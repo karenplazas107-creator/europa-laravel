@@ -149,21 +149,6 @@
 
         </nav>
 
-        <!-- Logout -->
-        <div class="db-sidebar__footer">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="db-logout-btn">
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                    </svg>
-                    Cerrar Sesión
-                </button>
-            </form>
-        </div>
-
     </aside>
 
     {{-- ════════════════════════════════════════
@@ -183,6 +168,22 @@
                     {{ strtoupper(substr(Auth::user()->nombre, 0, 1)) }}
                 </div>
             </div>
+
+            <!-- Separador Vertical -->
+            <div class="db-topbar-divider"></div>
+
+            <!-- Botón Cerrar Sesión Arriba a la Derecha -->
+            <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                @csrf
+                <button type="submit" class="db-topbar-logout-btn" title="Cerrar Sesión">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </form>
         </div>
     </header>
 

@@ -391,7 +391,7 @@ button {
 .db-user-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -401,13 +401,13 @@ button {
   font-weight: 800;
   color: var(--db-white);
   flex-shrink: 0;
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(30, 58, 138, 0.18);
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .db-user-chip:hover .db-user-avatar {
   transform: scale(1.04);
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(37, 99, 235, 0.45);
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(30, 58, 138, 0.35);
 }
 
 .db-user-info {
@@ -437,6 +437,49 @@ button {
   border-radius: 50%;
   background: var(--db-green);
   display: inline-block;
+}
+
+/* Separador en Topbar */
+.db-topbar-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--db-border);
+}
+
+/* Botón Cerrar Sesión en Topbar (Arriba a la derecha) */
+.db-topbar-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: all var(--transition);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.db-topbar-logout-btn svg {
+  flex-shrink: 0;
+  color: #64748b;
+  transition: transform var(--transition), color var(--transition);
+}
+
+.db-topbar-logout-btn:hover {
+  background: #fff1f2;
+  color: #be123c;
+  border-color: #fecdd3;
+  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.12);
+}
+
+.db-topbar-logout-btn:hover svg {
+  color: #e11d48;
+  transform: translateX(2px);
 }
 
 
@@ -897,4 +940,7 @@ button {
 
 @media (max-width: 520px) {
   .db-stats { grid-template-columns: 1fr; }
+  .db-topbar-logout-btn span { display: none; }
+  .db-topbar-logout-btn { padding: 8px 10px; }
+  .db-user-info { display: none; }
 }
