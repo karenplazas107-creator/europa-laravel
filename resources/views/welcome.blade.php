@@ -795,6 +795,15 @@
                 text-align: center;
                 gap: 28px;
             }
+            .promotions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .europa-hero-stats {
+                padding: 18px 16px;
+            }
+            .hero-stat-item {
+                padding: 0 24px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -809,6 +818,326 @@
             }
             .mockup-metrics-grid {
                 grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .promotions-grid {
+                grid-template-columns: 1fr;
+            }
+            .europa-hero-stats {
+                flex-direction: column;
+                gap: 16px;
+                padding: 20px;
+            }
+            .hero-stat-separator {
+                width: 80px;
+                height: 1px;
+            }
+            .hero-stat-item {
+                padding: 0;
+            }
+            .promo-filter-btn {
+                padding: 7px 16px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* ══════════════════════════════════════════
+           STATS DEL HERO (Control de Stock, etc.)
+        ══════════════════════════════════════════ */
+        .europa-hero-stats {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px 28px;
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-stat-item {
+            text-align: center;
+            padding: 0 48px;
+        }
+
+        .hero-stat-number {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ffffff;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .hero-stat-separator {
+            width: 1px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.12);
+            flex-shrink: 0;
+        }
+
+        /* ══════════════════════════════════════════
+           SECCIÓN PROMOCIONES DEL MES (PRODUCTOS)
+        ══════════════════════════════════════════ */
+        .europa-promotions-section {
+            padding: 80px 36px 90px;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .europa-promotions-container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .promotions-header {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 36px;
+        }
+
+        .promotions-tag {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--clr-blue-brand);
+            margin-bottom: 8px;
+        }
+
+        .promotions-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 3.8vw, 3rem);
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+        }
+
+        .promotions-subtitle {
+            font-size: 1.05rem;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Filtros de Categoría */
+        .promotions-filters {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+
+        .promo-filter-btn {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 9999px;
+            padding: 9px 24px;
+            font-family: var(--font-body);
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .promo-filter-btn:hover {
+            border-color: #cbd5e1;
+            color: #0f172a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .promo-filter-btn.active {
+            background-color: var(--clr-navy-btn);
+            color: #ffffff;
+            border-color: var(--clr-navy-btn);
+            box-shadow: 0 4px 16px rgba(30, 58, 138, 0.32);
+        }
+
+        /* Grid de Productos */
+        .promotions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .promo-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .promo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 36px rgba(15, 23, 42, 0.09);
+            border-color: #cbd5e1;
+        }
+
+        .promo-card__img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+
+        .promo-card__img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.45s ease;
+        }
+
+        .promo-card:hover .promo-card__img-wrap img {
+            transform: scale(1.06);
+        }
+
+        /* Badges de oferta en tarjeta */
+        .promo-card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 6px;
+            z-index: 2;
+            letter-spacing: 0.02em;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .promo-card-badge--red {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        .promo-card-badge--green {
+            background: #10b981;
+            color: #ffffff;
+        }
+
+        .promo-card-badge--yellow {
+            background: #f59e0b;
+            color: #000000;
+        }
+
+        /* Contenido de tarjeta */
+        .promo-card__body {
+            padding: 16px 18px 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .promo-card__category {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--clr-blue-brand);
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .promo-card__title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.35;
+            margin-bottom: 14px;
+            flex-grow: 1;
+        }
+
+        .promo-card__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .promo-card__pricing {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .promo-price-old {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            text-decoration: line-through;
+            font-weight: 500;
+        }
+
+        .promo-price-new {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--clr-navy-btn);
+        }
+
+        .promo-btn-cart {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: var(--clr-navy-btn);
+            color: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.28);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+
+        .promo-btn-cart:hover {
+            background-color: var(--clr-blue-brand);
+            transform: scale(1.1);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+            color: #ffffff;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     </style>
@@ -838,8 +1167,8 @@
             <div class="europa-navbar__right">
                 <nav class="europa-nav-links">
                     <a href="{{ url('/') }}" class="europa-nav-link active">Inicio</a>
-                    <a href="{{ url('/promociones') }}" class="europa-nav-link">Promociones</a>
-                    <a href="{{ url('/tienda') }}" class="europa-nav-link">Carrito</a>
+                    <a href="#promociones" class="europa-nav-link">Promociones</a>
+                    <a href="{{ route('tienda') }}" class="europa-nav-link">Carrito</a>
                 </nav>
 
                 <div class="europa-nav-auth">
@@ -1041,11 +1370,236 @@
             </div>
         </div>
 
+        <!-- Stats Bar at bottom of Hero -->
+        <div class="europa-hero-stats">
+            <div class="hero-stat-item">
+                <div class="hero-stat-number">100%</div>
+                <div class="hero-stat-label">Control de Stock</div>
+            </div>
+            <div class="hero-stat-separator"></div>
+            <div class="hero-stat-item">
+                <div class="hero-stat-number">24/7</div>
+                <div class="hero-stat-label">Disponibilidad</div>
+            </div>
+            <div class="hero-stat-separator"></div>
+            <div class="hero-stat-item">
+                <div class="hero-stat-number">+500</div>
+                <div class="hero-stat-label">En facturación</div>
+            </div>
+        </div>
+
         <!-- Curva inferior hacia fondo blanco -->
         <div class="europa-bottom-wave">
             <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0,60 C400,120 1000,120 1440,30 L1440,120 L0,120 Z" fill="#ffffff"></path>
             </svg>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         SECCIÓN PROMOCIONES DEL MES (PRODUCTOS)
+    ══════════════════════════════════════════ -->
+    <section class="europa-promotions-section" id="promociones">
+        <div class="europa-promotions-container">
+
+            <div class="promotions-header">
+                <span class="promotions-tag">Ofertas Especiales</span>
+                <h2 class="promotions-title">Promociones del Mes</h2>
+                <p class="promotions-subtitle">
+                    Los mejores precios en aseo, ropa, herramientas y abarrotes. ¡Solo en Almacén Europa!
+                </p>
+            </div>
+
+            <!-- Filtros de categoría -->
+            <div class="promotions-filters" id="promotions-filters">
+                <button type="button" class="promo-filter-btn active" data-filter="todos">
+                    Todos
+                </button>
+                <button type="button" class="promo-filter-btn" data-filter="aseo">
+                    🧹 Aseo
+                </button>
+                <button type="button" class="promo-filter-btn" data-filter="ropa">
+                    👕 Ropa
+                </button>
+                <button type="button" class="promo-filter-btn" data-filter="herramientas">
+                    🔧 Herramientas
+                </button>
+                <button type="button" class="promo-filter-btn" data-filter="abarrotes">
+                    🛒 Abarrotes
+                </button>
+            </div>
+
+            <!-- Grid de productos -->
+            <div class="promotions-grid" id="promotions-grid">
+
+                <!-- Producto 1 -->
+                <div class="promo-card" data-category="aseo">
+                    <div class="promo-card__img-wrap">
+                        <img src="https://images.unsplash.com/photo-1583947581924-860bda6a26df?w=600&h=450&fit=crop&auto=format" alt="Detergente en Polvo 1kg" loading="lazy">
+                        <span class="promo-card-badge promo-card-badge--red">🔥 -20%</span>
+                    </div>
+                    <div class="promo-card__body">
+                        <span class="promo-card__category">Aseo del Hogar</span>
+                        <h3 class="promo-card__title">Detergente en Polvo 1kg</h3>
+                        <div class="promo-card__footer">
+                            <div class="promo-card__pricing">
+                                <span class="promo-price-old">$8.500</span>
+                                <span class="promo-price-new">$6.800</span>
+                            </div>
+                            <a href="{{ route('tienda') }}" class="promo-btn-cart" title="Comprar en la tienda">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 2 -->
+                <div class="promo-card" data-category="aseo">
+                    <div class="promo-card__img-wrap">
+                        <img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=600&h=450&fit=crop&auto=format" alt="Jabón de Baño x3 und" loading="lazy">
+                        <span class="promo-card-badge promo-card-badge--green">✅ NUEVO</span>
+                    </div>
+                    <div class="promo-card__body">
+                        <span class="promo-card__category">Aseo Personal</span>
+                        <h3 class="promo-card__title">Jabón de Baño x3 und</h3>
+                        <div class="promo-card__footer">
+                            <div class="promo-card__pricing">
+                                <span class="promo-price-new">$4.200</span>
+                            </div>
+                            <a href="{{ route('tienda') }}" class="promo-btn-cart" title="Comprar en la tienda">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 3 -->
+                <div class="promo-card" data-category="aseo">
+                    <div class="promo-card__img-wrap">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=450&fit=crop&auto=format" alt="Escoba + Recogedor" loading="lazy">
+                        <span class="promo-card-badge promo-card-badge--yellow">⭐ OFERTA</span>
+                    </div>
+                    <div class="promo-card__body">
+                        <span class="promo-card__category">Aseo del Hogar</span>
+                        <h3 class="promo-card__title">Escoba + Recogedor</h3>
+                        <div class="promo-card__footer">
+                            <div class="promo-card__pricing">
+                                <span class="promo-price-old">$18.000</span>
+                                <span class="promo-price-new">$14.500</span>
+                            </div>
+                            <a href="{{ route('tienda') }}" class="promo-btn-cart" title="Comprar en la tienda">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 4 -->
+                <div class="promo-card" data-category="ropa">
+                    <div class="promo-card__img-wrap">
+                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=450&fit=crop&auto=format" alt="Camiseta Algodón Unisex" loading="lazy">
+                        <span class="promo-card-badge promo-card-badge--red">🔥 -30%</span>
+                    </div>
+                    <div class="promo-card__body">
+                        <span class="promo-card__category">Ropa</span>
+                        <h3 class="promo-card__title">Camiseta Algodón Unisex</h3>
+                        <div class="promo-card__footer">
+                            <div class="promo-card__pricing">
+                                <span class="promo-price-old">$25.000</span>
+                                <span class="promo-price-new">$17.500</span>
+                            </div>
+                            <a href="{{ route('tienda') }}" class="promo-btn-cart" title="Comprar en la tienda">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 5 -->
+                <div class="promo-card" data-category="herramientas">
+                    <div class="promo-card__img-wrap">
+                        <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&h=450&fit=crop&auto=format" alt="Juego de Llaves 12 pzs" loading="lazy">
+                        <span class="promo-card-badge promo-card-badge--yellow">⭐ OFERTA</span>
+                    </div>
+                    <div class="promo-card__body">
+                        <span class="promo-card__category">Herramientas</span>
+                        <h3 class="promo-card__title">Juego de Llaves 12 pzs</h3>
+                        <div class="promo-card__footer">
+                            <div class="promo-card__pricing">
+                                <span class="promo-price-old">$35.000</span>
+                                <span class="promo-price-new">$27.000</span>
+                            </div>
+                            <a href="{{ route('tienda') }}" class="promo-btn-cart" title="Comprar en la tienda">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 6 -->
+                <div class="promo-card" data-category="abarrotes">
+                    <div class="promo-card__img-wrap">
+                        <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=600&h=450&fit=crop&auto=format" alt="Aceite Girasol 1L" loading="lazy">
+                        <span class="promo-card-badge promo-card-badge--green">✅ NUEVO</span>
+                    </div>
+                    <div class="promo-card__body">
+                        <span class="promo-card__category">Abarrotes</span>
+                        <h3 class="promo-card__title">Aceite Girasol 1L</h3>
+                        <div class="promo-card__footer">
+                            <div class="promo-card__pricing">
+                                <span class="promo-price-new">$12.000</span>
+                            </div>
+                            <a href="{{ route('tienda') }}" class="promo-btn-cart" title="Comprar en la tienda">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 7 -->
+                <div class="promo-card" data-category="ropa">
+                    <div class="promo-card__img-wrap">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=450&fit=crop&auto=format" alt="Tenis Deportivos" loading="lazy">
+                        <span class="promo-card-badge promo-card-badge--red">🔥 -15%</span>
+                    </div>
+                    <div class="promo-card__body">
+                        <span class="promo-card__category">Ropa</span>
+                        <h3 class="promo-card__title">Tenis Deportivos</h3>
+                        <div class="promo-card__footer">
+                            <div class="promo-card__pricing">
+                                <span class="promo-price-old">$85.000</span>
+                                <span class="promo-price-new">$72.000</span>
+                            </div>
+                            <a href="{{ route('tienda') }}" class="promo-btn-cart" title="Comprar en la tienda">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Producto 8 -->
+                <div class="promo-card" data-category="abarrotes">
+                    <div class="promo-card__img-wrap">
+                        <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&h=450&fit=crop&auto=format" alt="Arroz Premium 5kg" loading="lazy">
+                        <span class="promo-card-badge promo-card-badge--yellow">⭐ OFERTA</span>
+                    </div>
+                    <div class="promo-card__body">
+                        <span class="promo-card__category">Abarrotes</span>
+                        <h3 class="promo-card__title">Arroz Premium 5kg</h3>
+                        <div class="promo-card__footer">
+                            <div class="promo-card__pricing">
+                                <span class="promo-price-old">$22.000</span>
+                                <span class="promo-price-new">$18.500</span>
+                            </div>
+                            <a href="{{ route('tienda') }}" class="promo-btn-cart" title="Comprar en la tienda">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </section>
 
@@ -1166,7 +1720,7 @@
             <div class="footer-links">
                 <a href="{{ url('/') }}">Inicio</a>
                 <a href="{{ url('/tienda') }}">Tienda en Línea</a>
-                <a href="{{ url('/promociones') }}">Promociones</a>
+                <a href="#promociones">Promociones</a>
                 <a href="{{ route('login') }}">Acceso Empleados</a>
             </div>
         </div>
@@ -1175,6 +1729,48 @@
             <p>&copy; {{ date('Y') }} Almacén Europa – Sistema de Gestión v2.0. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <!-- ══════════════════════════════════════════
+         SCRIPTS: FILTROS Y CARRITO
+    ══════════════════════════════════════════ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ── Filtro de Categorías en Promociones ──
+            const filterBtns = document.querySelectorAll('.promo-filter-btn');
+            const productCards = document.querySelectorAll('.promo-card');
+
+            filterBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const filter = this.dataset.filter;
+
+                    filterBtns.forEach(function (b) { b.classList.remove('active'); });
+                    this.classList.add('active');
+
+                    productCards.forEach(function (card) {
+                        if (filter === 'todos' || card.dataset.category === filter) {
+                            card.style.display = 'flex';
+                            card.style.animation = 'none';
+                            void card.offsetWidth; // Forzar reflow para reiniciar la animación
+                            card.style.animation = 'fadeInUp 0.35s ease forwards';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // ── Efecto clic botón carrito ──
+            document.querySelectorAll('.promo-btn-cart').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    this.style.transform = 'scale(0.85)';
+                    const self = this;
+                    setTimeout(function () {
+                        self.style.transform = '';
+                    }, 180);
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
