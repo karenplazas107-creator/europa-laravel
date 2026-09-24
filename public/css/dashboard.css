@@ -5,19 +5,19 @@
 
 /* ── Custom Properties & Design Tokens ── */
 :root {
-  /* Dark Obsidian Brand & Sidebar Surfaces */
-  --db-navy:          #090d16;
-  --db-navy-mid:      #0d1527;
-  --db-navy-light:    #152240;
+  /* Executive Dark Navy & Sidebar Surfaces */
+  --db-navy:          #0f172a;
+  --db-navy-mid:      #0b1120;
+  --db-navy-light:    #1e293b;
   --db-navy-card:     rgba(15, 23, 42, 0.65);
-  --db-sidebar-border:rgba(255, 255, 255, 0.07);
+  --db-sidebar-border:rgba(255, 255, 255, 0.08);
 
   /* Primary Brand Accents */
   --db-blue:          #2563eb;
   --db-blue-hover:    #1d4ed8;
   --db-blue-light:    #eff6ff;
-  --db-blue-glow:     rgba(37, 99, 235, 0.28);
-  --db-cyan:          #06b6d4;
+  --db-blue-glow:     rgba(37, 99, 235, 0.16);
+  --db-cyan:          #38bdf8;
   --db-cyan-light:    #ecfeff;
   --db-indigo:        #6366f1;
   --db-white:         #ffffff;
@@ -132,12 +132,12 @@ button {
 
 
 /* ══════════════════════════════════════════════════════════
-   SIDEBAR
+   SIDEBAR (Azul Marino Ejecutivo y Sobrio)
 ══════════════════════════════════════════════════════════ */
 .db-sidebar {
   grid-row: 1 / -1;
-  background: linear-gradient(180deg, var(--db-navy) 0%, var(--db-navy-mid) 100%);
-  border-right: 1px solid var(--db-sidebar-border);
+  background: linear-gradient(180deg, #0f172a 0%, #0b1120 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -148,13 +148,13 @@ button {
   width: var(--sidebar-w);
   height: 100vh;
   z-index: 200;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.22);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
 }
 
 /* Logo */
 .db-sidebar__logo {
   padding: 22px 20px 20px;
-  border-bottom: 1px solid var(--db-sidebar-border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -165,11 +165,12 @@ button {
   width: 38px;
   height: 38px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.4);
   flex-shrink: 0;
   color: #ffffff;
 }
@@ -189,24 +190,24 @@ button {
 .db-logo-name {
   font-family: var(--font-main);
   font-size: 1.35rem;
-  font-weight: 900;
-  color: var(--db-white);
+  font-weight: 800;
+  color: #ffffff;
   letter-spacing: -.03em;
   line-height: 1.1;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .db-logo-name span {
-  color: var(--db-cyan);
+  color: #38bdf8;
 }
 
 .db-logo-sub {
   font-size: .62rem;
   font-weight: 700;
   letter-spacing: .12em;
-  color: rgba(255, 255, 255, 0.45);
+  color: #94a3b8;
   text-transform: uppercase;
 }
 
@@ -225,9 +226,9 @@ button {
   font-size: .625rem;
   font-weight: 700;
   letter-spacing: .14em;
-  color: rgba(255, 255, 255, 0.35);
+  color: #64748b;
   text-transform: uppercase;
-  padding: 0 10px;
+  padding: 0 12px;
   margin-bottom: 8px;
 }
 
@@ -235,11 +236,11 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 10px 14px;
   border-radius: var(--radius-sm);
   font-size: .875rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.65);
+  color: #94a3b8;
   transition: all var(--transition);
   white-space: nowrap;
   border: 1px solid transparent;
@@ -248,37 +249,53 @@ button {
 
 .db-nav-link svg {
   flex-shrink: 0;
-  opacity: .75;
-  transition: transform var(--transition), opacity var(--transition);
+  color: #64748b;
+  opacity: .85;
+  transition: transform var(--transition), color var(--transition), opacity var(--transition);
 }
 
 .db-nav-link:hover {
-  background: rgba(255, 255, 255, 0.07);
-  color: var(--db-white);
-  border-color: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.04);
 }
 
 .db-nav-link:hover svg {
+  color: #cbd5e1;
   opacity: 1;
   transform: translateX(2px);
 }
 
+/* Estado Activo: Elegante, sutil y sin resplandor neón chillón */
 .db-nav-link.active {
-  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-  color: var(--db-white);
+  background: rgba(37, 99, 235, 0.14);
+  color: #ffffff;
   font-weight: 600;
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(59, 130, 246, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.db-nav-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  background: #3b82f6;
+  border-radius: 0 4px 4px 0;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
 }
 
 .db-nav-link.active svg {
+  color: #60a5fa;
   opacity: 1;
 }
 
 /* Logout en sidebar */
 .db-sidebar__footer {
   padding: 16px 14px;
-  border-top: 1px solid var(--db-sidebar-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
   flex-shrink: 0;
 }
 
@@ -287,19 +304,28 @@ button {
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 10px 12px;
+  padding: 10px 14px;
   border-radius: var(--radius-sm);
   font-size: .875rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.55);
+  color: #94a3b8;
   transition: all var(--transition);
   border: 1px solid transparent;
 }
 
+.db-logout-btn svg {
+  color: #64748b;
+  transition: color var(--transition);
+}
+
 .db-logout-btn:hover {
-  background: rgba(244, 63, 94, 0.12);
-  color: #fda4af;
+  background: rgba(244, 63, 94, 0.10);
+  color: #fca5a5;
   border-color: rgba(244, 63, 94, 0.2);
+}
+
+.db-logout-btn:hover svg {
+  color: #f43f5e;
 }
 
 
