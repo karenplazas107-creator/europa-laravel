@@ -10,7 +10,6 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\TiendaClienteController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VentaController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /* ══════════════════════════════════════════
@@ -19,25 +18,21 @@ use Illuminate\Support\Facades\Route;
 
 // Página principal
 Route::get('/', function () {
-    if (Auth::check() && Auth::user()->isCliente()) {
-        return redirect()->route('tienda');
-    }
-
-    return view('home');
+    return view('welcome');
 })->name('home');
+
+Route::get('/welcome', function () {
+    return view('welcome');
+})->name('welcome');
 
 // Promociones
 Route::get('/promociones', function () {
-    return view('home');
+    return redirect()->route('tienda');
 })->name('promociones');
 
 // Carrito
 Route::get('/carrito', function () {
-    if (Auth::check() && Auth::user()->isCliente()) {
-        return redirect()->route('tienda');
-    }
-
-    return view('home');
+    return redirect()->route('tienda');
 })->name('carrito');
 
 /* ══════════════════════════════════════════
