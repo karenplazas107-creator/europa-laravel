@@ -12,38 +12,38 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Usuarios
         User::create([
-            'rol'      => 'admin',
-            'nombre'   => 'Administrador',
+            'rol' => 'admin',
+            'nombre' => 'Administrador',
             'apellido' => 'Europa',
-            'email'    => 'admin@almaceneuropa.com',
-            'movil'    => '3001234567',
+            'email' => 'admin@almaceneuropa.com',
+            'movil' => '3001234567',
             'password' => Hash::make('admin123'),
         ]);
 
         User::create([
-            'rol'      => 'vendedor',
-            'nombre'   => 'Karen',
+            'rol' => 'vendedor',
+            'nombre' => 'Karen',
             'apellido' => 'Plazas',
-            'email'    => 'karen@almaceneuropa.com',
-            'movil'    => '3109876543',
+            'email' => 'karen@almaceneuropa.com',
+            'movil' => '3109876543',
             'password' => Hash::make('vendedor123'),
         ]);
 
         User::create([
-            'rol'      => 'cliente',
-            'nombre'   => 'Angie',
+            'rol' => 'cliente',
+            'nombre' => 'Angie',
             'apellido' => 'Patiño',
-            'email'    => 'angie111@gmail.com',
-            'movil'    => '3201111111',
+            'email' => 'angie111@gmail.com',
+            'movil' => '3201111111',
             'password' => Hash::make('cliente123'),
         ]);
 
         User::create([
-            'rol'      => 'cliente',
-            'nombre'   => 'Melanie',
+            'rol' => 'cliente',
+            'nombre' => 'Melanie',
             'apellido' => 'Lemus',
-            'email'    => 'Melanie12345@gmail.com',
-            'movil'    => '3214567890',
+            'email' => 'Melanie12345@gmail.com',
+            'movil' => '3214567890',
             'password' => Hash::make('cliente123'),
         ]);
 

@@ -43,11 +43,93 @@ class User extends Authenticatable
     }
 
     /**
-     * Indica a Laravel que el campo de autenticación es 'movil'
-     * en lugar del 'email' por defecto.
+     * Clave primaria para identificar al usuario en la sesión.
      */
     public function getAuthIdentifierName(): string
     {
-        return 'movil';
+        return 'usuario';
+    }
+
+    public const ROL_ADMIN = 'administrador';
+
+    public const ROL_VENDEDOR = 'vendedor';
+
+    public const ROL_BODEGA = 'auxiliar_bodega';
+
+    public const ROL_CLIENTE = 'cliente';
+
+    /**
+     * Lista de roles disponibles en el sistema con sus etiquetas legibles.
+     *
+     * @return array<string, string>
+     */
+    public static function rolesDisponibles(): array
+    {
+        return [
+            self::ROL_ADMIN => 'Administrador',
+            self::ROL_VENDEDOR => 'Vendedor',
+            self::ROL_BODEGA => 'Auxiliar de Bodega',
+            self::ROL_CLIENTE => 'Cliente',
+        ];
+    }
+
+    /**
+     * Mutator para almacenar siempre el rol en minúsculas y sin espacios.
+     */
+    public function setRolAttribute($value): void
+    {
+        $this->attributes['rol'] = strtolower(trim((string) $value));
+    }
+
+    public function getRolNormalizadoAttribute(): string
+    {
+        return strtolower(trim((string) $this->rol));
+    }
+
+    public function getNombreRolAttribute(): string
+    {
+        return match ($this->rol_normalizado) {
+            'admin', 'administrador' => 'Administrador',
+            'vendedor' => 'Vendedor',
+            'auxiliar_bodega', 'bodega', 'auxiliar de bodega' => 'Auxiliar de Bodega',
+            'cliente' => 'Cliente',
+            default => ucfirst($this->rol_normalizado ?: 'Usuario'),
+        };
+    }
+
+    public function isCliente(): bool
+    {
+        return $this->rol_normalizado === 'cliente';
+    }
+
+    public function isStaff(): bool
+    {
+        return in_array($this->rol_normalizado, [
+            'admin',
+            'administrador',
+            'vendedor',
+            'auxiliar_bodega',
+            'bodega',
+            'auxiliar de bodega',
+        ]);
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array($this->rol_normalizado, ['admin', 'administrador']);
+    }
+
+    public function isVendedor(): bool
+    {
+        return in_array($this->rol_normalizado, ['vendedor']);
+    }
+
+    public function isBodega(): bool
+    {
+        return in_array($this->rol_normalizado, [
+            'auxiliar_bodega',
+            'bodega',
+            'auxiliar de bodega',
+        ]);
     }
 }

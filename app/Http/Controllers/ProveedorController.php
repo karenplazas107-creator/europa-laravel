@@ -13,17 +13,17 @@ class ProveedorController extends Controller
         $search = $request->input('search', '');
 
         $proveedores = Proveedor::when($search, function ($q) use ($search) {
-                $q->where('nombre',    'like', "%{$search}%")
-                  ->orWhere('email',    'like', "%{$search}%")
-                  ->orWhere('telefono', 'like', "%{$search}%")
-                  ->orWhere('direccion','like', "%{$search}%");
-            })
+            $q->where('nombre', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('telefono', 'like', "%{$search}%")
+                ->orWhere('direccion', 'like', "%{$search}%");
+        })
             ->orderBy('nombre')
             ->get();
 
-        $total        = Proveedor::count();
-        $conEmail     = Proveedor::whereNotNull('email')->where('email', '!=', '')->count();
-        $conTelefono  = Proveedor::whereNotNull('telefono')->where('telefono', '!=', '')->count();
+        $total = Proveedor::count();
+        $conEmail = Proveedor::whereNotNull('email')->where('email', '!=', '')->count();
+        $conTelefono = Proveedor::whereNotNull('telefono')->where('telefono', '!=', '')->count();
 
         return view('proveedores.index', compact(
             'proveedores', 'search', 'total', 'conEmail', 'conTelefono'
@@ -38,16 +38,16 @@ class ProveedorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre'   => ['required', 'string', 'max:120'],
+            'nombre' => ['required', 'string', 'max:120'],
             'telefono' => ['required', 'string', 'max:20'],
-            'email'    => ['required', 'email', 'max:120', 'unique:suppliers,email'],
-            'direccion'=> ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:120', 'unique:suppliers,email'],
+            'direccion' => ['required', 'string', 'max:255'],
         ], [
-            'nombre.required'    => 'El nombre es obligatorio.',
-            'telefono.required'  => 'El teléfono es obligatorio.',
-            'email.required'     => 'El email es obligatorio.',
-            'email.email'        => 'Ingrese un email válido.',
-            'email.unique'       => 'Este email ya está registrado.',
+            'nombre.required' => 'El nombre es obligatorio.',
+            'telefono.required' => 'El teléfono es obligatorio.',
+            'email.required' => 'El email es obligatorio.',
+            'email.email' => 'Ingrese un email válido.',
+            'email.unique' => 'Este email ya está registrado.',
             'direccion.required' => 'La dirección es obligatoria.',
         ]);
 
@@ -61,6 +61,7 @@ class ProveedorController extends Controller
     public function edit(string $id)
     {
         $proveedor = Proveedor::findOrFail($id);
+
         return view('proveedores.edit', compact('proveedor'));
     }
 
@@ -69,17 +70,17 @@ class ProveedorController extends Controller
         $proveedor = Proveedor::findOrFail($id);
 
         $request->validate([
-            'nombre'   => ['required', 'string', 'max:120'],
+            'nombre' => ['required', 'string', 'max:120'],
             'telefono' => ['required', 'string', 'max:20'],
-            'email'    => ['required', 'email', 'max:120',
-                           Rule::unique('suppliers', 'email')->ignore($proveedor->proveedores, 'proveedores')],
-            'direccion'=> ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:120',
+                Rule::unique('suppliers', 'email')->ignore($proveedor->proveedores, 'proveedores')],
+            'direccion' => ['required', 'string', 'max:255'],
         ], [
-            'nombre.required'    => 'El nombre es obligatorio.',
-            'telefono.required'  => 'El teléfono es obligatorio.',
-            'email.required'     => 'El email es obligatorio.',
-            'email.email'        => 'Ingrese un email válido.',
-            'email.unique'       => 'Este email ya está en uso.',
+            'nombre.required' => 'El nombre es obligatorio.',
+            'telefono.required' => 'El teléfono es obligatorio.',
+            'email.required' => 'El email es obligatorio.',
+            'email.email' => 'Ingrese un email válido.',
+            'email.unique' => 'Este email ya está en uso.',
             'direccion.required' => 'La dirección es obligatoria.',
         ]);
 
@@ -93,7 +94,7 @@ class ProveedorController extends Controller
     public function destroy(string $id)
     {
         $proveedor = Proveedor::findOrFail($id);
-        $nombre    = $proveedor->nombre;
+        $nombre = $proveedor->nombre;
         $proveedor->delete();
 
         return redirect()

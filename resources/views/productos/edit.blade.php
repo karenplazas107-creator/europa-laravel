@@ -210,28 +210,9 @@
                 </div>
             </div>
 
-            {{-- Zona peligrosa: eliminar --}}
-            <div class="prod-danger-zone">
-                <span class="prod-danger-zone__label">Zona peligrosa</span>
-                <form method="POST"
-                      action="{{ route('productos.destroy', $producto->productos) }}"
-                      onsubmit="return confirm('¿Eliminar el producto {{ addslashes($producto->nombre) }}? Esta acción no se puede deshacer.')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="prod-btn prod-btn--danger">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="3 6 5 6 21 6"/>
-                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                            <path d="M10 11v6M14 11v6"/>
-                        </svg>
-                        Eliminar producto
-                    </button>
-                </form>
-            </div>
-
             <div class="prod-form-actions">
                 <a href="{{ route('catalogo.index') }}" class="prod-btn prod-btn--ghost">Cancelar</a>
-                <button type="submit" class="prod-btn prod-btn--primary">
+                <button type="submit" form="prod-form" class="prod-btn prod-btn--primary">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
                         <polyline points="17 21 17 13 7 13 7 21"/>
@@ -242,6 +223,26 @@
             </div>
 
         </form>
+
+        {{-- Zona peligrosa: eliminar (formulario separado e independiente) --}}
+        <div class="prod-danger-zone" style="margin-top: 2rem;">
+            <span class="prod-danger-zone__label">Zona peligrosa</span>
+            <form method="POST"
+                  action="{{ route('productos.destroy', $producto->productos) }}"
+                  onsubmit="return confirm('¿Eliminar el producto {{ addslashes($producto->nombre) }}? Esta acción no se puede deshacer.')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="prod-btn prod-btn--danger">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                        <path d="M10 11v6M14 11v6"/>
+                    </svg>
+                    Eliminar producto
+                </button>
+            </form>
+        </div>
+
     </div>
 </div>
 @endsection

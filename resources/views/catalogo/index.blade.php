@@ -34,7 +34,7 @@
     {{-- ── Stats ── --}}
     <div class="cat-stats">
         <div class="cat-stat-card">
-            <div class="cat-stat-icon" style="background:#eff6ff;color:#1d74e8">
+            <div class="cat-stat-icon" style="background:#eff6ff;color:#2563eb">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                 </svg>
@@ -46,7 +46,7 @@
         </div>
 
         <div class="cat-stat-card">
-            <div class="cat-stat-icon" style="background:#fdf4ff;color:#9333ea">
+            <div class="cat-stat-icon" style="background:#f5f3ff;color:#8b5cf6">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
                     <line x1="7" y1="7" x2="7.01" y2="7"/>
@@ -59,7 +59,7 @@
         </div>
 
         <div class="cat-stat-card">
-            <div class="cat-stat-icon" style="background:#fefce8;color:#ca8a04">
+            <div class="cat-stat-icon" style="background:#fffbeb;color:#d97706">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
                     <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
@@ -72,7 +72,7 @@
         </div>
 
         <div class="cat-stat-card">
-            <div class="cat-stat-icon" style="background:#fef2f2;color:#dc2626">
+            <div class="cat-stat-icon" style="background:#fff1f2;color:#be123c">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
@@ -350,20 +350,24 @@
 }
 .cat-stat-card {
     background: #fff; border-radius: 14px; border: 1px solid #e2e8f0;
-    box-shadow: 0 2px 8px rgba(13,27,53,.06);
+    box-shadow: var(--shadow-sm);
     padding: 18px 20px; display: flex; align-items: center; gap: 14px;
-    transition: transform .2s, box-shadow .2s;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
-.cat-stat-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(13,27,53,.1); }
+.cat-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(37, 99, 235, 0.25);
+}
 .cat-stat-icon {
     width: 46px; height: 46px; border-radius: 12px;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .cat-stat-value {
     font-family: 'Outfit', sans-serif; font-size: 1.65rem;
-    font-weight: 900; color: #0d1b35; letter-spacing: -.03em; line-height: 1;
+    font-weight: 900; color: #0f172a; letter-spacing: -.03em; line-height: 1;
 }
-.cat-stat-label { font-size: .75rem; color: #64748b; margin-top: 3px; }
+.cat-stat-label { font-size: .75rem; color: #64748b; margin-top: 3px; font-weight: 500; }
 
 /* Toolbar */
 .cat-toolbar { display: flex; align-items: center; gap: 12px; }
@@ -373,14 +377,19 @@
     display: flex; align-items: center; gap: 10px;
     background: #fff; border-radius: 12px;
     border: 1px solid #e2e8f0;
-    box-shadow: 0 2px 8px rgba(13,27,53,.05);
+    box-shadow: var(--shadow-xs);
     padding: 11px 16px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+.cat-search:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 .cat-search__icon  { color: #94a3b8; flex-shrink: 0; }
 .cat-search__input {
     flex: 1; border: none; outline: none;
     font-family: 'Inter', sans-serif; font-size: .9rem;
-    color: #0d1b35; background: transparent;
+    color: #0f172a; background: transparent;
 }
 .cat-search__input::placeholder { color: #94a3b8; }
 .cat-search__clear {
@@ -394,35 +403,43 @@
     display: flex; gap: 4px;
     background: #fff; border: 1px solid #e2e8f0;
     border-radius: 10px; padding: 4px;
-    box-shadow: 0 2px 8px rgba(13,27,53,.05);
+    box-shadow: var(--shadow-xs);
 }
 .cat-view-btn {
     width: 36px; height: 36px; border-radius: 7px;
     display: flex; align-items: center; justify-content: center;
-    color: #94a3b8; transition: all .2s; text-decoration: none;
+    color: #94a3b8; transition: all var(--transition); text-decoration: none;
 }
 .cat-view-btn:hover { background: #f1f5f9; color: #475569; }
-.cat-view-btn.active { background: #0d1b35; color: #fff; }
+.cat-view-btn.active {
+    background: #2563eb; color: #fff;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
 
 /* Filtros categoría */
 .cat-filters {
     display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
     background: #fff; border-radius: 12px; border: 1px solid #e2e8f0;
-    padding: 12px 16px; box-shadow: 0 2px 8px rgba(13,27,53,.05);
+    padding: 12px 16px; box-shadow: var(--shadow-xs);
 }
 .cat-filter-btn {
     display: inline-flex; align-items: center;
-    padding: 6px 16px; border-radius: 999px;
+    padding: 7px 18px; border-radius: 999px;
     font-size: .82rem; font-weight: 600;
     color: #475569; background: #f1f5f9;
     border: 1.5px solid transparent;
-    text-decoration: none; transition: all .2s;
+    text-decoration: none; transition: all var(--transition);
     white-space: nowrap;
 }
-.cat-filter-btn:hover { border-color: #1d74e8; color: #1d74e8; }
+.cat-filter-btn:hover {
+    border-color: rgba(37, 99, 235, 0.4);
+    color: #2563eb;
+    background: #eff6ff;
+}
 .cat-filter-btn.active {
-    background: #0d1b35; color: #fff; border-color: #0d1b35;
-    box-shadow: 0 3px 12px rgba(13,27,53,.22);
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    color: #fff; border-color: transparent;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
 }
 
 /* ── Grid de cards ── */
@@ -435,14 +452,15 @@
 .cat-card {
     background: #fff; border-radius: 16px;
     border: 1px solid #e2e8f0;
-    box-shadow: 0 2px 12px rgba(13,27,53,.07);
+    box-shadow: var(--shadow-sm);
     overflow: hidden;
-    transition: transform .2s, box-shadow .2s;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
     display: flex; flex-direction: column;
 }
 .cat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 36px rgba(13,27,53,.13);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(37, 99, 235, 0.25);
 }
 
 /* Imagen */

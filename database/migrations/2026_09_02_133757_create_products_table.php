@@ -18,12 +18,9 @@ return new class extends Migration
             $table->decimal('precio_compra');
             $table->decimal('precio_venta');
             $table->foreignId('categoria')
-            ->constrained('categories', 'categoria')
-            ->onDelete('cascade');
+                ->constrained('categories', 'categoria')
+                ->onDelete('cascade');
 
-
-
-            
         });
     }
 

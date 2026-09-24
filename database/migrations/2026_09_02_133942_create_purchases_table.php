@@ -16,12 +16,11 @@ return new class extends Migration
             $table->date('fecha');
             $table->decimal('total', 10, 2)->unsigned();
             $table->foreignId('proveedor')
-            ->constrained('suppliers', 'proveedores')
-            ->onDelete('cascade');
+                ->constrained('suppliers', 'proveedores')
+                ->onDelete('cascade');
             $table->foreignId('usuario')
-            ->constrained('users', 'usuario')
-            ->onDelete('cascade');
-
+                ->constrained('users', 'usuario')
+                ->onDelete('cascade');
 
             $table->timestamps();
         });

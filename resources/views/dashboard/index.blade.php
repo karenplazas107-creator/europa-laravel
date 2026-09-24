@@ -114,14 +114,14 @@
             <div class="db-legend">
                 <div class="db-legend-item">
                     <div class="db-legend-left">
-                        <div class="db-legend-dot" style="background:#22c55e"></div>
+                        <div class="db-legend-dot" style="background:#10b981"></div>
                         <span class="db-legend-name">Aseo</span>
                     </div>
                     <span class="db-legend-value">38%</span>
                 </div>
                 <div class="db-legend-item">
                     <div class="db-legend-left">
-                        <div class="db-legend-dot" style="background:#1d74e8"></div>
+                        <div class="db-legend-dot" style="background:#2563eb"></div>
                         <span class="db-legend-name">Abarrotes</span>
                     </div>
                     <span class="db-legend-value">27%</span>
@@ -135,7 +135,7 @@
                 </div>
                 <div class="db-legend-item">
                     <div class="db-legend-left">
-                        <div class="db-legend-dot" style="background:#ef4444"></div>
+                        <div class="db-legend-dot" style="background:#f43f5e"></div>
                         <span class="db-legend-name">Herramientas</span>
                     </div>
                     <span class="db-legend-value">15%</span>
@@ -155,45 +155,45 @@
     <table class="db-table">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Cliente</th>
-                <th>Productos</th>
-                <th>Total</th>
-                <th>Fecha</th>
-                <th>Estado</th>
+                <th>CÓDIGO</th>
+                <th>CLIENTE</th>
+                <th>ITEMS</th>
+                <th>TOTAL</th>
+                <th>FECHA</th>
+                <th>ESTADO</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>#0041</td>
-                <td>María González</td>
+                <td>Carlos Mendoza</td>
                 <td>3 productos</td>
-                <td>$42.500</td>
-                <td>Hoy, 10:24 am</td>
+                <td>$48.500</td>
+                <td>{{ now()->format('d/m/Y') }}</td>
                 <td><span class="db-badge db-badge--green">Completada</span></td>
             </tr>
             <tr>
                 <td>#0040</td>
-                <td>Pedro Ramírez</td>
+                <td>Lucía Fernández</td>
                 <td>1 producto</td>
-                <td>$18.000</td>
-                <td>Hoy, 09:15 am</td>
+                <td>$12.000</td>
+                <td>{{ now()->format('d/m/Y') }}</td>
                 <td><span class="db-badge db-badge--green">Completada</span></td>
             </tr>
             <tr>
                 <td>#0039</td>
-                <td>Ana Martínez</td>
+                <td>Andrés Gómez</td>
                 <td>5 productos</td>
-                <td>$87.200</td>
-                <td>Ayer, 04:48 pm</td>
+                <td>$89.900</td>
+                <td>{{ now()->subDay()->format('d/m/Y') }}</td>
                 <td><span class="db-badge db-badge--yellow">Pendiente</span></td>
             </tr>
             <tr>
                 <td>#0038</td>
-                <td>Luis Torres</td>
+                <td>Valentina Ríos</td>
                 <td>2 productos</td>
-                <td>$29.900</td>
-                <td>Ayer, 11:30 am</td>
+                <td>$34.200</td>
+                <td>{{ now()->subDay()->format('d/m/Y') }}</td>
                 <td><span class="db-badge db-badge--green">Completada</span></td>
             </tr>
             <tr>
@@ -217,13 +217,18 @@
 <script>
 (function () {
     // ── Colores comunes ──
-    var blue   = '#1d74e8';
-    var blueT  = 'rgba(29,116,232,.12)';
+    var blue   = '#2563eb';
+    var blueT  = 'rgba(37,99,235,.10)';
 
     // ════════════════════════════════
     // Gráfica de líneas
     // ════════════════════════════════
     var lineCtx = document.getElementById('lineChart').getContext('2d');
+
+    // Gradiente suave para el área
+    var gradient = lineCtx.createLinearGradient(0, 0, 0, 220);
+    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.28)');
+    gradient.addColorStop(1, 'rgba(37, 99, 235, 0.00)');
 
     new Chart(lineCtx, {
         type: 'line',
@@ -233,11 +238,11 @@
                 label: 'Ventas ($)',
                 data: [12000, 19500, 15200, 14800, 21000, 24500],
                 borderColor: blue,
-                backgroundColor: blueT,
+                backgroundColor: gradient,
                 borderWidth: 2.5,
                 pointBackgroundColor: blue,
                 pointBorderColor: '#fff',
-                pointBorderWidth: 2,
+                pointBorderWidth: 2.5,
                 pointRadius: 5,
                 pointHoverRadius: 7,
                 fill: true,
@@ -250,11 +255,13 @@
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: '#0d1b35',
+                    backgroundColor: '#090d16',
                     titleColor: '#fff',
-                    bodyColor: 'rgba(255,255,255,.7)',
-                    padding: 10,
-                    cornerRadius: 8,
+                    bodyColor: 'rgba(255,255,255,.8)',
+                    borderColor: 'rgba(255,255,255,.1)',
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 10,
                     callbacks: {
                         label: function (ctx) {
                             return ' $' + ctx.parsed.y.toLocaleString('es-CO');
@@ -266,14 +273,14 @@
                 x: {
                     grid: { display: false },
                     border: { display: false },
-                    ticks: { color: '#94a3b8', font: { size: 12 } }
+                    ticks: { color: '#64748b', font: { size: 12, weight: '500' } }
                 },
                 y: {
-                    grid: { color: '#f1f5fd', borderDash: [4,4] },
+                    grid: { color: '#f1f5f9', borderDash: [4,4] },
                     border: { display: false },
                     ticks: {
-                        color: '#94a3b8',
-                        font: { size: 11 },
+                        color: '#64748b',
+                        font: { size: 11, weight: '500' },
                         callback: function (v) { return '$' + (v/1000) + 'k'; }
                     }
                 }
@@ -292,23 +299,25 @@
             labels: ['Aseo', 'Abarrotes', 'Ropa', 'Herramientas'],
             datasets: [{
                 data: [38, 27, 20, 15],
-                backgroundColor: ['#22c55e', '#1d74e8', '#f59e0b', '#ef4444'],
-                borderColor: '#fff',
+                backgroundColor: ['#10b981', '#2563eb', '#f59e0b', '#f43f5e'],
+                borderColor: '#ffffff',
                 borderWidth: 3,
-                hoverOffset: 6,
+                hoverOffset: 8,
             }]
         },
         options: {
             responsive: false,
-            cutout: '68%',
+            cutout: '72%',
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: '#0d1b35',
+                    backgroundColor: '#090d16',
                     titleColor: '#fff',
-                    bodyColor: 'rgba(255,255,255,.7)',
+                    bodyColor: 'rgba(255,255,255,.8)',
+                    borderColor: 'rgba(255,255,255,.1)',
+                    borderWidth: 1,
                     padding: 10,
-                    cornerRadius: 8,
+                    cornerRadius: 10,
                     callbacks: {
                         label: function (ctx) {
                             return ' ' + ctx.label + ': ' + ctx.parsed + '%';

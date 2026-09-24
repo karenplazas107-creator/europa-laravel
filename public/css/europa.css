@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════
-   ALMACÉN EUROPA – Design System CSS v2.0
-   Paleta: Azul marino #0f1f3d + Azul eléctrico #1d74e8 + Cian #38bdf8
+   ALMACÉN EUROPA – Design System CSS v3.0
+   Paleta: Obsidian #090d16 + Electric Sapphire #2563eb + Cyan #06b6d4
    ═══════════════════════════════════════════════════════════ */
 
 /* ──────────────────────────────
@@ -8,21 +8,21 @@
 ────────────────────────────── */
 :root {
   /* Colores principales */
-  --clr-navy:        #0d1b35;
-  --clr-navy-mid:    #122040;
-  --clr-navy-light:  #1a2f5e;
-  --clr-blue:        #1d74e8;
-  --clr-blue-dark:   #1558c0;
-  --clr-blue-bright: #2563eb;
-  --clr-cyan:        #38bdf8;
-  --clr-cyan-light:  #bae6fd;
+  --clr-navy:        #090d16;
+  --clr-navy-mid:    #0d1527;
+  --clr-navy-light:  #152240;
+  --clr-blue:        #2563eb;
+  --clr-blue-dark:   #1d4ed8;
+  --clr-blue-bright: #3b82f6;
+  --clr-cyan:        #06b6d4;
+  --clr-cyan-light:  #ecfeff;
   --clr-white:       #ffffff;
-  --clr-bg:          #f1f5fd;
-  --clr-bg-light:    #f8faff;
-  --clr-text:        #0d1b35;
+  --clr-bg:          #f8fafc;
+  --clr-bg-light:    #f8fafc;
+  --clr-text:        #0f172a;
   --clr-text-muted:  #64748b;
-  --clr-green:       #22c55e;
-  --clr-red:         #ef4444;
+  --clr-green:       #10b981;
+  --clr-red:         #f43f5e;
   --clr-yellow:      #f59e0b;
   --clr-border:      #e2e8f0;
 
@@ -36,19 +36,19 @@
   --radius-full: 9999px;
 
   /* Sombras */
-  --shadow-xs:   0 1px 4px rgba(13,27,53,.06);
-  --shadow-sm:   0 2px 10px rgba(13,27,53,.08);
-  --shadow-md:   0 8px 32px rgba(13,27,53,.12);
-  --shadow-lg:   0 20px 64px rgba(13,27,53,.18);
-  --shadow-blue: 0 8px 28px rgba(29,116,232,.35);
-  --shadow-card: 0 2px 16px rgba(13,27,53,.08);
+  --shadow-xs:   0 1px 4px rgba(15,23,42,.04);
+  --shadow-sm:   0 2px 10px rgba(15,23,42,.06);
+  --shadow-md:   0 8px 32px rgba(15,23,42,.08);
+  --shadow-lg:   0 24px 64px rgba(9,13,22,.24);
+  --shadow-blue: 0 8px 28px rgba(37,99,235,.35);
+  --shadow-card: 0 2px 16px rgba(15,23,42,.06);
 
   /* Transición */
-  --transition: 0.22s cubic-bezier(.4,0,.2,1);
+  --transition: 0.22s cubic-bezier(.16,1,.3,1);
 
   /* Tipografías */
-  --font-main: 'Outfit', 'Inter', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-main: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
   --nav-h: 68px;
 }
@@ -65,6 +65,7 @@ body.europa-body {
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 img   { display: block; max-width: 100%; }
 a     { text-decoration: none; color: inherit; }
@@ -80,14 +81,18 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   top: 0; left: 0; right: 0;
   z-index: 1000;
   height: var(--nav-h);
-  background: var(--clr-navy);
+  background: rgba(9, 13, 22, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   transition: background var(--transition), box-shadow var(--transition);
 }
 .europa-nav.scrolled {
-  background: rgba(13,27,53,.96);
-  box-shadow: 0 2px 24px rgba(0,0,0,.22);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(9, 13, 22, 0.98);
+  box-shadow: 0 4px 30px rgba(0,0,0,.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 .europa-nav__container {
@@ -270,7 +275,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 ══════════════════════════════════════════════════════════ */
 .europa-hero {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--clr-navy) 0%, #0f2247 55%, #1a3260 100%);
+  background: radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.22) 0%, transparent 45%),
+              radial-gradient(circle at 15% 75%, rgba(6, 182, 212, 0.14) 0%, transparent 45%),
+              linear-gradient(150deg, #090d16 0%, #0c1222 45%, #0f1c3a 100%);
   padding-top: var(--nav-h);
   position: relative;
   overflow: hidden;
@@ -283,7 +290,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   top: -15%;
   right: -8%;
   width: 55vw; height: 55vw;
-  background: radial-gradient(circle, rgba(29,116,232,.14) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(37,99,235,.18) 0%, transparent 68%);
   pointer-events: none;
 }
 .europa-hero::after {
@@ -292,7 +299,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   bottom: 15%;
   left: -5%;
   width: 38vw; height: 38vw;
-  background: radial-gradient(circle, rgba(56,189,248,.07) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(6,182,212,.12) 0%, transparent 68%);
   pointer-events: none;
 }
 
@@ -313,9 +320,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(29,116,232,.15);
-  border: 1px solid rgba(29,116,232,.28);
-  color: var(--clr-cyan-light);
+  background: rgba(37,99,235,.15);
+  border: 1px solid rgba(37,99,235,.35);
+  color: #67e8f9;
   font-size: .75rem;
   font-weight: 600;
   letter-spacing: .07em;
@@ -332,8 +339,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   flex-shrink: 0;
 }
 @keyframes pulse-dot {
-  0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,.5); }
-  50%       { transform: scale(1.3); opacity: .85; box-shadow: 0 0 0 4px rgba(34,197,94,.12); }
+  0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(16,185,129,.5); }
+  50%       { transform: scale(1.3); opacity: .85; box-shadow: 0 0 0 4px rgba(16,185,129,.15); }
 }
 
 /* ── Título Hero ── */
@@ -347,7 +354,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin-bottom: 20px;
 }
 .europa-hero__accent {
-  background: linear-gradient(95deg, var(--clr-blue) 0%, var(--clr-cyan) 100%);
+  background: linear-gradient(95deg, #3b82f6 0%, #06b6d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -355,7 +362,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 
 .europa-hero__desc {
   font-size: .9875rem;
-  color: rgba(255,255,255,.65);
+  color: rgba(255,255,255,.7);
   line-height: 1.75;
   max-width: 430px;
   margin-bottom: 38px;
@@ -379,32 +386,32 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 .europa-mockup {
-  background: #0e1d36;
+  background: #0d1527;
   border-radius: var(--radius-xl);
-  border: 1px solid rgba(29,116,232,.22);
-  box-shadow: var(--shadow-lg), 0 0 80px rgba(29,116,232,.12), inset 0 1px 0 rgba(255,255,255,.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 50px rgba(37, 99, 235, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   overflow: hidden;
   position: relative;
 }
 .europa-mockup__bar {
-  background: #132038;
-  padding: 10px 16px;
+  background: #111a30;
+  padding: 11px 16px;
   display: flex;
   gap: 7px;
   align-items: center;
-  border-bottom: 1px solid rgba(255,255,255,.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .dot { width: 10px; height: 10px; border-radius: 50%; }
-.dot.red    { background: #ff5f57; }
-.dot.yellow { background: #ffbd2e; }
-.dot.green  { background: #28c840; }
+.dot.red    { background: #f43f5e; }
+.dot.yellow { background: #f59e0b; }
+.dot.green  { background: #10b981; }
 
 .europa-mockup__content { padding: 16px; }
 .europa-mockup__header  { margin-bottom: 10px; }
 .mockup-label {
   font-size: .6rem;
   letter-spacing: .09em;
-  color: rgba(255,255,255,.38);
+  color: rgba(255,255,255,.45);
   text-transform: uppercase;
   font-weight: 600;
 }
@@ -417,14 +424,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin-bottom: 12px;
 }
 .europa-chart {
-  background: #091525;
+  background: #080e1c;
   border-radius: var(--radius-sm);
   padding: 10px;
-  border: 1px solid rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
 }
 .chart-label {
   font-size: .52rem;
-  color: rgba(255,255,255,.32);
+  color: rgba(255,255,255,.38);
   letter-spacing: .06em;
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -443,7 +450,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   border-radius: 4px;
   z-index: 1;
   white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(29,116,232,.5);
+  box-shadow: 0 2px 8px rgba(37,99,235,.5);
 }
 .chart-bars {
   display: flex;
@@ -458,10 +465,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transition: height .5s ease;
 }
 .chart-bars:not(.chart-bars--teal) .bar {
-  background: linear-gradient(180deg, #2d8bff 0%, #0d4fb5 100%);
+  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
 }
 .chart-bars--teal .bar {
-  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+  background: linear-gradient(180deg, #06b6d4 0%, #0284c7 100%);
 }
 
 /* Stats row */
@@ -471,12 +478,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   gap: 6px;
 }
 .stat-card {
-  background: #091525;
+  background: #080e1c;
   border-radius: var(--radius-sm);
   padding: 8px 10px;
-  border: 1px solid rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
 }
-.stat-label { font-size: .52rem; color: rgba(255,255,255,.3); margin-bottom: 3px; font-weight: 500; letter-spacing: .04em; }
+.stat-label { font-size: .52rem; color: rgba(255,255,255,.35); margin-bottom: 3px; font-weight: 500; letter-spacing: .04em; }
 .stat-val   { font-size: .82rem; font-weight: 800; color: #fff; font-family: var(--font-main); }
 .stat-green { color: var(--clr-green) !important; }
 .stat-yellow{ color: var(--clr-yellow) !important; }
@@ -585,7 +592,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    SECCIÓN PROMOCIONES
 ══════════════════════════════════════════════════════════ */
 .europa-promo {
-  background: #f4f7fe;
+  background: var(--clr-bg);
   padding: 92px 0 96px;
 }
 .europa-promo__container {
@@ -622,10 +629,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   box-shadow: var(--shadow-sm);
 }
 .europa-filter.active {
-  background: var(--clr-navy);
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
   color: var(--clr-white);
-  border-color: var(--clr-navy);
-  box-shadow: 0 4px 18px rgba(13,27,53,.28);
+  border-color: transparent;
+  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35);
 }
 
 /* ── Grid de productos ── */
@@ -641,13 +648,14 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-card);
-  border: 1px solid rgba(226,232,240,.7);
-  transition: transform var(--transition), box-shadow var(--transition);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
   animation: fadeInUp .4s ease forwards;
 }
 .europa-product-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 48px rgba(13,27,53,.14);
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.12);
+  border-color: rgba(37, 99, 235, 0.25);
 }
 
 .europa-product-card__img-wrap {
@@ -675,8 +683,8 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   z-index: 1;
   letter-spacing: .02em;
 }
-.europa-badge-tag--red    { background: #ef4444; color: #fff; }
-.europa-badge-tag--green  { background: #22c55e; color: #fff; }
+.europa-badge-tag--red    { background: #f43f5e; color: #fff; }
+.europa-badge-tag--green  { background: #10b981; color: #fff; }
 .europa-badge-tag--yellow { background: #f59e0b; color: #fff; }
 
 /* Cuerpo de tarjeta */
@@ -723,12 +731,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   display: flex; align-items: center; justify-content: center;
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(13,27,53,.2);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
 }
 .btn-cart:hover {
   background: var(--clr-blue);
   transform: scale(1.1);
-  box-shadow: 0 4px 14px rgba(29,116,232,.4);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.45);
 }
 
 

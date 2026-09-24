@@ -16,15 +16,11 @@ return new class extends Migration
             $table->integer('cantidad')->unsigned();
             $table->decimal('precio', 10, 2);
             $table->foreignId('venta')
-            ->constrained('sales', 'ventas')
-            ->onDelete('cascade');
+                ->constrained('sales', 'ventas')
+                ->onDelete('cascade');
             $table->foreignId('producto')
-            ->constrained('products', 'productos')
-            ->onDelete('cascade');
-
-
-
-
+                ->constrained('products', 'productos')
+                ->onDelete('cascade');
 
             $table->timestamps();
         });

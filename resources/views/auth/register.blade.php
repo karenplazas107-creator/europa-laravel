@@ -16,7 +16,9 @@
 
         body {
             font-family: 'Inter', system-ui, sans-serif;
-            background: #eef2fb;
+            background: radial-gradient(circle at 10% 20%, rgba(37,99,235,0.06), transparent 45%),
+                        radial-gradient(circle at 90% 80%, rgba(6,182,212,0.06), transparent 45%),
+                        #f8fafc;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -34,34 +36,35 @@
             background: #fff;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 24px 80px rgba(13,27,72,.18), 0 4px 20px rgba(13,27,72,.08);
+            box-shadow: 0 25px 60px -15px rgba(15,23,42,0.14), 0 0 0 1px rgba(226,232,240,0.8);
         }
 
         /* ══════════════════════════════
-           PANEL IZQUIERDO
+           PANEL IZQUIERDO – Obsidian & Sapphire
         ══════════════════════════════ */
         .reg-left {
-            background: linear-gradient(160deg, #0d1f5c 0%, #122580 42%, #1440b0 100%);
+            background: linear-gradient(160deg, #090d16 0%, #0d1527 45%, #152550 100%);
             padding: 36px 34px 40px;
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
         }
         .reg-left::before {
             content: '';
             position: absolute;
             top: -25%; right: -25%;
-            width: 65%; height: 65%;
-            background: radial-gradient(circle, rgba(56,189,248,.18) 0%, transparent 65%);
+            width: 70%; height: 70%;
+            background: radial-gradient(circle, rgba(37,99,235,.28) 0%, transparent 65%);
             pointer-events: none;
         }
         .reg-left::after {
             content: '';
             position: absolute;
             bottom: 5%; left: -20%;
-            width: 55%; height: 50%;
-            background: radial-gradient(circle, rgba(29,116,232,.13) 0%, transparent 65%);
+            width: 60%; height: 50%;
+            background: radial-gradient(circle, rgba(6,182,212,.2) 0%, transparent 65%);
             pointer-events: none;
         }
 
@@ -70,7 +73,7 @@
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            color: rgba(255,255,255,.7);
+            color: rgba(255,255,255,.75);
             font-size: .825rem;
             font-weight: 500;
             text-decoration: none;
@@ -92,11 +95,11 @@
 
         .reg-logo-icon {
             width: 54px; height: 54px;
-            background: linear-gradient(135deg, #1d74e8, #38bdf8);
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
             border-radius: 14px;
             display: flex; align-items: center; justify-content: center;
             margin-bottom: 26px;
-            box-shadow: 0 6px 22px rgba(29,116,232,.45);
+            box-shadow: 0 8px 24px rgba(37,99,235,.45);
         }
         .reg-logo-icon svg { width: 28px; height: 28px; }
 
@@ -111,7 +114,7 @@
         }
         .reg-left__desc {
             font-size: .875rem;
-            color: rgba(255,255,255,.62);
+            color: rgba(255,255,255,.7);
             line-height: 1.72;
             max-width: 250px;
         }
@@ -122,17 +125,17 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            background: rgba(255,255,255,.1);
-            border: 1px solid rgba(255,255,255,.15);
-            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            backdrop-filter: blur(10px);
             border-radius: 14px;
             padding: 14px 18px;
         }
         .security-icon {
             width: 38px; height: 38px;
             border-radius: 50%;
-            background: rgba(29,116,232,.2);
-            border: 1px solid rgba(29,116,232,.35);
+            background: rgba(37,99,235,.2);
+            border: 1px solid rgba(37,99,235,.35);
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
             color: #38bdf8;
@@ -146,7 +149,7 @@
         }
         .security-info span {
             font-size: .74rem;
-            color: rgba(255,255,255,.5);
+            color: rgba(255,255,255,.55);
         }
 
         /* ══════════════════════════════
@@ -163,7 +166,7 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1.85rem;
             font-weight: 900;
-            color: #0d1b35;
+            color: #0f172a;
             letter-spacing: -.03em;
             margin-bottom: 5px;
         }
@@ -175,12 +178,12 @@
 
         /* Alerta de error */
         .reg-alert {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
             border-radius: 10px;
             padding: 11px 14px;
             font-size: .84rem;
-            color: #dc2626;
+            color: #be123c;
             margin-bottom: 18px;
             display: flex;
             align-items: flex-start;
@@ -224,18 +227,18 @@
             border-radius: 10px;
             font-family: 'Inter', sans-serif;
             font-size: .875rem;
-            color: #0d1b35;
+            color: #0f172a;
             background: #fff;
             outline: none;
             transition: border-color .2s, box-shadow .2s;
         }
         .form-input::placeholder { color: #94a3b8; }
         .form-input:focus {
-            border-color: #1d74e8;
-            box-shadow: 0 0 0 3px rgba(29,116,232,.11);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
         }
-        .form-input.is-error { border-color: #ef4444; }
-        .form-input.is-error:focus { box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+        .form-input.is-error { border-color: #f43f5e; }
+        .form-input.is-error:focus { box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12); }
 
         /* Toggle password */
         .input-toggle {
@@ -265,16 +268,16 @@
             background: #e2e8f0;
             transition: background .3s;
         }
-        .strength-bar.active-weak   { background: #ef4444; }
+        .strength-bar.active-weak   { background: #f43f5e; }
         .strength-bar.active-fair   { background: #f59e0b; }
-        .strength-bar.active-good   { background: #22c55e; }
-        .strength-bar.active-strong { background: #16a34a; }
+        .strength-bar.active-good   { background: #10b981; }
+        .strength-bar.active-strong { background: #059669; }
 
         /* Botón submit */
         .btn-register {
             width: 100%;
             padding: 13px;
-            background: linear-gradient(135deg, #1d74e8, #1440b0);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -287,14 +290,13 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: opacity .2s, transform .2s, box-shadow .2s;
-            box-shadow: 0 6px 24px rgba(29,116,232,.38);
+            transition: all .2s;
+            box-shadow: 0 6px 24px rgba(37, 99, 235, 0.35);
             margin-bottom: 20px;
         }
         .btn-register:hover {
-            opacity: .92;
-            transform: translateY(-1px);
-            box-shadow: 0 10px 30px rgba(29,116,232,.48);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.45);
         }
         .btn-register:active { transform: translateY(0); }
 
@@ -318,12 +320,12 @@
             color: #64748b;
         }
         .reg-login-link a {
-            color: #1d74e8;
+            color: #2563eb;
             font-weight: 700;
             text-decoration: none;
             transition: color .2s;
         }
-        .reg-login-link a:hover { color: #1440b0; text-decoration: underline; }
+        .reg-login-link a:hover { color: #1d4ed8; text-decoration: underline; }
 
         /* Responsive */
         @media (max-width: 700px) {

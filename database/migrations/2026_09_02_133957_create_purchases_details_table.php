@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('purchases_details', function (Blueprint $table) {
-             $table->id('detalle_compra');
+            $table->id('detalle_compra');
             $table->date('fecha');
             $table->decimal('total', 10, 2)->unsigned();
             $table->foreignId('compra')
-            ->constrained('purchases', 'compra')
-            ->onDelete('cascade');
+                ->constrained('purchases', 'compra')
+                ->onDelete('cascade');
             $table->foreignId('producto')
-            ->constrained('products', 'productos')
-            ->onDelete('cascade');
+                ->constrained('products', 'productos')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

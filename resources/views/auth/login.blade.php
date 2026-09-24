@@ -17,7 +17,9 @@
 
         body {
             font-family: 'Inter', system-ui, sans-serif;
-            background: #eef2fb;
+            background: radial-gradient(circle at 10% 20%, rgba(37,99,235,0.06), transparent 45%),
+                        radial-gradient(circle at 90% 80%, rgba(6,182,212,0.06), transparent 45%),
+                        #f8fafc;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -36,19 +38,20 @@
             background: #fff;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 24px 80px rgba(13,27,72,.18), 0 4px 20px rgba(13,27,72,.08);
+            box-shadow: 0 25px 60px -15px rgba(15,23,42,0.14), 0 0 0 1px rgba(226,232,240,0.8);
         }
 
         /* ══════════════════════════════
-           PANEL IZQUIERDO – Azul
+           PANEL IZQUIERDO – Obsidian & Sapphire
         ══════════════════════════════ */
         .login-left {
-            background: linear-gradient(160deg, #0d1f5c 0%, #122580 40%, #1440b0 100%);
+            background: linear-gradient(160deg, #090d16 0%, #0d1527 45%, #152550 100%);
             padding: 36px 36px 40px;
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         /* Efecto de fondo radial */
@@ -57,19 +60,19 @@
             position: absolute;
             top: -30%;
             right: -30%;
-            width: 70%;
-            height: 70%;
-            background: radial-gradient(circle, rgba(56,189,248,.18) 0%, transparent 65%);
+            width: 75%;
+            height: 75%;
+            background: radial-gradient(circle, rgba(37,99,235,.28) 0%, transparent 65%);
             pointer-events: none;
         }
         .login-left::after {
             content: '';
             position: absolute;
-            bottom: 10%;
+            bottom: 5%;
             left: -20%;
-            width: 60%;
-            height: 50%;
-            background: radial-gradient(circle, rgba(29,116,232,.14) 0%, transparent 65%);
+            width: 65%;
+            height: 55%;
+            background: radial-gradient(circle, rgba(6,182,212,.2) 0%, transparent 65%);
             pointer-events: none;
         }
 
@@ -78,7 +81,7 @@
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            color: rgba(255,255,255,.72);
+            color: rgba(255,255,255,.75);
             font-size: .825rem;
             font-weight: 500;
             text-decoration: none;
@@ -101,11 +104,11 @@
 
         .login-logo-icon {
             width: 52px; height: 52px;
-            background: linear-gradient(135deg, #1d74e8, #38bdf8);
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
             border-radius: 14px;
             display: flex; align-items: center; justify-content: center;
             margin-bottom: 28px;
-            box-shadow: 0 6px 20px rgba(29,116,232,.45);
+            box-shadow: 0 8px 24px rgba(37,99,235,.45);
         }
         .login-logo-icon svg { width: 26px; height: 26px; }
 
@@ -120,7 +123,7 @@
         }
         .login-left__desc {
             font-size: .9rem;
-            color: rgba(255,255,255,.65);
+            color: rgba(255,255,255,.7);
             line-height: 1.7;
             max-width: 260px;
         }
@@ -131,30 +134,30 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            background: rgba(255,255,255,.1);
-            border: 1px solid rgba(255,255,255,.15);
-            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.12);
+            backdrop-filter: blur(10px);
             border-radius: 14px;
             padding: 14px 18px;
         }
         .server-dot {
             width: 38px; height: 38px;
             border-radius: 50%;
-            background: rgba(34,197,94,.15);
-            border: 1px solid rgba(34,197,94,.3);
+            background: rgba(16,185,129,.15);
+            border: 1px solid rgba(16,185,129,.35);
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
         }
         .server-dot-inner {
             width: 12px; height: 12px;
-            background: #22c55e;
+            background: #10b981;
             border-radius: 50%;
-            box-shadow: 0 0 0 4px rgba(34,197,94,.25);
+            box-shadow: 0 0 0 4px rgba(16,185,129,.25);
             animation: pulse-server 2.2s ease-in-out infinite;
         }
         @keyframes pulse-server {
-            0%, 100% { box-shadow: 0 0 0 4px rgba(34,197,94,.25); }
-            50%       { box-shadow: 0 0 0 8px rgba(34,197,94,.1); }
+            0%, 100% { box-shadow: 0 0 0 4px rgba(16,185,129,.25); }
+            50%       { box-shadow: 0 0 0 8px rgba(16,185,129,.1); }
         }
         .server-info strong {
             display: block;
@@ -165,7 +168,7 @@
         }
         .server-info span {
             font-size: .75rem;
-            color: rgba(255,255,255,.5);
+            color: rgba(255,255,255,.55);
         }
 
         /* ══════════════════════════════
@@ -182,7 +185,7 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1.9rem;
             font-weight: 900;
-            color: #0d1b35;
+            color: #0f172a;
             letter-spacing: -.03em;
             margin-bottom: 6px;
         }
@@ -194,12 +197,12 @@
 
         /* Alerta de error */
         .login-alert {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
             border-radius: 10px;
             padding: 12px 16px;
             font-size: .85rem;
-            color: #dc2626;
+            color: #be123c;
             margin-bottom: 22px;
             display: flex;
             align-items: center;
@@ -222,12 +225,12 @@
         }
         .form-label a {
             font-size: .8rem;
-            font-weight: 500;
-            color: #1d74e8;
+            font-weight: 600;
+            color: #2563eb;
             text-decoration: none;
             transition: color .2s;
         }
-        .form-label a:hover { color: #1558c0; text-decoration: underline; }
+        .form-label a:hover { color: #1d4ed8; text-decoration: underline; }
 
         .input-wrap {
             position: relative;
@@ -249,18 +252,18 @@
             border-radius: 10px;
             font-family: 'Inter', sans-serif;
             font-size: .9rem;
-            color: #0d1b35;
+            color: #0f172a;
             background: #fff;
             outline: none;
             transition: border-color .2s, box-shadow .2s;
         }
         .form-input::placeholder { color: #94a3b8; }
         .form-input:focus {
-            border-color: #1d74e8;
-            box-shadow: 0 0 0 3px rgba(29,116,232,.12);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
         }
-        .form-input.is-error { border-color: #ef4444; }
-        .form-input.is-error:focus { box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+        .form-input.is-error { border-color: #f43f5e; }
+        .form-input.is-error:focus { box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12); }
 
         /* Toggle contraseña */
         .input-toggle {
@@ -286,7 +289,7 @@
         }
         .form-remember input[type="checkbox"] {
             width: 16px; height: 16px;
-            accent-color: #1d74e8;
+            accent-color: #2563eb;
             cursor: pointer;
         }
         .form-remember label {
@@ -300,7 +303,7 @@
         .btn-login {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #1d74e8, #1440b0);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -313,14 +316,13 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: opacity .2s, transform .2s, box-shadow .2s;
-            box-shadow: 0 6px 24px rgba(29,116,232,.4);
+            transition: all .2s;
+            box-shadow: 0 6px 24px rgba(37, 99, 235, 0.35);
             margin-bottom: 24px;
         }
         .btn-login:hover {
-            opacity: .93;
-            transform: translateY(-1px);
-            box-shadow: 0 10px 32px rgba(29,116,232,.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 32px rgba(37, 99, 235, 0.45);
         }
         .btn-login:active { transform: translateY(0); }
 
@@ -344,12 +346,12 @@
             color: #64748b;
         }
         .login-register a {
-            color: #1d74e8;
+            color: #2563eb;
             font-weight: 700;
             text-decoration: none;
             transition: color .2s;
         }
-        .login-register a:hover { color: #1440b0; text-decoration: underline; }
+        .login-register a:hover { color: #1d4ed8; text-decoration: underline; }
 
         /* ── Responsive ── */
         @media (max-width: 680px) {
@@ -418,14 +420,14 @@
         <form method="POST" action="{{ route('login.post') }}" id="login-form">
             @csrf
 
-            {{-- Móvil / Usuario --}}
+            {{-- Correo / Móvil --}}
             <div class="form-group">
-                <label class="form-label" for="movil">Número de Móvil</label>
+                <label class="form-label" for="movil">Correo Electrónico o Número de Móvil</label>
                 <div class="input-wrap">
                     <span class="input-icon">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-                            <line x1="12" y1="18" x2="12.01" y2="18"/>
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
                         </svg>
                     </span>
                     <input
@@ -433,7 +435,7 @@
                         id="movil"
                         name="movil"
                         class="form-input @error('movil') is-error @enderror"
-                        placeholder="3001234567"
+                        placeholder="ej. correo@ejemplo.com o 3001234567"
                         value="{{ old('movil') }}"
                         required
                         autofocus

@@ -182,18 +182,18 @@
     gap: 7px;
     font-size: .875rem;
     font-weight: 600;
-    color: #1d74e8;
+    color: #2563eb;
     text-decoration: none;
     transition: color .2s;
 }
-.cl-breadcrumb__back:hover { color: #1440b0; }
+.cl-breadcrumb__back:hover { color: #1d4ed8; }
 
 /* Card */
 .cl-edit-card {
     background: #fff;
-    border-radius: 16px;
+    border-radius: 18px;
     border: 1px solid #e2e8f0;
-    box-shadow: 0 2px 16px rgba(13,27,53,.08);
+    box-shadow: 0 1px 3px rgba(9, 13, 22, 0.04), 0 8px 24px -4px rgba(9, 13, 22, 0.06);
     padding: 28px 32px 32px;
 }
 .cl-edit-card__header {
@@ -204,7 +204,7 @@
 }
 .cl-edit-avatar {
     width: 52px; height: 52px;
-    background: linear-gradient(135deg, #1d74e8, #38bdf8);
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-family: 'Outfit', sans-serif;
@@ -213,16 +213,17 @@
     color: #fff;
     flex-shrink: 0;
     letter-spacing: -.02em;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 .cl-edit-card__title {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     font-weight: 800;
-    color: #0d1b35;
+    color: #090d16;
     letter-spacing: -.02em;
 }
 .cl-edit-card__sub {
-    font-size: .8rem;
+    font-size: .82rem;
     color: #64748b;
     margin-top: 3px;
     display: flex;
@@ -231,16 +232,17 @@
     flex-wrap: wrap;
 }
 .cl-badge-sm {
-    background: #dcfce7;
-    color: #16a34a;
-    font-size: .68rem;
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    font-size: .7rem;
     font-weight: 700;
-    padding: 2px 8px;
+    padding: 2px 9px;
     border-radius: 999px;
 }
 .cl-divider {
     border: none;
-    border-top: 1px solid #f1f5fd;
+    border-top: 1px solid #f1f5f9;
     margin-bottom: 22px;
 }
 
@@ -250,12 +252,12 @@
     align-items: flex-start;
     gap: 10px;
     padding: 12px 16px;
-    border-radius: 10px;
+    border-radius: 12px;
     font-size: .84rem;
     margin-bottom: 20px;
 }
-.cl-alert ul { list-style: none; }
-.cl-alert--error { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
+.cl-alert ul { list-style: none; margin: 0; padding: 0; }
+.cl-alert--error { background: #fff1f2; border: 1px solid #fecdd3; color: #9f1239; }
 
 /* Form grid */
 .cl-form-grid {
@@ -287,20 +289,20 @@
     width: 100%;
     padding: 11px 14px 11px 38px;
     border: 1.5px solid #e2e8f0;
-    border-radius: 10px;
+    border-radius: 12px;
     font-family: 'Inter', sans-serif;
     font-size: .875rem;
-    color: #0d1b35;
+    color: #090d16;
     background: #fff;
     outline: none;
     transition: border-color .2s, box-shadow .2s;
 }
 .cl-input::placeholder { color: #94a3b8; }
 .cl-input:focus {
-    border-color: #1d74e8;
-    box-shadow: 0 0 0 3px rgba(29,116,232,.1);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
 }
-.cl-input.is-error { border-color: #ef4444; }
+.cl-input.is-error { border-color: #f43f5e; }
 
 /* Acciones */
 .cl-edit-actions {
@@ -314,13 +316,13 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 11px 24px;
-    border-radius: 10px;
+    padding: 10px 22px;
+    border-radius: 12px;
     font-family: 'Outfit', sans-serif;
-    font-size: .9rem;
+    font-size: .88rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all .2s;
+    transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
     text-decoration: none;
     border: none;
 }
@@ -328,14 +330,14 @@
     background: #f1f5f9;
     color: #475569;
 }
-.cl-btn--ghost:hover { background: #e2e8f0; }
+.cl-btn--ghost:hover { background: #e2e8f0; color: #090d16; }
 .cl-btn--primary {
-    background: linear-gradient(135deg, #1d74e8, #1440b0);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: #fff;
-    box-shadow: 0 4px 16px rgba(29,116,232,.35);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, .28);
 }
 .cl-btn--primary:hover {
-    box-shadow: 0 8px 24px rgba(29,116,232,.45);
+    box-shadow: 0 8px 22px rgba(37, 99, 235, .38);
     transform: translateY(-1px);
 }
 

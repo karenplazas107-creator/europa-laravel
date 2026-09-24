@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proveedor extends Model
 {
-    protected $table      = 'suppliers';
+    protected $table = 'suppliers';
+
     protected $primaryKey = 'proveedores';
 
     protected $fillable = [
@@ -22,10 +23,11 @@ class Proveedor extends Model
     public function getInitialesAttribute(): string
     {
         $words = explode(' ', trim($this->nombre));
-        $ini   = strtoupper(substr($words[0], 0, 1));
+        $ini = strtoupper(substr($words[0], 0, 1));
         if (isset($words[1])) {
             $ini .= strtoupper(substr($words[1], 0, 1));
         }
+
         return $ini;
     }
 
@@ -34,6 +36,6 @@ class Proveedor extends Model
      */
     public function getIdFormateadoAttribute(): string
     {
-        return '#' . str_pad($this->proveedores, 4, '0', STR_PAD_LEFT);
+        return '#'.str_pad($this->proveedores, 4, '0', STR_PAD_LEFT);
     }
 }

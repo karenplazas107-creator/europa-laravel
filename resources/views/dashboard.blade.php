@@ -10,7 +10,7 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Inter', system-ui, sans-serif;
-            background: #f1f5fd;
+            background: #f8fafc;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -19,25 +19,27 @@
 
         /* Topbar */
         .dash-topbar {
-            background: #0d1b35;
+            background: #090d16;
             height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 28px;
-            box-shadow: 0 2px 12px rgba(0,0,0,.18);
+            box-shadow: 0 4px 20px rgba(0,0,0,.25);
+            border-bottom: 1px solid rgba(255,255,255,.08);
         }
         .dash-logo {
             display: flex; align-items: center; gap: 10px;
             font-family: 'Outfit', sans-serif;
-            font-size: 1rem; font-weight: 800;
+            font-size: 1.05rem; font-weight: 800;
             color: #fff; text-decoration: none;
         }
         .dash-logo-icon {
-            width: 34px; height: 34px;
-            background: linear-gradient(135deg,#1d74e8,#38bdf8);
-            border-radius: 8px;
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg,#2563eb,#06b6d4);
+            border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
         }
         .dash-logo-icon svg { width: 18px; height: 18px; }
 
@@ -49,11 +51,12 @@
         .dash-user-rol  { font-size: .75rem; color: rgba(255,255,255,.5); }
         .dash-avatar {
             width: 36px; height: 36px;
-            background: linear-gradient(135deg,#1d74e8,#38bdf8);
+            background: linear-gradient(135deg,#2563eb,#06b6d4);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-family: 'Outfit', sans-serif;
             font-size: .9rem; font-weight: 800; color: #fff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
         }
 
         /* Main */
@@ -66,8 +69,8 @@
         }
         .dash-welcome {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.75rem; font-weight: 900;
-            color: #0d1b35;
+            font-size: 1.85rem; font-weight: 800;
+            color: #090d16;
             letter-spacing: -.03em;
             margin-bottom: 6px;
         }
@@ -86,11 +89,16 @@
             background: #fff;
             border-radius: 16px;
             padding: 22px 24px;
-            box-shadow: 0 2px 16px rgba(13,27,53,.07);
-            border: 1px solid #e8eef8;
+            box-shadow: 0 1px 3px rgba(9, 13, 22, 0.04), 0 4px 12px rgba(9, 13, 22, 0.02);
+            border: 1px solid #e2e8f0;
+            transition: all .2s ease;
+        }
+        .dash-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px -4px rgba(9, 13, 22, 0.08);
         }
         .dash-card__icon {
-            width: 44px; height: 44px;
+            width: 46px; height: 46px;
             border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
             margin-bottom: 16px;
@@ -103,8 +111,8 @@
         }
         .dash-card__value {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.6rem; font-weight: 900;
-            color: #0d1b35; letter-spacing: -.03em;
+            font-size: 1.65rem; font-weight: 800;
+            color: #090d16; letter-spacing: -.03em;
         }
 
         /* Logout */
@@ -112,14 +120,19 @@
         .btn-logout {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 10px 22px;
-            background: #0d1b35; color: #fff;
-            border: none; border-radius: 10px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #fff;
+            border: none; border-radius: 12px;
             font-family: 'Outfit', sans-serif;
-            font-size: .9rem; font-weight: 700;
+            font-size: .88rem; font-weight: 700;
             cursor: pointer;
-            transition: background .2s, transform .2s;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, .28);
+            transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .btn-logout:hover { background: #1a2f5e; transform: translateY(-1px); }
+        .btn-logout:hover {
+            box-shadow: 0 8px 22px rgba(37, 99, 235, .4);
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>

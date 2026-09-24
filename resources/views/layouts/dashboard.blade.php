@@ -27,8 +27,14 @@
 
         <!-- Logo -->
         <div class="db-sidebar__logo">
+            <div class="db-logo-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="3"/>
+                    <path d="M7 9h10M7 12h6M8 17v4M16 17v4M5 21h14"/>
+                </svg>
+            </div>
             <div class="db-logo-wrap">
-                <span class="db-logo-name">Europa</span>
+                <span class="db-logo-name">Europa<span>.</span></span>
                 <span class="db-logo-sub">Sistema de Gestión</span>
             </div>
         </div>
@@ -51,6 +57,18 @@
             <!-- GESTIÓN -->
             <div class="db-nav-section">
                 <div class="db-nav-section__label">Gestión</div>
+                @if(Auth::user()->isAdmin())
+                <a href="{{ route('usuarios.index') }}"
+                   class="db-nav-link {{ request()->routeIs('usuarios.*') ? 'active' : '' }}">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <line x1="19" y1="8" x2="19" y2="14"/>
+                        <line x1="22" y1="11" x2="16" y2="11"/>
+                    </svg>
+                    Usuarios y Roles
+                </a>
+                @endif
                 <a href="{{ route('clientes.index') }}"
                    class="db-nav-link {{ request()->routeIs('clientes.*') ? 'active' : '' }}">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -106,6 +124,7 @@
             </div>
 
             <!-- COMERCIAL -->
+            @if(!Auth::user()->isBodega())
             <div class="db-nav-section">
                 <div class="db-nav-section__label">Comercial</div>
                 <a href="{{ route('ventas.index') }}"
@@ -116,6 +135,7 @@
                     </svg>
                     Ventas
                 </a>
+                @if(Auth::user()->isAdmin())
                 <a href="{{ route('reportes.index') }}"
                    class="db-nav-link {{ request()->routeIs('reportes.*') ? 'active' : '' }}">
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -123,7 +143,9 @@
                     </svg>
                     Reportes / Informes
                 </a>
+                @endif
             </div>
+            @endif
 
         </nav>
 
@@ -149,13 +171,13 @@
     ════════════════════════════════════════ --}}
     <header class="db-topbar">
         <div class="db-topbar__title">
-            <span>Inicio -</span> @yield('page-title', 'Panel de Control')
+            <span>Inicio /</span> @yield('page-title', 'Panel de Control')
         </div>
         <div class="db-topbar__right">
             <div class="db-user-chip">
                 <div class="db-user-info">
                     <div class="db-user-name">{{ Auth::user()->nombre }} {{ Auth::user()->apellido }}</div>
-                    <div class="db-user-rol">{{ ucfirst(Auth::user()->rol) }}</div>
+                    <div class="db-user-rol">{{ Auth::user()->nombre_rol }}</div>
                 </div>
                 <div class="db-user-avatar">
                     {{ strtoupper(substr(Auth::user()->nombre, 0, 1)) }}

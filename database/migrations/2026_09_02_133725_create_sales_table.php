@@ -14,14 +14,15 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id('ventas');
             $table->foreignId('usuario')
-            ->constrained('users', 'usuario')
-            ->onDelete('cascade');
+                ->constrained('users', 'usuario')
+                ->onDelete('cascade');
             $table->date('fecha');
             $table->integer('total')->unsigned();
             $table->string('metodo_pago');
             $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      */

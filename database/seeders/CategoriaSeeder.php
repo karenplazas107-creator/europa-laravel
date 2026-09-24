@@ -24,10 +24,10 @@ class CategoriaSeeder extends Seeder
 
         foreach ($categorias as $cat) {
             DB::table('categories')->insertOrIgnore([
-                'nombre'      => $cat['nombre'],
+                'nombre' => $cat['nombre'],
                 'descripcion' => $cat['descripcion'],
-                'created_at'  => now(),
-                'updated_at'  => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
     }
