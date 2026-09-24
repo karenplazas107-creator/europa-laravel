@@ -407,6 +407,19 @@
         <h2 class="login-right__title">Bienvenido de nuevo</h2>
         <p class="login-right__sub">Ingrese sus credenciales para continuar</p>
 
+        @if (request()->has('checkout'))
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; color: #1e40af; font-size: 0.88rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" style="flex-shrink:0;">
+                    <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <div>
+                    <strong style="display:block; font-weight:700; color: #1e3a8a;">Inicia sesión para completar tu compra</strong>
+                    <span style="color: #2563eb;">Tus productos están guardados en el carrito y podrás pagar enseguida.</span>
+                </div>
+            </div>
+        @endif
+
         {{-- Error general --}}
         @if ($errors->any())
             <div class="login-alert">
@@ -419,6 +432,9 @@
 
         <form method="POST" action="{{ route('login.post') }}" id="login-form">
             @csrf
+            @if(request()->has('checkout'))
+                <input type="hidden" name="checkout" value="1">
+            @endif
 
             {{-- Correo / Móvil --}}
             <div class="form-group">
@@ -489,7 +505,7 @@
         </form>
 
         <p class="login-register">
-            ¿Nuevo empleado? <a href="{{ route('register') }}">Regístrese aquí</a>
+            ¿No tienes cuenta? <a href="{{ route('register') }}{{ request()->has('checkout') ? '?checkout=1' : '' }}">Regístrate aquí</a>
         </p>
     </div>
 

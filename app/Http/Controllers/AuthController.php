@@ -56,6 +56,10 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             if (Auth::user()->isCliente()) {
+                if ($request->has('checkout')) {
+                    return redirect()->route('checkout');
+                }
+
                 return redirect()->intended(route('tienda'));
             }
 
@@ -68,6 +72,10 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             if (Auth::user()->isCliente()) {
+                if ($request->has('checkout')) {
+                    return redirect()->route('checkout');
+                }
+
                 return redirect()->intended(route('tienda'));
             }
 
@@ -123,7 +131,11 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('tienda')->with('bienvenida', '¡Bienvenido(a), '.$user->nombre.'!');
+        if ($request->has('checkout')) {
+            return redirect()->route('checkout')->with('bienvenida', '¡Bienvenido(a), '.$user->nombre.'!');
+        }
+
+        return redirect()->intended(route('tienda'))->with('bienvenida', '¡Bienvenido(a), '.$user->nombre.'!');
     }
 
     /* ══════════════════════════════════════

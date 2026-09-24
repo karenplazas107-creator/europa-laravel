@@ -1525,10 +1525,16 @@
 
         <!-- Usuario & Carrito -->
         <div class="tienda-nav__user-zone">
-            <div class="tienda-nav__avatar">
-                {{ strtoupper(substr(Auth::user()->nombre ?? 'C', 0, 1)) }}
-            </div>
-            <span class="tienda-nav__username">{{ strtolower(Auth::user()->nombre ?? 'Cliente') }}</span>
+            @auth
+                <div class="tienda-nav__avatar">
+                    {{ strtoupper(substr(Auth::user()?->nombre ?? 'C', 0, 1)) }}
+                </div>
+                <span class="tienda-nav__username">{{ strtolower(Auth::user()?->nombre ?? 'Cliente') }}</span>
+            @else
+                <a href="{{ route('login') }}" class="europa-btn-ingresar" style="background: #1e3a8a; color: #ffffff; padding: 7px 18px; border-radius: 9999px; font-weight: 700; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    Ingresar →
+                </a>
+            @endauth
 
             <!-- Botón carrito -->
             <button class="tienda-nav__btn-cart" id="btn-open-cart" aria-label="Abrir carrito">
@@ -1540,17 +1546,19 @@
                 <span class="tienda-nav__cart-badge" id="cart-badge" style="display: none;">0</span>
             </button>
 
-            <!-- Botón cerrar sesión -->
-            <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                @csrf
-                <button type="submit" class="tienda-nav__btn-logout" title="Cerrar sesión">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
-                </button>
-            </form>
+            @auth
+                <!-- Botón cerrar sesión -->
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="tienda-nav__btn-logout" title="Cerrar sesión">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </button>
+                </form>
+            @endauth
         </div>
     </header>
 
@@ -1566,7 +1574,11 @@
                 </div>
 
                 <h1 class="tienda-hero__title">
-                    Hola, <span class="tienda-hero__title-user">{{ strtolower(Auth::user()->nombre ?? 'Cliente') }}</span> 👋<br>
+                    @auth
+                        Hola, <span class="tienda-hero__title-user">{{ strtolower(Auth::user()?->nombre ?? 'Cliente') }}</span> 👋<br>
+                    @else
+                        Hola, <span class="tienda-hero__title-user">bienvenido(a)</span> 👋<br>
+                    @endauth
                     ¿Qué vas a llevar hoy?
                 </h1>
 
@@ -2394,6 +2406,10 @@
                     showToast('Tu carrito está vacío. Agrega productos antes de finalizar la compra.');
                     return;
                 }
+                @guest
+                    window.location.href = "{{ route('login') }}?checkout=1";
+                    return;
+                @endguest
                 closeDrawer();
                 renderModalSummary();
                 if (checkoutModalBackdrop) {

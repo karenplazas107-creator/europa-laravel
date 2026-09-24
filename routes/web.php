@@ -30,6 +30,9 @@ Route::get('/promociones', function () {
     return redirect()->route('tienda');
 })->name('promociones');
 
+// Catálogo / Tienda pública
+Route::get('/tienda', [TiendaClienteController::class, 'index'])->name('tienda');
+
 // Carrito
 Route::get('/carrito', function () {
     return redirect()->route('tienda');
@@ -63,8 +66,7 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 Route::middleware('auth')->group(function () {
 
-    // ── Espacio del Cliente ──
-    Route::get('/tienda', [TiendaClienteController::class, 'index'])->name('tienda');
+    // ── Espacio del Cliente (solo checkout y confirmación de pago requieren login) ──
     Route::get('/checkout', [TiendaClienteController::class, 'showCheckout'])->name('checkout');
     Route::post('/checkout', [TiendaClienteController::class, 'processCheckout'])->name('checkout.process');
     Route::post('/tienda/checkout', [TiendaClienteController::class, 'processCheckout'])->name('tienda.checkout');

@@ -252,4 +252,46 @@ class ClienteTiendaTest extends TestCase
             'estado' => 'pagado',
         ]);
     }
+
+    public function test_visitante_no_autenticado_puede_ver_tienda_sin_redirigir_a_login(): void
+    {
+        $response = $this->get(route('tienda'));
+
+        $response->assertOk();
+        $response->assertSee('bienvenido(a)');
+        $response->assertSee('Ingresar');
+    }
+
+    public function test_visitante_no_autenticado_al_intentar_checkout_es_redirigido_a_login(): void
+    {
+        $response = $this->get(route('checkout'));
+
+        $response->assertRedirect(route('login'));
+    }
+
+    public function test_login_con_parametro_checkout_redirige_directamente_a_checkout(): void
+    {
+        $response = $this->post(route('login.post'), [
+            'movil' => '3009998877',
+            'password' => 'password123',
+            'checkout' => '1',
+        ]);
+
+        $response->assertRedirect(route('checkout'));
+    }
+
+    public function test_registro_con_parametro_checkout_redirige_directamente_a_checkout(): void
+    {
+        $response = $this->post(route('register.post'), [
+            'nombre' => 'Mariana',
+            'apellido' => 'Lopez',
+            'email' => 'mariana@test.com',
+            'movil' => '3128887766',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+            'checkout' => '1',
+        ]);
+
+        $response->assertRedirect(route('checkout'));
+    }
 }

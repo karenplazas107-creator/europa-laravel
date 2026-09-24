@@ -385,6 +385,19 @@
         <h2 class="reg-right__title">Crear Cuenta</h2>
         <p class="reg-right__sub">Completa tus datos para realizar compras en línea</p>
 
+        @if (request()->has('checkout'))
+            <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; color: #1e40af; font-size: 0.88rem; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" style="flex-shrink:0;">
+                    <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <div>
+                    <strong style="display:block; font-weight:700; color: #1e3a8a;">Regístrate para completar tu pedido</strong>
+                    <span style="color: #2563eb;">Tus productos están guardados en tu carrito y podrás pagar en el siguiente paso.</span>
+                </div>
+            </div>
+        @endif
+
         {{-- Errores --}}
         @if ($errors->any())
             <div class="reg-alert">
@@ -401,6 +414,9 @@
 
         <form method="POST" action="{{ route('register.post') }}" id="reg-form" novalidate>
             @csrf
+            @if(request()->has('checkout'))
+                <input type="hidden" name="checkout" value="1">
+            @endif
 
             <div class="form-grid">
 
