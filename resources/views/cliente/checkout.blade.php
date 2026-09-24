@@ -30,53 +30,97 @@
 
         body {
             font-family: var(--font-body);
-            background-color: #ffffff;
+            background: rgba(15, 23, 42, 0.85);
+            background-image: radial-gradient(circle at 50% 15%, #1e293b 0%, #0f172a 100%);
             color: #1e293b;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
         }
 
         /* ══════════════════════════════════════════
-           LAYOUT PRINCIPAL (2 COLUMNAS TIPO SHOPIFY)
+           VENTANA MODAL FLOTANTE DE CHECKOUT
         ══════════════════════════════════════════ */
         .chk-container {
             display: flex;
-            min-height: 100vh;
+            background: #ffffff;
             width: 100%;
+            max-width: 1080px;
+            max-height: 92vh;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            position: relative;
+            animation: modalFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.96) translateY(12px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         /* Columna Izquierda (Formulario) */
         .chk-main {
-            flex: 1.2;
-            padding: 40px 60px 60px 80px;
+            flex: 1.15;
+            padding: 32px 40px 40px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            max-width: 760px;
-            margin-left: auto;
+            overflow-y: auto;
+            max-height: 92vh;
         }
 
         /* Columna Derecha (Resumen Sticky) */
         .chk-sidebar {
-            flex: 0.95;
+            flex: 0.85;
             background-color: var(--color-bg-summary);
             border-left: 1px solid var(--color-border);
-            padding: 40px 80px 60px 50px;
+            padding: 32px 36px 40px;
+            overflow-y: auto;
+            max-height: 92vh;
+        }
+
+        .chk-modal-close-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .chk-modal-close-btn:hover {
+            background: #fee2e2;
+            color: #ef4444;
+            transform: rotate(90deg);
         }
 
         @media (max-width: 1024px) {
+            body {
+                padding: 10px;
+                display: block;
+            }
             .chk-container {
                 flex-direction: column-reverse;
+                max-height: none;
             }
             .chk-main {
-                padding: 30px 24px 60px 24px;
+                padding: 24px 20px 40px;
                 max-width: 100%;
-                margin: 0;
+                max-height: none;
             }
             .chk-sidebar {
-                padding: 24px;
+                padding: 24px 20px;
                 border-left: none;
                 border-bottom: 1px solid var(--color-border);
+                max-height: none;
             }
         }
 
@@ -619,12 +663,20 @@
                 <a href="{{ route('tienda') }}" class="chk-logo">
                     Almacén Europa<span>.</span>
                 </a>
-                <div class="chk-security-badge">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                    </svg>
-                    Pago Seguro SSL
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="chk-security-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        Pago Seguro SSL
+                    </div>
+                    <a href="{{ route('tienda') }}" class="chk-modal-close-btn" title="Cerrar y volver a la tienda (Esc)" aria-label="Cerrar modal">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </a>
                 </div>
             </div>
 
@@ -896,6 +948,11 @@
                 </svg>
                 <span id="btn-submit-text">Pagar ahora</span>
             </button>
+
+            {{-- Volver a la tienda --}}
+            <a href="{{ route('tienda') }}" style="display: block; width: 100%; text-align: center; margin-top: 10px; font-size: 0.82rem; color: #1e3a8a; text-decoration: underline; font-weight: 600;">
+                &larr; Volver a la tienda
+            </a>
 
             {{-- Enlaces Institucionales Footer --}}
             <footer class="chk-footer-links">
@@ -1245,6 +1302,13 @@
 
     // Inicializar resumen al cargar
     document.addEventListener('DOMContentLoaded', renderSummary);
+
+    // Cerrar modal y volver a la tienda con Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            window.location.href = "{{ route('tienda') }}";
+        }
+    });
 </script>
 
 </body>

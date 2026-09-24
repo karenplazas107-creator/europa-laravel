@@ -51,6 +51,15 @@ class TiendaClienteController extends Controller
         }
 
         $productos = $query->get();
+        $user = Auth::user();
+        $departamentos = [
+            'Amazonas', 'Antioquia', 'Arauca', 'Atlántico', 'Bogotá D.C.', 'Bolívar',
+            'Boyacá', 'Caldas', 'Caquetá', 'Casanare', 'Cauca', 'Cesar', 'Chocó',
+            'Córdoba', 'Cundinamarca', 'Guainía', 'Guaviare', 'Huila', 'La Guajira',
+            'Magdalena', 'Meta', 'Nariño', 'Norte de Santander', 'Putumayo', 'Quindío',
+            'Risaralda', 'San Andrés y Providencia', 'Santander', 'Sucre', 'Tolima',
+            'Valle del Cauca', 'Vaupés', 'Vichada',
+        ];
 
         return view('cliente.tienda', compact(
             'productos',
@@ -58,7 +67,9 @@ class TiendaClienteController extends Controller
             'totalProductos',
             'totalCategorias',
             'search',
-            'categoriaId'
+            'categoriaId',
+            'departamentos',
+            'user'
         ));
     }
 
