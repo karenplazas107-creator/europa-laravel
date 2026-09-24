@@ -1,41 +1,68 @@
-# Módulo de Gestión de Productos
+# Módulo de Gestión de Productos (Laravel)
 
-Este módulo es el corazón del catálogo, permitiendo la definición técnica de los artículos, sus precios, categorías e imágenes.
-
-*Archivos involucrados:*
-
-- **Controlador:** `controllers/ProductoController.php`
-- **Modelo:** `models/Producto.php`
-- **Vista Principal:** `views/productos/index.php`
-- **Carpeta de Imágenes:** `img/productos/`
+El módulo de **Gestión de Productos** es el corazón operativo del catálogo de **Almacén Europa**. Permite la administración integral del ciclo de vida de los artículos comerciales, control de márgenes de ganancia, gestión de imágenes multimedia y asociación con categorías.
 
 ---
 
-## 1. Gestión de Información
+## 1. Componentes Técnicos Involucrados
 
-El registro de un producto incluye:
-- **Datos Básicos:** Nombre, descripción y código de barras.
-- **Precios:** Diferenciación entre precio de compra (para cálculo de valor de inventario) y precio de venta.
-- **Categorización:** Asociación obligatoria a una categoría para facilitar la navegación y reportes.
-- **Imagen:** Soporte para carga de archivos multimedia (JPG, PNG, WEBP).
-
----
-
-## 2. Manejo de Imágenes (Lógica del Controlador)
-
-El `ProductoController` gestiona el ciclo de vida de las imágenes:
-1. **Validación:** Verifica extensiones permitidas.
-2. **Renombrado:** Asigna nombres únicos basados en `timestamp` para evitar colisiones y caché del navegador.
-3. **Limpieza:** Al editar o eliminar un producto, el sistema borra automáticamente el archivo de imagen anterior del servidor para ahorrar espacio.
+| Componente | Archivo en el Proyecto | Responsabilidad |
+|---|---|---|
+| **Controlador** | `app/Http/Controllers/ProductoController.php` | Operaciones CRUD, procesamiento de imágenes y control de stock |
+| **Modelos** | `app/Models/Producto.php`<br>`app/Models/Categoria.php` | Modelos Eloquent con relaciones `belongsTo` y scopes de consulta |
+| **Rutas Web** | `routes/web.php` | Recursos RESTful agrupados: `/productos`, `/productos/create`, `/productos/{id}/edit`, etc. |
+| **Almacenamiento** | `storage/app/public/productos/` | Disco de almacenamiento público para fotografías y fichas de producto |
+| **Vistas Blade** | `resources/views/productos/index.blade.php`<br>`resources/views/productos/create.blade.php`<br>`resources/views/productos/edit.blade.php` | Formularios de captura de datos y paneles de inventario |
 
 ---
 
-## 3. Integración con Inventario
+## 2. Endpoints y Enrutamiento (`routes/web.php`)
 
-Al crear un producto a través del método `crearConStock()`, el sistema no solo inserta el registro en la tabla `productos`, sino que inicializa su configuración en la tabla `inventario` (stock inicial y stock mínimo), asegurando que el producto sea rastreable desde el momento de su creación.
+```php
+Route::middleware(['auth', 'staff'])->group(function () {
+    Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+    Route::get('/productos/create', [ProductoController::class, 'create'])->name('productos.create');
+    Route::post('/productos', [ProductoController::class, 'store'])->name('productos.store');
+    Route::get('/productos/{id}/edit', [ProductoController::class, 'edit'])->name('productos.edit');
+    Route::put('/productos/{id}', [ProductoController::class, 'update'])->name('productos.update');
+    Route::delete('/productos/{id}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+    Route::post('/productos/{id}/stock', [ProductoController::class, 'ajustarStock'])->name('productos.stock');
+});
+```
 
 ---
-## 4. Roles y Responsabilidades
 
-- **Administrador / Bodeguero:** Son los encargados de la gestión técnica de los productos (crear, editar, eliminar y ajustar stock).
-- **Vendedor:** Puede consultar la lista de productos y sus detalles (precios/stock) para informar al cliente, pero no tiene permisos de modificación.
+## 3. Funcionalidades del Módulo
+
+### A. Estructura y Validación de Datos (`store` / `update`)
+Al registrar o actualizar un producto, Laravel valida las reglas de negocio estrictamente:
+- **Datos Comerciales:** Nombre obligatorio (`max:120`), descripción detallada (`max:500`) y código de barras único (`unique:products,codigo_barras`).
+- **Control de Precios:** `precio_compra` y `precio_venta` validados como valores numéricos no negativos. La diferencia define el margen bruto del negocio.
+- **Categorización:** Validación de existencia con clave foránea en la tabla categorías (`exists:categories,categoria`).
+- **Existencias:** `stock` inicial entero y `stock_minimo` de seguridad.
+
+### B. Gestión y Almacenamiento Seguro de Imágenes
+El controlador maneja el almacenamiento de imágenes en el disco público de Laravel:
+```php
+if ($request->hasFile('imagen')) {
+    // Si es edición y ya tenía imagen, se borra el archivo previo para ahorrar espacio en disco
+    if (!empty($producto->imagen) && Storage::disk('public')->exists($producto->imagen)) {
+        Storage::disk('public')->delete($producto->imagen);
+    }
+    $data['imagen'] = $request->file('imagen')->store('productos', 'public');
+}
+```
+Se admiten formatos `jpg`, `jpeg`, `png`, `webp` con un tamaño máximo de 2MB.
+
+### C. Eliminación Segura (`destroy`)
+Al eliminar un producto, el controlador ejecuta una limpieza completa:
+1. Elimina el archivo multimedia físico asociado en `storage/app/public/productos/`.
+2. Elimina el registro del producto en la tabla `products`.
+3. Notifica al usuario con un mensaje Flash en la sesión.
+
+---
+
+## 4. Roles y Seguridad
+
+- **Administrador y Bodeguero:** Tienen permisos completos de creación, edición, asignación de precios y eliminación de referencias.
+- **Vendedor:** Puede consultar fichas técnicas y precios para cotizar a clientes sin permisos de modificación estructural.

@@ -1,96 +1,82 @@
-# Módulo de Gestión de Usuarios
+# Módulo de Gestión de Usuarios y Roles (Laravel)
 
-Este módulo permite a los administradores del sistema gestionar las cuentas de usuario (vendedores, bodegueros y otros administradores), controlando sus accesos y perfiles dentro de la plataforma.
-
-*Archivos involucrados:*
-
-- **Vista Principal (Dashboard Admin):** `views/dashboard/admin.php`
-- **Controlador Administrativo:** `controllers/AdminUsuarioController.php`
-- **Controlador de Registro:** `controllers/UsuarioController.php`
-- **Modelo de Datos:** `models/Usuario.php`
+El módulo de **Gestión de Usuarios** es el centro de control de personal y seguridad de **Almacén Europa**. Permite al Administrador dar de alta colaboradores, asignar roles operativos y mantener el principio de privilegio mínimo en el sistema.
 
 ---
 
-## 0. Responsabilidades por Rol
+## 1. Componentes Técnicos Involucrados
 
-- **Administrador:** Tiene control total del sistema. Es el único responsable de registrar y gestionar a los **Vendedores** y **Bodegueros**.
-- **Comprador (Cliente):** Es el único rol que puede **registrarse de forma autónoma** a través del formulario público.
-- **Vendedor / Bodeguero:** Son registrados exclusivamente por el Administrador desde el panel interno.
-
----
-
-## 1. Interfaz de Gestión (views/dashboard/admin.php)
-
-### ¿Qué es y para qué sirve?
-
-Es el centro de control para la administración de personal. Presenta una tabla dinámica que lista a todos los usuarios del sistema, excluyendo a los clientes (compradores), para mantener la interfaz enfocada en el equipo de trabajo.
-
-### Componentes de la interfaz:
-
-- **Tabla de Usuarios:** Muestra nombre completo, correo electrónico, rol asignado y botones de acción rápida.
-- **Badges de Rol:** Etiquetas visuales de colores para identificar rápidamente el cargo (Azul para Administrador, Ámbar para Vendedor, Índigo para Bodeguero).
-- **Botón "Agregar Usuario":** Despliega un modal con el formulario de registro administrativo.
-- **Acciones Rápidas:** Iconos de edición (lápiz) y eliminación (papelera) por cada registro.
+| Componente | Archivo en el Proyecto | Responsabilidad |
+|---|---|---|
+| **Controlador** | `app/Http/Controllers/UsuarioController.php` | Lógica de alta, actualización de perfiles, asignación de roles y bajas de personal |
+| **Modelo** | `app/Models/User.php` | Modelo Eloquent de la tabla `users` con métodos auxiliares de rol (`isAdmin`, `isStaff`, `isCliente`, `rolesDisponibles`) |
+| **Middlewares** | `app/Http/Middleware/AdminMiddleware.php`<br>`app/Http/Middleware/StaffMiddleware.php` | Restricción de acceso exclusivo para administradores |
+| **Rutas Web** | `routes/web.php` | Endpoints RESTful protegidos: `/usuarios`, `/usuarios/create`, `/usuarios/{id}/edit`, etc. |
+| **Vistas Blade** | `resources/views/usuarios/index.blade.php`<br>`resources/views/usuarios/create.blade.php`<br>`resources/views/usuarios/edit.blade.php` | Tableros administrativos con tarjetas métricas, filtros y modales |
 
 ---
 
-## 2. Creación de Usuarios (Lógica Administrativa)
+## 2. Roles del Sistema (RBAC)
 
-Aunque el sistema permite el registro público, el administrador tiene una vía dedicada para crear empleados:
+El sistema define 4 roles con responsabilidades claramente delimitadas:
 
-- **Formulario:** Solicita nombres, apellidos, móvil, correo, contraseña y la selección explícita del rol.
-- **Envío:** Los datos viajan por POST hacia `controllers/UsuarioController.php`.
-- **Diferenciación:** Se envía un campo oculto `desde_admin = 1`. Esto indica al controlador que, tras el registro exitoso, debe redirigir de vuelta al dashboard administrativo y no a la página de login.
-
----
-
-## 3. Edición de Usuarios (Modales Dinámicos)
-
-La edición se realiza sin recargar la página mediante modales:
-
-- **Carga de Datos:** Al hacer clic en el icono de editar, la función JS `openEditModal(u)` recibe el objeto JSON del usuario y rellena automáticamente los campos del formulario.
-- **Controlador:** El formulario envía los cambios a `controllers/AdminUsuarioController.php?accion=editar`.
-- **Campos Editables:** Nombres, apellidos, móvil y rol. La contraseña no se edita desde aquí por seguridad.
+| Rol Técnico | Nombre Visible | Responsabilidades y Acceso |
+|---|---|---|
+| `administrador` / `admin` | **Administrador General** | Acceso irrestricto a todos los módulos: creación de personal, finanzas, inventarios y configuración |
+| `vendedor` | **Vendedor / Cajero** | Terminal POS de ventas, consulta de stock y catálogo de productos |
+| `auxiliar_bodega` / `bodeguero` | **Auxiliar de Bodega** | Movimientos de inventario, ajustes de stock, catálogo de productos y gestión de proveedores |
+| `cliente` | **Cliente / Comprador** | Portal e-commerce público, catálogo virtual, carrito interactivo y pasarela de checkout |
 
 ---
 
-## 4. Eliminación de Usuarios (Seguridad y Confirmación)
+## 3. Endpoints y Enrutamiento (`routes/web.php`)
 
-Para prevenir eliminaciones accidentales, el sistema implementa una doble validación:
-
-1. **Confirmación Visual:** Se utiliza la librería *SweetAlert2* para mostrar un modal de advertencia ("¿Estás seguro?").
-2. **Ejecución:** Solo si el usuario confirma, se redirige a `controllers/AdminUsuarioController.php?accion=eliminar&id=...`.
-3. **Persistencia:** El modelo ejecuta un `DELETE` físico en la base de datos para el ID correspondiente.
-
----
-
-## 5. Lógica del Modelo (models/Usuario.php)
-
-El modelo es el encargado de interactuar con la base de datos mediante PDO:
-
-- `obtenerTodos()`: Ejecuta un `SELECT` filtrando por `rol != 'Comprador'`.
-- `registrar($datos)`: Inserta los datos en la tabla `usuarios`. Las contraseñas deben llegar ya encriptadas desde el controlador.
-- `editarCompleto($id, ...)`: Actualiza los campos básicos del usuario.
-- `eliminarCompleto($id)`: Remueve el registro de la tabla por su ID.
+```php
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
+    Route::get('/usuarios/create', [UsuarioController::class, 'create'])->name('usuarios.create');
+    Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
+    Route::get('/usuarios/{id}/edit', [UsuarioController::class, 'edit'])->name('usuarios.edit');
+    Route::put('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuarios.update');
+    Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+});
+```
 
 ---
 
-## 6. Sistema de Alertas y Retroalimentación
+## 4. Funcionalidades del Módulo
 
-El módulo utiliza variables de sesión (`$_SESSION['alert']`) para comunicar resultados:
+### A. Panel de Control y Métricas de Personal
+La vista principal de usuarios despliega tarjetas de conteo dinámicas calculadas en el servidor:
+- **Total de Usuarios:** Cuentas totales en la base de datos.
+- **Administradores:** Personal directivo con acceso total.
+- **Vendedores:** Personal de atención y facturación.
+- **Personal de Bodega:** Operadores de inventario.
+- **Clientes Registrados:** Compradores digitales.
 
-1. El controlador procesa la acción y guarda un array con `icon`, `title` y `text`.
-2. Al redirigir a `admin.php`, el script PHP detecta la alerta.
-3. Se renderiza un bloque `<script>` que dispara `Swal.fire()`.
-4. La alerta se destruye (`unset`) inmediatamente para que no reaparezca al recargar.
+### B. Creación de Usuarios por el Administrador (`store`)
+Permite registrar colaboradores sin pasar por el formulario de clientes:
+1. Valida nombre, apellido, correo único (opcional para vendedores físicos sin correo corporativo), número de teléfono móvil obligatorio y único.
+2. Exige selección explícita del rol (`in:administrador,vendedor,auxiliar_bodega,cliente`).
+3. Encripta la contraseña con `Hash::make()` (Bcrypt).
+4. Persiste el registro y notifica con un mensaje Flash de éxito.
+
+### C. Edición de Perfiles y Cambio de Roles (`update`)
+Permite modificar los datos de cualquier colaborador o promoverlo/cambiarlo de rol. La contraseña es opcional; si no se suministra, el sistema conserva el hash anterior sin alteraciones.
+
+### D. Protección contra Autoeliminación Accidental (`destroy`)
+Para evitar que el administrador activo se elimine a sí mismo y bloquee el acceso al sistema, el controlador implementa una salvaguarda de seguridad:
+```php
+if ((string) $usuario->usuario === (string) Auth::user()->usuario) {
+    return redirect()
+        ->route('usuarios.index')
+        ->with('error', 'No puedes eliminar tu propio usuario con sesión activa.');
+}
+```
 
 ---
 
-## 7. Flujo de Trabajo
+## 5. Medidas de Seguridad
 
-Acceso Admin → Sidebar "Usuarios" → `admin.php`
-       ↓
-[ TABLA DE USUARIOS ]
-       ├── Botón Nuevo  → Modal → `UsuarioController` → Éxito → `admin.php` (Alert)
-       ├── Icono Editar → Modal → `AdminUsuarioController` → Actualizar → `admin.php`
-       └── Icono Borrar → SweetAlert → `AdminUsuarioController` → Eliminar → `admin.php`
+1. **Blindaje por Middleware (`AdminMiddleware`):** Incluso si un vendedor o cliente conoce la URL `/usuarios`, el middleware verifica `$user->isAdmin()`, rechazando la solicitud con error 403 o redirección forzada.
+2. **Hasheo Unidireccional:** Las contraseñas nunca viajan en texto plano ni se guardan sin cifrado.

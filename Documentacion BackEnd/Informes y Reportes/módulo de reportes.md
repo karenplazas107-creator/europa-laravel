@@ -1,49 +1,67 @@
-# Módulo de Informes y Reportes
+# Módulo de Informes y Reportes Analíticos (Laravel)
 
-Este módulo transforma los datos crudos de la base de datos en información visual y estadística para la toma de decisiones estratégicas.
-
-*Archivos involucrados:*
-
-- **Vista Principal:** `views/reportes/index.php`
-- **Modelos de Datos:** `models/Venta.php`, `models/Producto.php`
-- **Librería Externa:** Chart.js (vía CDN)
+El módulo de **Informes y Reportes** proporciona inteligencia de negocios y analítica comercial para la toma de decisiones estratégicas en **Almacén Europa**, combinando indicadores ejecutivos, gráficos interactivos con Chart.js, rankings de productos y exportación/impresión profesional directa.
 
 ---
 
-## 1. Indicadores Clave (KPIs)
+## 1. Componentes Técnicos Involucrados
 
-El módulo presenta un resumen ejecutivo con 4 métricas principales:
-- **Ingresos Totales:** Suma histórica de todas las ventas confirmadas.
-- **Ingresos del Día:** Monitoreo en tiempo real de las ventas actuales.
-- **Ingresos del Mes:** Comparativa mensual.
-- **Ticket Promedio:** Valor medio de las transacciones realizadas.
-
----
-
-## 2. Visualización de Datos (Gráficas)
-
-Utiliza la librería **Chart.js** para generar representaciones dinámicas:
-- **Gráfica de Líneas:** Muestra la evolución de los ingresos en los últimos 12 meses.
-- **Gráfica de Barras:** Detalla las ventas diarias de los últimos 30 días, permitiendo identificar picos de demanda.
+| Componente | Archivo en el Proyecto | Responsabilidad |
+|---|---|---|
+| **Controlador** | `app/Http/Controllers/ReporteController.php` | Agregación estadística, cálculos temporales con Carbon y preparación de datasets |
+| **Modelos** | `app/Models/Venta.php`<br>`app/Models/DetalleVenta.php`<br>`app/Models/Producto.php`<br>`app/Models/User.php` | Modelos consultados con funciones agregadas de Eloquent (`SUM`, `COUNT`, `MAX`, `AVG`) |
+| **Rutas Web** | `routes/web.php` | `Route::get('/reportes', ...)` y `Route::get('/reportes/imprimir', ...)` |
+| **Librería de Gráficos** | Chart.js | Renderizado interactivo de gráficos de líneas, barras y rosquillas |
+| **Vistas Blade** | `resources/views/reportes/index.blade.php`<br>`resources/views/reportes/imprimir.blade.php` | Dashboard analítico e interfaz de impresión limpia en la misma ventana |
 
 ---
 
-## 3. Análisis de Rendimiento
+## 2. Endpoints y Enrutamiento (`routes/web.php`)
 
-- **Ranking de Productos:** Un gráfico de barras horizontales (progreso) que destaca los productos más vendidos por unidades e ingresos generados.
-- **Rendimiento por Vendedor:** Compara el desempeño de los empleados basándose en el volumen de ventas y el dinero recaudado.
-
----
-
-## 4. Auditoría de Inventario
-
-El módulo también proporciona un vistazo rápido al estado físico del negocio:
-- Total de productos y unidades en stock.
-- Conteo de productos con stock bajo o agotados.
-- **Valor del Inventario:** Cálculo del capital invertido basado en (Stock * Precio de Compra).
+```php
+Route::middleware(['auth', 'staff'])->group(function () {
+    Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
+    Route::get('/reportes/imprimir', [ReporteController::class, 'imprimir'])->name('reportes.imprimir');
+});
+```
 
 ---
 
-## 5. Lógica de Obtención de Datos
+## 3. Indicadores Clave de Negocio (KPIs)
 
-Toda la inteligencia de este módulo reside en los modelos, especialmente en `Venta.php`, el cual contiene consultas SQL complejas con agrupamientos (`GROUP BY`) y funciones de agregación (`SUM`, `COUNT`, `AVG`) para procesar miles de registros en milisegundos.
+El controlador calcula dinámicamente en cada carga:
+1. **Ingresos Totales Históricos:** `Venta::sum('total')`.
+2. **Ingresos del Día:** `Venta::whereDate('fecha', Carbon::today())->sum('total')`.
+3. **Ingresos del Mes en Curso:** `Venta::whereBetween('fecha', [$inicioMes, $finMes])->sum('total')`.
+4. **Ticket Promedio:** Valor medio de facturación por cada transacción (`ingresosTotales / totalVentasCount`).
+5. **Venta Más Alta:** Registro de la transacción con mayor valor monetario.
+
+---
+
+## 4. Visualización de Datos y Gráficos (Chart.js)
+
+### A. Evolución Temporal de Ingresos
+Gráfico de líneas continuas que ilustra el comportamiento de los ingresos a lo largo de los últimos 12 meses, identificando patrones de estacionalidad.
+
+### B. Ventas Diarias de los Últimos 30 Días
+Gráfico de barras verticales que detalla los ingresos diarios, permitiendo identificar días pico de mayor afluencia comercial.
+
+### C. Distribución por Métodos de Pago
+Gráfico tipo rosquilla (*Doughnut*) que segmenta la facturación por medio de pago utilizado (Efectivo, Wompi, PSE, Contra Entrega, Transferencia).
+
+---
+
+## 5. Rankings y Auditoría Operativa
+
+- **Top 5 Productos Más Vendidos:** Tabla y barras porcentuales de progreso que destacan las referencias con mayor volumen de unidades colocadas y sus ingresos acumulados.
+- **Rendimiento por Colaborador:** Auditoría de productividad comercial según el número de ventas registradas por cada vendedor o cajero.
+- **Auditoría Financiera del Inventario:** Conteo de productos, valor total del stock a costo (`SUM(stock * precio_compra)`) y alertas de stock bajo y agotado.
+
+---
+
+## 6. Impresión Integrada en la Misma Ventana
+
+A diferencia de sistemas antiguos que abrían pestañas emergentes propensas a ser bloqueadas por el navegador, **Almacén Europa** implementa:
+1. **Ruta Dedicada de Impresión (`/reportes/imprimir`):** Carga el reporte ejecutivo formal con encabezado institucional, tablas limpias y métricas consolidadas.
+2. **Hojas de Estilo `@media print`:** Ocultan botones de navegación, menús laterales y pies de página irrelevantes durante la impresión física o exportación a PDF.
+3. **Disparador `window.print()`:** Invoca directamente el diálogo de impresión del sistema operativo manteniendo al usuario dentro de la misma experiencia.
