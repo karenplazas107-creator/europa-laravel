@@ -1546,259 +1546,213 @@
         const mdTitulo = document.getElementById('md-titulo');
         const ticketRender = document.getElementById('ticket-pos-render');
 
-        function verFacturaPos(ventaId, autoPrint = false) {
-            modalBackdrop.classList.add('is-open');
-            ticketRender.innerHTML = `
-                <div style="text-align: center; padding: 40px; color: #64748b;">
-                    <div style="display: inline-block; width: 32px; height: 32px; border: 3px solid #cbd5e1; border-top-color: #1e3a8a; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
-                    <p style="margin-top: 12px; font-weight: 600;">Generando Factura POS..</p>
-                </div>
-            `;
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
 
-            fetch(`/mis-compras/${ventaId}`)
-                .then(res => res.json())
-                .then(data => {
+        function verFacturaPos(ventaId, autoPrint = false) {
+            if (!modalBackdrop || !ticketRender) return;
+
+            modalBackdrop.classList.add('is-open');
+            ticketRender.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">' +
+                '<div style="display: inline-block; width: 32px; height: 32px; border: 3px solid #cbd5e1; border-top-color: #1e3a8a; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>' +
+                '<p style="margin-top: 12px; font-weight: 600;">Generando Factura POS...</p>' +
+                '</div>';
+
+            fetch('/mis-compras/' + encodeURIComponent(ventaId))
+                .then(function(res) {
+                    if (!res.ok) throw new Error('Error al cargar factura: ' + res.status);
+                    return res.json();
+                })
+                .then(function(data) {
                     if (!data.success) {
-                        ticketRender.innerHTML = `<div style="color: #ef4444; padding: 20px; text-align: center;">No fue posible cargar la factura POS.</div>`;
+                        ticketRender.innerHTML = '<div style="color: #ef4444; padding: 20px; text-align: center; font-weight: 600;">No fue posible cargar la factura POS.</div>';
                         return;
                     }
 
-                    mdTitulo.textContent = `Factura POS Nro. ${data.consecutivo_pos}`;
+                    if (mdTitulo) {
+                        mdTitulo.textContent = 'Factura POS Nro. ' + data.consecutivo_pos;
+                    }
 
-                    let itemsRows = data.detalles.map(d => `
-                        <tr>
-                            <td class="col-art">${d.producto_nombre}</td>
-                            <td class="col-pre">${d.precio_formateado}</td>
-                            <td class="col-cant">${d.cantidad}</td>
-                            <td class="col-desc">${data.descuento !== '$0' ? '10' : '0'}</td>
-                        </tr>
-                    `).join('');
+                    var itemsHtml = '';
+                    if (data.detalles && data.detalles.length > 0) {
+                        for (var i = 0; i < data.detalles.length; i++) {
+                            var d = data.detalles[i];
+                            itemsHtml += '<tr>' +
+                                '<td class="col-art">' + escapeHtml(d.producto_nombre) + '</td>' +
+                                '<td class="col-pre">' + escapeHtml(d.precio_formateado) + '</td>' +
+                                '<td class="col-cant">' + escapeHtml(String(d.cantidad)) + '</td>' +
+                                '<td class="col-desc">' + (data.descuento !== '$0' ? '10' : '0') + '</td>' +
+                                '</tr>';
+                        }
+                    }
 
-                    ticketRender.innerHTML = `
-                        <!-- Línea Superior del Ticket -->
-                        <div class="pos-top-line">
-                            <span>${data.fecha}</span>
-                            <span>ALMACÉN EUROPA -- POS Colombia</span>
-                        </div>
+                    var html = '';
+                    html += '<div class="pos-top-line">';
+                    html += '  <span>' + escapeHtml(data.fecha) + '</span>';
+                    html += '  <span>ALMACÉN EUROPA -- POS Colombia</span>';
+                    html += '</div>';
 
-                        <!-- Encabezado de la Empresa -->
-                        <div class="pos-header">
-                            <div class="pos-store-name">ALMACÉN EUROPA</div>
-                            <div class="pos-store-info">NIT: 901234567-8</div>
-                            <div class="pos-store-info">CRA. 5 # 12-34 BRR. CENTRO</div>
-                            <div class="pos-store-info">NEIVA - HUILA · TEL: 300 123 4567</div>
+                    html += '<div class="pos-header">';
+                    html += '  <div class="pos-store-name">ALMACÉN EUROPA</div>';
+                    html += '  <div class="pos-store-info">NIT: 901234567-8</div>';
+                    html += '  <div class="pos-store-info">CRA. 5 # 12-34 BRR. CENTRO</div>';
+                    html += '  <div class="pos-store-info">NEIVA - HUILA · TEL: 300 123 4567</div>';
+                    html += '  <div class="pos-doc-title">FACTURA DE VENTA</div>';
+                    html += '  <div class="pos-regimen">RÉGIMEN COMÚN</div>';
+                    html += '  <div class="pos-date">' + escapeHtml(data.fecha) + ' ' + escapeHtml(data.hora) + '</div>';
+                    html += '</div>';
 
-                            <div class="pos-doc-title">FACTURA DE VENTA</div>
-                            <div class="pos-regimen">RÉGIMEN COMÚN</div>
-                            <div class="pos-date">${data.fecha} ${data.hora}</div>
-                        </div>
+                    html += '<div class="pos-client-info">';
+                    html += '  <div class="pos-client-row"><span class="pos-client-lbl">Cliente:</span><span class="pos-client-val">' + escapeHtml(data.cliente_nombre) + '</span></div>';
+                    html += '  <div class="pos-client-row"><span class="pos-client-lbl">NIT o CC:</span><span class="pos-client-val">' + escapeHtml(data.documento) + '</span></div>';
+                    html += '  <div class="pos-client-row"><span class="pos-client-lbl">Factura Nro.:</span><span class="pos-client-val">' + escapeHtml(data.consecutivo_pos) + '</span></div>';
+                    html += '  <div class="pos-client-row"><span class="pos-client-lbl">Vendedor:</span><span class="pos-client-val">' + escapeHtml(data.vendedor) + '</span></div>';
+                    html += '</div>';
 
-                        <!-- Información del Cliente -->
-                        <div class="pos-client-info">
-                            <div class="pos-client-row">
-                                <span class="pos-client-lbl">Cliente:</span>
-                                <span class="pos-client-val">${data.cliente_nombre}</span>
-                            </div>
-                            <div class="pos-client-row">
-                                <span class="pos-client-lbl">NIT o CC:</span>
-                                <span class="pos-client-val">${data.documento}</span>
-                            </div>
-                            <div class="pos-client-row">
-                                <span class="pos-client-lbl">Factura Nro.:</span>
-                                <span class="pos-client-val">${data.consecutivo_pos}</span>
-                            </div>
-                            <div class="pos-client-row">
-                                <span class="pos-client-lbl">Vendedor:</span>
-                                <span class="pos-client-val">${data.vendedor}</span>
-                            </div>
-                        </div>
+                    html += '<table class="pos-table">';
+                    html += '  <thead><tr><th class="col-art">Artículo</th><th class="col-pre">Precio</th><th class="col-cant">Cant.</th><th class="col-desc">Desc %</th></tr></thead>';
+                    html += '  <tbody>' + itemsHtml + '</tbody>';
+                    html += '</table>';
 
-                        <!-- Tabla de Artículos -->
-                        <table class="pos-table">
-                            <thead>
-                                <tr>
-                                    <th class="col-art">Artículo</th>
-                                    <th class="col-pre">Precio</th>
-                                    <th class="col-cant">Cant.</th>
-                                    <th class="col-desc">Desc %</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${itemsRows}
-                            </tbody>
-                        </table>
+                    html += '<hr class="pos-thick-line">';
 
-                        <!-- Línea negra sólida bajo los artículos -->
-                        <hr class="pos-thick-line">
+                    html += '<table class="pos-totals-table">';
+                    html += '  <tr><td class="pos-tot-lbl">Subtotal</td><td class="pos-tot-val">' + escapeHtml(data.subtotal_sin_iva) + '</td></tr>';
+                    html += '  <tr><td class="pos-tot-lbl">IVA 19%:</td><td class="pos-tot-val">' + escapeHtml(data.iva_19) + '</td></tr>';
+                    html += '  <tr><td class="pos-tot-lbl">IVA 0%:</td><td class="pos-tot-val">$0</td></tr>';
+                    html += '  <tr><td class="pos-tot-lbl pos-total-highlight">Total</td><td class="pos-tot-val pos-total-highlight">' + escapeHtml(data.total) + '</td></tr>';
+                    html += '</table>';
 
-                        <!-- Desglose de Totales a la Derecha -->
-                        <table class="pos-totals-table">
-                            <tr>
-                                <td class="pos-tot-lbl">Subtotal</td>
-                                <td class="pos-tot-val">${data.subtotal_sin_iva}</td>
-                            </tr>
-                            <tr>
-                                <td class="pos-tot-lbl">IVA 19%:</td>
-                                <td class="pos-tot-val">${data.iva_19}</td>
-                            </tr>
-                            <tr>
-                                <td class="pos-tot-lbl">IVA 0%:</td>
-                                <td class="pos-tot-val">$0</td>
-                            </tr>
-                            <tr>
-                                <td class="pos-tot-lbl pos-total-highlight">Total</td>
-                                <td class="pos-tot-val pos-total-highlight">${data.total}</td>
-                            </tr>
-                        </table>
+                    html += '<div class="pos-payment-block">';
+                    html += '  <div class="pos-pay-row"><span class="pos-pay-lbl">Tipo de Pago &nbsp; ' + escapeHtml(data.metodo_pago) + '</span><span class="pos-pay-val">' + escapeHtml(data.total) + '</span></div>';
+                    html += '  <div class="pos-pay-row"><span class="pos-pay-lbl">Cambio</span><span class="pos-pay-val">$0</span></div>';
+                    html += '</div>';
 
-                        <!-- Medio de Pago y Cambio -->
-                        <div class="pos-payment-block">
-                            <div class="pos-pay-row">
-                                <span class="pos-pay-lbl">Tipo de Pago &nbsp; ${data.metodo_pago}</span>
-                                <span class="pos-pay-val">${data.total}</span>
-                            </div>
-                            <div class="pos-pay-row">
-                                <span class="pos-pay-lbl">Cambio</span>
-                                <span class="pos-pay-val">$0</span>
-                            </div>
-                        </div>
+                    html += '<hr class="pos-dashed-line">';
 
-                        <!-- Línea punteada -->
-                        <hr class="pos-dashed-line">
+                    html += '<div class="pos-loyalty">';
+                    html += '  Puntos con esta compra: <strong>' + escapeHtml(String(data.puntos_compra)) + '</strong><br>';
+                    html += '  Puntos acumulados: <strong>' + escapeHtml(String(data.puntos_acumulados)) + '</strong>';
+                    html += '</div>';
 
-                        <!-- Puntos de compra -->
-                        <div class="pos-loyalty">
-                            Puntos con esta compra: <strong>${data.puntos_compra}</strong><br>
-                            Puntos acumulados: <strong>${data.puntos_acumulados}</strong>
-                        </div>
+                    html += '<hr class="pos-dashed-line">';
 
-                        <!-- Línea punteada -->
-                        <hr class="pos-dashed-line">
+                    html += '<div class="pos-custom-text">';
+                    html += '  ¡Gracias por su compra en Almacén Europa!<br>';
+                    html += '  Garantía: 30 días calendario con este recibo';
+                    html += '</div>';
 
-                        <!-- Texto Personalizado / Mensaje de Agradecimiento -->
-                        <div class="pos-custom-text">
-                            ¡Gracias por su compra en Almacén Europa!<br>
-                            Garantía: 30 días calendario con este recibo
-                        </div>
+                    html += '<hr class="pos-dashed-line">';
 
-                        <!-- Línea punteada -->
-                        <hr class="pos-dashed-line">
+                    html += '<div class="pos-footer-credits">';
+                    html += '  www.almaceneuropa.com<br>';
+                    html += '  Desarrollado para Almacén Europa<br>';
+                    html += '  NIT: 901234567-8';
+                    html += '</div>';
 
-                        <!-- Pie de Ticket y Créditos -->
-                        <div class="pos-footer-credits">
-                            www.almaceneuropa.com<br>
-                            Desarrollado para Almacén Europa<br>
-                            NIT: 901234567-8
-                        </div>
+                    html += '<hr class="pos-dashed-line">';
 
-                        <!-- Línea punteada final -->
-                        <hr class="pos-dashed-line">
-                    `;
+                    ticketRender.innerHTML = html;
 
                     if (autoPrint) {
-                        setTimeout(() => {
+                        setTimeout(function() {
                             imprimirTicketActual();
-                        }, 400);
+                        }, 350);
                     }
                 })
-                .catch(err => {
-                    ticketRender.innerHTML = `<div style="color: #ef4444; padding: 20px; text-align: center;">Error al cargar datos de la factura POS.</div>`;
+                .catch(function(err) {
+                    console.error('Error cargando factura POS:', err);
+                    ticketRender.innerHTML = '<div style="color: #ef4444; padding: 20px; text-align: center; font-weight: 600;">Error al conectar con el servidor para obtener la factura POS.</div>';
                 });
         }
 
-        // Imprime directamente la factura POS sin salir de la página
         function imprimirFacturaPosDirecto(ventaId) {
             verFacturaPos(ventaId, true);
         }
 
-        // Impresión mediante iframe oculto para no salir de la página ni distorsionar la vista
         function imprimirTicketActual() {
-            const ticketContent = ticketRender.innerHTML;
-            const iframe = document.createElement('iframe');
-            iframe.style.position = 'fixed';
-            iframe.style.right = '0';
-            iframe.style.bottom = '0';
-            iframe.style.width = '0';
-            iframe.style.height = '0';
-            iframe.style.border = '0';
-            document.body.appendChild(iframe);
+            var content = document.getElementById('ticket-pos-render');
+            if (!content) return;
 
-            const doc = iframe.contentWindow.document;
+            var iframe = document.getElementById('pos-silent-iframe');
+            if (!iframe) {
+                iframe = document.createElement('iframe');
+                iframe.id = 'pos-silent-iframe';
+                iframe.style.position = 'fixed';
+                iframe.style.right = '0';
+                iframe.style.bottom = '0';
+                iframe.style.width = '0';
+                iframe.style.height = '0';
+                iframe.style.border = '0';
+                iframe.style.opacity = '0';
+                iframe.style.pointerEvents = 'none';
+                document.body.appendChild(iframe);
+            }
+
+            var doc = iframe.contentWindow.document;
             doc.open();
-            doc.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Factura POS</title>
-                    <style>
-                        * { box-sizing: border-box; margin: 0; padding: 0; }
-                        body {
-                            font-family: Arial, Helvetica, sans-serif;
-                            font-size: 12.5px;
-                            line-height: 1.35;
-                            color: #000;
-                            width: 78mm;
-                            margin: 0 auto;
-                            padding: 3mm 2mm;
-                        }
-                        @page { size: 80mm auto; margin: 0; }
-                        .pos-top-line { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 12px; }
-                        .pos-header { text-align: center; margin-bottom: 14px; }
-                        .pos-store-name { font-size: 16px; font-weight: 900; text-transform: uppercase; margin-bottom: 2px; }
-                        .pos-store-info { font-size: 11.5px; line-height: 1.3; text-transform: uppercase; }
-                        .pos-doc-title { margin-top: 10px; font-size: 13.5px; font-weight: 800; }
-                        .pos-regimen { font-size: 11.5px; font-weight: 700; }
-                        .pos-date { font-size: 11.5px; margin-top: 2px; }
-                        .pos-client-info { font-size: 12.5px; line-height: 1.36; margin-bottom: 12px; }
-                        .pos-client-row { display: flex; }
-                        .pos-client-lbl { width: 90px; flex-shrink: 0; }
-                        .pos-client-val { font-weight: 600; }
-                        .pos-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-                        .pos-table th { padding: 4px 2px; font-weight: 800; font-size: 12px; }
-                        .pos-table th.col-art { text-align: left; width: 48%; }
-                        .pos-table th.col-pre { text-align: right; width: 24%; }
-                        .pos-table th.col-cant { text-align: center; width: 14%; }
-                        .pos-table th.col-desc { text-align: right; width: 14%; }
-                        .pos-table td { padding: 4px 2px; vertical-align: top; }
-                        .pos-table td.col-art { text-align: left; font-weight: 700; text-transform: uppercase; line-height: 1.2; }
-                        .pos-table td.col-pre { text-align: right; white-space: nowrap; }
-                        .pos-table td.col-cant { text-align: center; }
-                        .pos-table td.col-desc { text-align: right; }
-                        .pos-thick-line { border: none; border-bottom: 2px solid #000; margin: 5px 0 8px; }
-                        .pos-totals-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 10px; }
-                        .pos-totals-table td { padding: 2px 2px; }
-                        .pos-totals-table .pos-tot-lbl { text-align: right; padding-right: 12px; width: 60%; }
-                        .pos-totals-table .pos-tot-val { text-align: right; font-weight: 700; width: 40%; white-space: nowrap; }
-                        .pos-total-highlight { font-size: 13.5px; font-weight: 900; }
-                        .pos-pay-row { display: flex; justify-content: flex-end; gap: 14px; font-size: 12.5px; margin-bottom: 3px; }
-                        .pos-pay-lbl { font-weight: 400; }
-                        .pos-pay-val { font-weight: 700; min-width: 85px; text-align: right; }
-                        .pos-dashed-line { border: none; border-bottom: 1px dashed #000; margin: 8px 0; }
-                        .pos-loyalty { font-size: 11.5px; line-height: 1.4; margin-bottom: 6px; }
-                        .pos-custom-text { text-align: center; font-size: 11.5px; line-height: 1.35; margin: 8px 0; }
-                        .pos-footer-credits { text-align: center; font-size: 10.5px; line-height: 1.35; margin-top: 4px; }
-                    </style>
-                </head>
-                <body>
-                    ${ticketContent}
-                </body>
-                </html>
-            `);
+            doc.write('<!DOCTYPE html><html><head><title>Factura POS<\/title><style>' +
+                '* { box-sizing: border-box; margin: 0; padding: 0; } ' +
+                '@page { size: 80mm auto; margin: 0mm; } ' +
+                'body { font-family: Arial, Helvetica, sans-serif; font-size: 12.5px; line-height: 1.35; color: #000; width: 78mm; margin: 0 auto; padding: 4mm 2mm; background: #fff; } ' +
+                '.pos-top-line { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 12px; } ' +
+                '.pos-header { text-align: center; margin-bottom: 14px; } ' +
+                '.pos-store-name { font-size: 16px; font-weight: 900; text-transform: uppercase; margin-bottom: 2px; } ' +
+                '.pos-store-info { font-size: 11.5px; line-height: 1.3; text-transform: uppercase; } ' +
+                '.pos-doc-title { margin-top: 10px; font-size: 13.5px; font-weight: 800; } ' +
+                '.pos-regimen { font-size: 11.5px; font-weight: 700; } ' +
+                '.pos-date { font-size: 11.5px; margin-top: 2px; } ' +
+                '.pos-client-info { font-size: 12.5px; line-height: 1.36; margin-bottom: 12px; } ' +
+                '.pos-client-row { display: flex; } ' +
+                '.pos-client-lbl { width: 90px; flex-shrink: 0; } ' +
+                '.pos-client-val { font-weight: 600; } ' +
+                '.pos-table { width: 100%; border-collapse: collapse; font-size: 12px; } ' +
+                '.pos-table th { padding: 4px 2px; font-weight: 800; font-size: 12px; } ' +
+                '.pos-table th.col-art { text-align: left; width: 48%; } ' +
+                '.pos-table th.col-pre { text-align: right; width: 24%; } ' +
+                '.pos-table th.col-cant { text-align: center; width: 14%; } ' +
+                '.pos-table th.col-desc { text-align: right; width: 14%; } ' +
+                '.pos-table td { padding: 4px 2px; vertical-align: top; } ' +
+                '.pos-table td.col-art { text-align: left; font-weight: 700; text-transform: uppercase; line-height: 1.2; } ' +
+                '.pos-table td.col-pre { text-align: right; white-space: nowrap; } ' +
+                '.pos-table td.col-cant { text-align: center; } ' +
+                '.pos-table td.col-desc { text-align: right; } ' +
+                '.pos-thick-line { border: none; border-bottom: 2px solid #000; margin: 5px 0 8px; } ' +
+                '.pos-totals-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 10px; } ' +
+                '.pos-totals-table td { padding: 2px 2px; } ' +
+                '.pos-totals-table .pos-tot-lbl { text-align: right; padding-right: 12px; width: 60%; } ' +
+                '.pos-totals-table .pos-tot-val { text-align: right; font-weight: 700; width: 40%; white-space: nowrap; } ' +
+                '.pos-total-highlight { font-size: 13.5px; font-weight: 900; } ' +
+                '.pos-payment-block { margin-top: 6px; } ' +
+                '.pos-pay-row { display: flex; justify-content: flex-end; gap: 14px; font-size: 12.5px; margin-bottom: 3px; } ' +
+                '.pos-pay-lbl { font-weight: 400; } ' +
+                '.pos-pay-val { font-weight: 700; min-width: 85px; text-align: right; } ' +
+                '.pos-dashed-line { border: none; border-bottom: 1px dashed #000; margin: 8px 0; } ' +
+                '.pos-loyalty { font-size: 11.5px; line-height: 1.4; margin-bottom: 6px; } ' +
+                '.pos-custom-text { text-align: center; font-size: 11.5px; line-height: 1.35; margin: 8px 0; } ' +
+                '.pos-footer-credits { text-align: center; font-size: 10.5px; line-height: 1.35; margin-top: 4px; } ' +
+                '<\/style><\/head><body>' +
+                content.innerHTML +
+                '<\/body><\/html>');
             doc.close();
 
             iframe.contentWindow.focus();
-            setTimeout(() => {
+            setTimeout(function() {
                 iframe.contentWindow.print();
-                setTimeout(() => {
-                    if (document.body.contains(iframe)) {
-                        document.body.removeChild(iframe);
-                    }
-                }, 1500);
             }, 250);
         }
 
         function cerrarModalDetalle() {
-            modalBackdrop.classList.remove('is-open');
+            if (modalBackdrop) {
+                modalBackdrop.classList.remove('is-open');
+            }
         }
 
         function cerrarModalClickFuera(e) {
@@ -1807,9 +1761,8 @@
             }
         }
 
-        // Cerrar con Escape
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && modalBackdrop.classList.contains('is-open')) {
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalBackdrop && modalBackdrop.classList.contains('is-open')) {
                 cerrarModalDetalle();
             }
         });

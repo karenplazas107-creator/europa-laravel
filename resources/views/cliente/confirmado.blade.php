@@ -581,34 +581,18 @@
         iframe.style.width = '0';
         iframe.style.height = '0';
         iframe.style.border = '0';
+        iframe.style.opacity = '0';
         document.body.appendChild(iframe);
 
         const doc = iframe.contentWindow.document;
         doc.open();
-        doc.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>Factura POS</title>
-                <style>
-                    * { box-sizing: border-box; margin: 0; padding: 0; }
-                    body {
-                        font-family: Arial, Helvetica, sans-serif;
-                        font-size: 12.5px;
-                        line-height: 1.35;
-                        color: #000;
-                        width: 78mm;
-                        margin: 0 auto;
-                        padding: 3mm 2mm;
-                    }
-                    @page { size: 80mm auto; margin: 0; }
-                </style>
-            </head>
-            <body>
-                ${ticketContent}
-            </body>
-            </html>
-        `);
+        doc.write('<!DOCTYPE html><html><head><title>Factura POS<\/title><style>' +
+            '* { box-sizing: border-box; margin: 0; padding: 0; } ' +
+            'body { font-family: Arial, Helvetica, sans-serif; font-size: 12.5px; line-height: 1.35; color: #000; width: 78mm; margin: 0 auto; padding: 3mm 2mm; } ' +
+            '@page { size: 80mm auto; margin: 0; }' +
+            '<\/style><\/head><body>' +
+            ticketContent +
+            '<\/body><\/html>');
         doc.close();
 
         iframe.contentWindow.focus();
