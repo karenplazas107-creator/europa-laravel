@@ -125,17 +125,6 @@ class ProductoController extends Controller
             'precio_venta' => ['required', 'numeric', 'min:0'],
             'categoria' => ['required', 'exists:categories,categoria'],
             'stock' => ['required', 'integer', 'min:0'],
-            'codigo_barras' => ['nullable', 'string', 'max:60',
-                Rule::unique('products', 'codigo_barras')
-                    ->ignore($producto->productos, 'productos')],
-            'imagen' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-        ], [
-            'nombre.required' => 'El nombre es obligatorio.',
-            'descripcion.required' => 'La descripción es obligatoria.',
-            'precio_compra.required' => 'El precio de compra es obligatorio.',
-            'precio_venta.required' => 'El precio de venta es obligatorio.',
-            'categoria.required' => 'Selecciona una categoría.',
-            'categoria.exists' => 'La categoría seleccionada no existe.',
             'stock_minimo' => ['nullable', 'integer', 'min:0'],
             'codigo_barras' => ['nullable', 'string', 'max:60',
                 Rule::unique('products', 'codigo_barras')
@@ -176,7 +165,7 @@ class ProductoController extends Controller
         $producto->update($data);
 
         return redirect()
-            ->route('productos.index')
+            ->route('catalogo.index')
             ->with('success', "Producto \"{$producto->nombre}\" actualizado correctamente.");
     }
 

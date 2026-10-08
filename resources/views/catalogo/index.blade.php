@@ -177,13 +177,7 @@
                         <tr>
                             <td>
                                 <div class="cat-list-producto">
-                                    @if ($p->imagen)
-                                        <img src="{{ asset('storage/' . $p->imagen) }}" alt="{{ $p->nombre }}" class="cat-list-img">
-                                    @else
-                                        <div class="cat-list-img-placeholder">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                        </div>
-                                    @endif
+                                    <img src="{{ $p->imagen_url }}" alt="{{ $p->nombre }}" class="cat-list-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=100&h=100&fit=crop&auto=format';">
                                     <div>
                                         <div class="cat-list-nombre">{{ $p->nombre }}</div>
                                         <div class="cat-list-desc">{{ Str::limit($p->descripcion, 55) }}</div>
@@ -234,20 +228,11 @@
                 <div class="cat-card">
                     {{-- Imagen --}}
                     <div class="cat-card__img-wrap">
-                        @if ($p->imagen)
-                            <img src="{{ asset('storage/' . $p->imagen) }}"
-                                 alt="{{ $p->nombre }}"
-                                 class="cat-card__img">
-                        @else
-                            <div class="cat-card__img-placeholder">
-                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                    <circle cx="8.5" cy="8.5" r="1.5"/>
-                                    <polyline points="21 15 16 10 5 21"/>
-                                </svg>
-                                <span>Sin imagen</span>
-                            </div>
-                        @endif
+                        <img src="{{ $p->imagen_url }}"
+                             alt="{{ $p->nombre }}"
+                             class="cat-card__img"
+                             loading="lazy"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500&h=380&fit=crop&auto=format';">
 
                         {{-- Badges sobre imagen --}}
                         <span class="cat-card__cat-badge">{{ $p->categoriaObj->nombre ?? '—' }}</span>
@@ -290,28 +275,26 @@
                             </div>
                         @endif
 
-                        {{-- Acciones --}}
+                        {{-- Acciones (solo iconos) --}}
                         <div class="cat-card__actions">
                             <a href="{{ route('productos.edit', $p->productos) }}"
-                               class="cat-card__btn cat-card__btn--edit" title="Editar">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                               class="cat-card__btn cat-card__btn--edit" title="Editar producto">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                                 </svg>
-                                Editar
                             </a>
                             <form method="POST"
                                   action="{{ route('productos.destroy', $p->productos) }}"
-                                  style="display:inline"
+                                  style="display:inline; flex: 1;"
                                   onsubmit="return confirm('¿Eliminar {{ addslashes($p->nombre) }}?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="cat-card__btn cat-card__btn--delete" title="Eliminar">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <button type="submit" class="cat-card__btn cat-card__btn--delete" style="width: 100%;" title="Eliminar producto">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="3 6 5 6 21 6"/>
                                         <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
                                     </svg>
-                                    Eliminar
                                 </button>
                             </form>
                         </div>
@@ -626,15 +609,13 @@
     padding-top: 10px; border-top: 1px solid #f1f5fd;
 }
 .cat-card__btn {
-    flex: 1; display: inline-flex; align-items: center; justify-content: center;
-    gap: 5px; padding: 7px 10px; border-radius: 8px;
-    font-family: 'Inter', sans-serif; font-size: .75rem; font-weight: 600;
-    cursor: pointer; border: none; text-decoration: none; transition: all .2s;
+    flex: 1; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 8px; cursor: pointer; border: none; text-decoration: none; transition: all .2s;
 }
 .cat-card__btn--edit   { background: #fef9c3; color: #ca8a04; }
-.cat-card__btn--edit:hover { background: #fef08a; }
+.cat-card__btn--edit:hover { background: #fef08a; transform: translateY(-1px); }
 .cat-card__btn--delete { background: #fee2e2; color: #dc2626; }
-.cat-card__btn--delete:hover { background: #fecaca; }
+.cat-card__btn--delete:hover { background: #fecaca; transform: translateY(-1px); }
 
 /* Acciones en vista lista */
 .cat-td-actions { display: flex; align-items: center; gap: 6px; justify-content: center; }
