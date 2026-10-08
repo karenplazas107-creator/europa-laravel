@@ -1,62 +1,68 @@
-# Módulo de Gestión de Clientes (Laravel)
+# Módulo de Gestión de Clientes
 
-El módulo de **Gestión de Clientes** permite al personal administrativo y comercial supervisar el directorio de compradores registrados en **Almacén Europa**, actualizar sus datos de contacto y auditar sus registros.
-
----
-
-## 1. Componentes Técnicos Involucrados
-
-| Componente | Archivo en el Proyecto | Responsabilidad |
-|---|---|---|
-| **Controlador** | `app/Http/Controllers/ClienteController.php` | Control de listado, edición, actualización y eliminación de clientes |
-| **Modelo** | `app/Models/User.php` | Representa la entidad con filtro de negocio `where('rol', 'cliente')` |
-| **Rutas Web** | `routes/web.php` | Rutas agrupadas bajo middleware `auth` y `staff`: `/clientes`, `/clientes/{id}/edit`, etc. |
-| **Vistas Blade** | `resources/views/clientes/index.blade.php`<br>`resources/views/clientes/edit.blade.php` | Interfaces administrativas con tablas dinámicas, modales y formularios de edición |
+Este módulo funciona como el directorio central de compradores de **Almacén Europa**. En esta sección se concentran todos los clientes que se han registrado en la tienda virtual o que han sido dados de alta en el sistema para realizar compras.
 
 ---
 
-## 2. Endpoints y Enrutamiento (`routes/web.php`)
+## 1. ¿Para qué sirve este módulo?
 
-```php
-Route::middleware(['auth', 'staff'])->group(function () {
-    Route::get('/clientes', [ClienteController::class, 'index'])->name('clientes.index');
-    Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit'])->name('clientes.edit');
-    Route::put('/clientes/{id}', [ClienteController::class, 'update'])->name('clientes.update');
-    Route::delete('/clientes/{id}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
-});
-```
+Este módulo permite llevar un control ordenado de la base de clientes del negocio:
+- Permite consultar la lista completa de personas registradas como compradores.
+- Facilita la búsqueda inmediata de un cliente por su nombre, teléfono o correo electrónico.
+- Permite actualizar o corregir datos de contacto cuando un cliente cambia de número telefónico o dirección de correo.
+- Permite reasignar una nueva contraseña en caso de que un cliente la haya olvidado y solicite ayuda para recuperarla.
+- Permite eliminar registros de clientes que ya no formen parte de la comunidad o que hayan sido creados por prueba.
 
 ---
 
-## 3. Funcionalidades del Módulo
+## 2. ¿Quiénes utilizan este módulo?
 
-### A. Directorio y Búsqueda en Tiempo Real
-El método `index(Request $request)` filtra exclusivamente a los usuarios con rol `'cliente'`:
-```php
-$clientes = User::where('rol', 'cliente')
-    ->when($search, function ($query, $search) {
-        $query->where(function ($q) use ($search) {
-            $q->where('nombre', 'like', "%{$search}%")
-                ->orWhere('apellido', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhere('movil', 'like', "%{$search}%");
-        });
-    })
-    ->orderBy('nombre')
-    ->get();
-```
-La interfaz complementa esto con filtrado instantáneo por JavaScript en el frontend para respuesta en cero milisegundos mientras el usuario escribe.
+Este módulo está destinado exclusivamente al personal administrativo y comercial:
+- **Administrador:** Tiene control total para ver, editar o eliminar registros de clientes.
+- **Vendedores:** Pueden consultar los datos de contacto para comunicarse con un comprador sobre su pedido o verificar si ya está registrado en el sistema.
 
-### B. Edición y Validación Segura de Datos
-En `ClienteController@update`, se valida rigurosamente la integridad de los datos:
-1. **Unicidad de Correo y Teléfono:** Se utiliza `Rule::unique('users', 'campo')->ignore($cliente->usuario, 'usuario')` para permitir conservar el correo/móvil propio sin disparar errores de duplicidad.
-2. **Actualización Opcional de Contraseña:** Si el campo `password` se deja en blanco, la contraseña actual se mantiene intacta. Si se proporciona, se exige confirmación y mínimo 6 caracteres, aplicándose `Hash::make()`.
-
-### C. Eliminación Controlada
-El método `destroy` localiza al usuario asegurando que pertenezca al rol `'cliente'` mediante `findOrFail`, eliminándolo de la base de datos y retornando un mensaje de sesión tipo `flash` (`with('success', ...)`).
+*Nota de seguridad:* Los clientes que navegan por la tienda virtual no tienen acceso a esta pantalla; si intentaran entrar a esta dirección, el sistema los regresa automáticamente a la tienda.
 
 ---
 
-## 4. Roles y Seguridad
+## 3. Paso a paso: Cómo funciona la Gestión de Clientes
 
-- **Acceso Exclusivo Staff:** Solo los usuarios con rol `admin`, `vendedor` o `bodeguero` pueden acceder a este módulo. Si un usuario con rol `cliente` intenta ingresar a `/clientes`, es interceptado por `StaffMiddleware` y redirigido a `/tienda`.
+A continuación se explica paso a paso cómo se trabaja dentro de este módulo:
+
+### Paso 1: Ingreso a la lista de clientes
+El usuario autorizado entra a la opción **"Clientes"** en el menú lateral o superior. De inmediato se carga una tabla limpia donde se aprecian las siguientes columnas:
+- Nombre y Apellido del cliente.
+- Número de teléfono celular.
+- Correo electrónico.
+- Fecha en la que se registró en la plataforma.
+- Botones de acción: **Editar** y **Eliminar**.
+
+### Paso 2: Búsqueda rápida de un comprador
+En la parte superior de la tabla hay un cuadro de búsqueda inteligente:
+- El encargado puede escribir el nombre de la persona, su apellido, su número de celular o su correo electrónico.
+- A medida que se van tecleando las letras o números, la lista se va filtrando al instante sin tener que esperar a que la página vuelva a cargar.
+- Esto hace que sea muy rápido encontrar la ficha de un cliente mientras está al teléfono o esperando en la tienda.
+
+### Paso 3: Edición de la información de un cliente
+Cuando un comprador solicita actualizar sus datos o reporta que cambió de teléfono:
+1. El encargado ubica al cliente en la lista y presiona el botón **"Editar"**.
+2. Se abre una pantalla con el formulario que contiene los datos actuales del cliente.
+3. Se realizan los cambios necesarios (por ejemplo, corregir un apellido mal escrito o poner el nuevo número móvil).
+4. **¿Qué pasa con la contraseña?** El campo de contraseña se deja vacío por defecto. Si el cliente no necesita cambiar su clave, ese campo se deja en blanco y el sistema conserva la contraseña que ya tenía intacta. Si el cliente pidió restablecer su clave, aquí se le escribe la nueva contraseña y su confirmación.
+5. Al hacer clic en **"Guardar Cambios"**, el sistema comprueba que el nuevo correo o teléfono no pertenezca a otro cliente ya registrado.
+6. Si todo está correcto, guarda los cambios y muestra un mensaje verde confirmando que los datos se actualizaron con éxito.
+
+### Paso 4: Eliminación controlada de un cliente
+Si es necesario dar de baja a un usuario comprador:
+1. El encargado presiona el botón **"Eliminar"** (identificado con el icono de papelera o en color rojo).
+2. El sistema muestra una alerta de confirmación preguntando si está completamente seguro de borrar a ese cliente, para evitar borrados por un clic accidental.
+3. Al confirmar, el sistema retira el registro de la base de datos y muestra una notificación en pantalla avisando que el cliente fue eliminado satisfactoriamente.
+
+---
+
+## 4. Normas y validaciones importantes
+
+Para mantener la base de datos limpia y ordenada, el sistema aplica las siguientes reglas automáticas:
+- **No permite correos duplicados:** Dos clientes no pueden tener el mismo correo electrónico.
+- **No permite teléfonos duplicados:** Cada número de celular debe ser único dentro de los clientes registrados.
+- **Segregación estricta de cuentas:** Este módulo solo muestra y permite gestionar cuentas con perfil de cliente; las cuentas de los empleados y administradores se gestionan en un módulo aparte para garantizar máxima seguridad.

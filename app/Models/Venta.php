@@ -79,4 +79,45 @@ class Venta extends Model
 
         return trim("{$this->usuarioObj->nombre} {$this->usuarioObj->apellido}");
     }
+
+    public function getNumeroFacturaAttribute(): string
+    {
+        return sprintf('FAC-%06d', $this->ventas);
+    }
+
+    public function getEstadoEtiquetaAttribute(): string
+    {
+        return match (strtolower(trim((string) $this->estado))) {
+            'pagado' => 'Pagado y Aprobado',
+            'pendiente_entrega' => 'Contra Entrega / Por Despachar',
+            'completado' => 'Entregado y Completado',
+            'cancelado' => 'Cancelado',
+            'pendiente' => 'Pendiente',
+            default => ucfirst(str_replace('_', ' ', (string) ($this->estado ?: 'Completado'))),
+        };
+    }
+
+    public function getEstadoBadgeClassAttribute(): string
+    {
+        return match (strtolower(trim((string) $this->estado))) {
+            'pagado' => 'badge-pagado',
+            'pendiente_entrega' => 'badge-pendiente',
+            'completado' => 'badge-completado',
+            'cancelado' => 'badge-cancelado',
+            default => 'badge-default',
+        };
+    }
+
+    public function getSubtotalBrutoAttribute(): float
+    {
+        return (float) $this->detalles->sum(fn ($d) => $d->cantidad * $d->precio);
+    }
+
+    public function getDescuentoCalculadoAttribute(): float
+    {
+        $bruto = $this->subtotal_bruto;
+        $total = (float) $this->total;
+
+        return max(0.0, round($bruto - $total, 2));
+    }
 }

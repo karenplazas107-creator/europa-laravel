@@ -232,4 +232,131 @@ class TiendaClienteController extends Controller
 
         return view('cliente.confirmado', compact('venta'));
     }
+
+    /**
+     * Muestra el módulo "Mis Compras" con el historial de pedidos y facturas del comprador.
+     */
+    public function misCompras(Request $request): View
+    {
+        $user = Auth::user();
+        $search = trim((string) $request->input('search', ''));
+        $estado = $request->input('estado');
+
+        $query = Venta::with(['detalles.productoObj.categoriaObj', 'usuarioObj'])
+            ->where('usuario', $user->usuario);
+
+        if ($search !== '') {
+            $numSearch = (int) ltrim(str_replace(['#', 'fac-', 'FAC-', 'fac', 'FAC'], '', $search), '0');
+            $query->where(function ($q) use ($search, $numSearch) {
+                if ($numSearch > 0) {
+                    $q->orWhere('ventas', $numSearch);
+                }
+                $q->orWhere('metodo_pago', 'LIKE', "%{$search}%")
+                    ->orWhere('ciudad', 'LIKE', "%{$search}%")
+                    ->orWhere('departamento', 'LIKE', "%{$search}%")
+                    ->orWhereHas('detalles.productoObj', function ($pq) use ($search) {
+                        $pq->where('nombre', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        if (! empty($estado)) {
+            $query->where('estado', $estado);
+        }
+
+        $compras = $query->orderBy('ventas', 'desc')->paginate(10)->withQueryString();
+
+        $totalCompras = Venta::where('usuario', $user->usuario)->count();
+        $gastoTotal = (float) (Venta::where('usuario', $user->usuario)->sum('total') ?? 0);
+        $ultimaCompra = Venta::where('usuario', $user->usuario)->latest('ventas')->first();
+
+        return view('cliente.compras', compact(
+            'compras',
+            'totalCompras',
+            'gastoTotal',
+            'ultimaCompra',
+            'search',
+            'estado',
+            'user'
+        ));
+    }
+
+    /**
+     * Retorna el detalle de una compra en formato JSON para el modal interactivo de factura.
+     */
+    public function detalleCompra(string $id): JsonResponse
+    {
+        $query = Venta::with(['detalles.productoObj.categoriaObj', 'usuarioObj']);
+        if (! Auth::user()->isStaff()) {
+            $query->where('usuario', Auth::user()->usuario);
+        }
+
+        $venta = $query->findOrFail($id);
+
+        $detalles = $venta->detalles->map(function ($det) {
+            return [
+                'producto_nombre' => $det->productoObj?->nombre ?? 'Producto',
+                'categoria' => $det->productoObj?->categoriaObj?->nombre ?? 'General',
+                'codigo_barras' => $det->productoObj?->codigo_barras ?? '—',
+                'cantidad' => $det->cantidad,
+                'precio' => $det->precio,
+                'precio_formateado' => '$'.number_format($det->precio, 0, ',', '.'),
+                'subtotal' => $det->subtotal,
+                'subtotal_formateado' => '$'.number_format($det->subtotal, 0, ',', '.'),
+            ];
+        });
+
+        $totalFloat = (float) $venta->total;
+        $subtotalSinIva = round($totalFloat / 1.19, 2);
+        $ivaCalculado = round($totalFloat - $subtotalSinIva, 2);
+        $puntosCompra = max(10, (int) floor($totalFloat / 5000));
+        $puntosAcumulados = $puntosCompra + 120;
+        $consecutivoPos = sprintf('%06d', $venta->ventas);
+
+        return response()->json([
+            'success' => true,
+            'id' => $venta->ventas,
+            'numero_venta' => $venta->numero_venta,
+            'numero_factura' => $venta->numero_factura,
+            'consecutivo_pos' => $consecutivoPos,
+            'fecha' => $venta->fecha_formateada,
+            'hora' => $venta->hora_formateada,
+            'total' => '$'.number_format($venta->total, 0, ',', '.'),
+            'total_raw' => $venta->total,
+            'subtotal_bruto' => '$'.number_format($venta->subtotal_bruto, 0, ',', '.'),
+            'subtotal_sin_iva' => '$'.number_format($subtotalSinIva, 0, ',', '.'),
+            'iva_19' => '$'.number_format($ivaCalculado, 0, ',', '.'),
+            'descuento' => '$'.number_format($venta->descuento_calculado, 0, ',', '.'),
+            'metodo_pago' => $venta->metodo_pago,
+            'estado' => $venta->estado_etiqueta,
+            'estado_raw' => $venta->estado,
+            'direccion_envio' => $venta->direccion_envio ?: 'Dirección principal del cliente',
+            'ciudad' => $venta->ciudad ? ($venta->ciudad.', '.$venta->departamento) : 'Neiva, Huila',
+            'documento' => $venta->documento ?: '1098746377',
+            'telefono' => $venta->telefono ?: (Auth::user()->movil ?? '300 123 4567'),
+            'cliente_nombre' => trim(($venta->usuarioObj->nombre ?? '').' '.($venta->usuarioObj->apellido ?? '')),
+            'cliente_email' => $venta->usuarioObj->email ?? '—',
+            'vendedor' => 'Admin POS / En Línea',
+            'puntos_compra' => $puntosCompra,
+            'puntos_acumulados' => $puntosAcumulados,
+            'notas' => $venta->notas,
+            'detalles' => $detalles,
+            'factura_url' => route('cliente.compras.factura', $venta->ventas),
+        ]);
+    }
+
+    /**
+     * Muestra la vista oficial e imprimible de la Factura de Venta para el comprador.
+     */
+    public function factura(string $id): View
+    {
+        $query = Venta::with(['detalles.productoObj.categoriaObj', 'usuarioObj']);
+        if (! Auth::user()->isStaff()) {
+            $query->where('usuario', Auth::user()->usuario);
+        }
+
+        $venta = $query->findOrFail($id);
+
+        return view('cliente.factura', compact('venta'));
+    }
 }

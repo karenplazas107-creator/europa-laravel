@@ -72,6 +72,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/tienda/checkout', [TiendaClienteController::class, 'processCheckout'])->name('tienda.checkout');
     Route::get('/pedido-confirmado/{id}', [TiendaClienteController::class, 'pedidoConfirmado'])->name('checkout.confirmado');
 
+    // ── Módulo de Mis Compras y Facturación para el Comprador ──
+    Route::get('/mis-compras', [TiendaClienteController::class, 'misCompras'])->name('cliente.compras');
+    Route::get('/mis-compras/{id}', [TiendaClienteController::class, 'detalleCompra'])->name('cliente.compras.detalle');
+    Route::get('/mis-compras/{id}/factura', [TiendaClienteController::class, 'factura'])->name('cliente.compras.factura');
+
     // ── Panel Administrativo (solo Admin / Vendedor / Staff) ──
     Route::middleware('staff')->group(function () {
 

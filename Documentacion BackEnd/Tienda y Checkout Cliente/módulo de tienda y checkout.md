@@ -1,117 +1,89 @@
-# Módulo de Tienda Virtual y Checkout del Cliente (Laravel)
+# Módulo de Tienda Virtual y Pago en Línea (Checkout)
 
-El módulo de **Tienda Virtual y Checkout** proporciona una experiencia de comercio electrónico moderna, rápida e intuitiva para los clientes de **Almacén Europa**, incluyendo catálogo con filtros en vivo, carrito deslizante (*slide-over drawer*), pasarela de pago inspirada en Shopify con métodos colombianos y motor de cupones de descuento.
-
----
-
-## 1. Componentes Técnicos Involucrados
-
-| Componente | Archivo en el Proyecto | Responsabilidad |
-|---|---|---|
-| **Controlador** | `app/Http/Controllers/TiendaClienteController.php` | Renderizado de la tienda, visualización del checkout, procesamiento transaccional de pedidos y comprobante de confirmación |
-| **Modelos** | `app/Models/Producto.php`<br>`app/Models/Categoria.php`<br>`app/Models/Venta.php`<br>`app/Models/DetalleVenta.php`<br>`app/Models/User.php` | Modelos de persistencia de inventario, usuarios y ventas |
-| **Rutas Web** | `routes/web.php` | `/tienda`, `/checkout` (GET/POST), `/pedido-confirmado/{id}` |
-| **Almacenamiento Local** | `localStorage ('europa_cart_items')` | Persistencia del carrito en el navegador del cliente sin saturar la sesión |
-| **Vistas Blade** | `resources/views/cliente/tienda.blade.php`<br>`resources/views/cliente/checkout.blade.php`<br>`resources/views/cliente/confirmado.blade.php` | Interfaces e-commerce con diseño premium, tipografías Google Fonts (Inter / Outfit) y microinteracciones |
+Este módulo es la cara digital de **Almacén Europa** hacia el público. Funciona como una tienda virtual completa y moderna donde los clientes pueden navegar desde su celular o computador, descubrir productos, agregarlos a su carrito de compras y realizar su pedido a domicilio con total comodidad y seguridad.
 
 ---
 
-## 2. Endpoints y Enrutamiento (`routes/web.php`)
+## 1. ¿Para qué sirve este módulo?
 
-```php
-Route::middleware('auth')->group(function () {
-    // Experiencia exclusiva del cliente
-    Route::get('/tienda', [TiendaClienteController::class, 'index'])->name('tienda');
-    Route::get('/checkout', [TiendaClienteController::class, 'showCheckout'])->name('checkout');
-    Route::post('/checkout', [TiendaClienteController::class, 'processCheckout'])->name('checkout.process');
-    Route::get('/pedido-confirmado/{id}', [TiendaClienteController::class, 'pedidoConfirmado'])->name('checkout.confirmado');
-});
-```
-
----
-
-## 3. Funcionalidades de la Tienda Virtual (`/tienda`)
-
-### A. Catálogo Interactivo y Filtrado Instantáneo
-- **Buscador en Vivo:** Permite buscar productos por nombre o descripción con filtrado en tiempo real sin recargar la página.
-- **Píldoras de Categorías:** Chips interactivos para filtrar rápidamente por colecciones (Fragancias, Cuidado Facial, etc.).
-- **Badges de Stock y Precios:** Muestra disponibilidad real, impidiendo agregar productos agotados.
-
-### B. Carrito Deslizante (*Slide-Over Drawer*)
-- Despliegue suave desde el costado derecho con backdrop difuminado.
-- Controles interactivos de cantidad (`+` / `-`) y eliminación de artículos.
-- Cálculo de subtotal en tiempo real.
-- Persistencia automática en el navegador mediante `localStorage.setItem('europa_cart_items', ...)` para que el cliente no pierda sus productos al navegar o refrescar.
+Este módulo brinda una experiencia de compra en línea sencilla, rápida y atractiva:
+- Permite a los clientes explorar el catálogo de productos con fotos de alta calidad y precios claros.
+- Ofrece filtros rápidos por categorías y un buscador instantáneo que encuentra productos mientras se escribe.
+- Cuenta con un carrito de compras interactivo que se despliega desde el lateral sin interrumpir la navegación.
+- Recuerda los productos del carrito para que el cliente no los pierda si recarga la página o apaga el celular.
+- Incluye una pantalla de pago limpia y moderna inspirada en tiendas de clase mundial (estilo Shopify).
+- Recibe múltiples medios de pago colombianos (PSE, tarjetas de crédito/débito, transferencias y Pago Contra Entrega).
+- Permite aplicar cupones de descuento automáticos (como el cupón `EUROPA10`).
+- Genera un comprobante de orden confirmado con número de pedido (`#0000XX`) y opción de imprimir la factura.
 
 ---
 
-## 4. Pasarela de Pago y Checkout Estilo Shopify (`/checkout`)
+## 2. ¿Quiénes utilizan este módulo?
 
-La pantalla de checkout implementa una arquitectura de dos columnas inspirada en las mejores prácticas de Shopify:
-
-### Columna Izquierda: Formulario de Despacho y Pagos
-1. **Contacto:** Correo electrónico o número celular del cliente autenticado.
-2. **Entrega en Colombia:** Nombre, apellidos, documento de identidad (Cédula de Ciudadanía), dirección domiciliaria con complemento opcional, ciudad y selector de departamentos de Colombia.
-3. **Métodos de Pago Colombianos en Acordeón:**
-   - **PSE / Addi:** Débito bancario en línea y crédito sin tarjeta.
-   - **Wompi (Bancolombia):** Tarjetas de crédito y débito Visa, Mastercard y American Express.
-   - **Pago Contra Entrega:** Pago en efectivo directamente al repartidor domiciliario.
-   - **Transferencia Bancaria / Nequi / Daviplata:** Instrucciones inmediatas para transferir a cuentas corporativas.
-
-### Columna Derecha: Resumen de Compra y Cupones
-- **Lista de Productos:** Miniaturas, títulos, categorías, cantidades y subtotales.
-- **Motor de Cupones de Descuento:**
-  - Validación en vivo sin alertas invasivas del navegador (cero `alert()`).
-  - Avisos sutiles en línea (verde para éxito, ámbar para advertencias).
-  - Códigos promocionales como **`EUROPA10`** descuentan automáticamente un **10%** del subtotal, actualizando el botón *"Pagar ahora"*.
-- **Desglose Transparente:** Subtotal, descuento aplicado, costo de envío (Gratis) y Total Final en pesos colombianos (COP).
+- **Clientes / Compradores:** Son los usuarios principales de esta sección. Es el entorno diseñado exclusivamente para que elijan sus artículos y hagan sus pedidos.
+- **Equipo de Despachos y Vendedores:** Reciben las órdenes confirmadas en el sistema para empaquetar los productos y enviarlos a la dirección indicada por el cliente.
 
 ---
 
-## 5. Procesamiento Transaccional y Confirmación (`processCheckout`)
+## 3. Paso a paso: Cómo compra un Cliente en la Tienda Virtual
 
-Al pulsar *"Pagar ahora"*, el formulario envía la orden vía AJAX POST a `TiendaClienteController@processCheckout`:
+Todo el proceso de compra fue diseñado para ser muy amigable y consta de los siguientes pasos:
 
-```php
-$venta = DB::transaction(function () use ($request) {
-    // 1. Bloqueo y verificación de stock para cada artículo
-    foreach ($request->input('items') as $item) {
-        $prod = Producto::where('productos', $item['producto_id'])->lockForUpdate()->firstOrFail();
-        if ($prod->stock < $item['cantidad']) {
-            throw new \RuntimeException("Stock insuficiente para '{$prod->nombre}'.");
-        }
-        $totalVenta += ($prod->precio_venta * $item['cantidad']);
-    }
+### Paso 1: Exploración del catálogo de la tienda
+El cliente ingresa a la dirección de la tienda y se encuentra con un diseño visual moderno y organizado:
+1. **Buscador en tiempo real:** Arriba puede escribir lo que desea encontrar (por ejemplo: *"Crema hidratante"* o *"Perfume"*) y los resultados aparecen al instante.
+2. **Botones de categorías:** Si prefiere curiosear por secciones, puede presionar los botones superiores (Perfumería, Cuidado Facial, Maquillaje, etc.) para ver únicamente los productos de ese grupo.
+3. **Disponibilidad clara:** Cada producto muestra su foto, su nombre, su precio y una etiqueta de disponibilidad. Si un producto no tiene existencias, aparece claramente como **"Agotado"** y el botón de compra se desactiva, evitando disgustos o cobros de cosas que no hay en bodega.
 
-    // 2. Validación de cupón de descuento
-    $cupon = strtoupper(trim((string) $request->input('cupon', '')));
-    if ($cupon === 'EUROPA10') {
-        $descuento = round($totalVenta * 0.10, 2);
-        $totalVenta = max(0.0, $totalVenta - $descuento);
-    }
+### Paso 2: Agregar artículos al Carrito de Compras
+Cuando el cliente ve un producto que le gusta:
+1. Presiona el botón **"Agregar al Carrito"**.
+2. De inmediato se desliza suavemente un panel lateral desde la derecha (el Carrito Deslizante), mostrándole lo que lleva acumulado.
+3. En este carrito el cliente puede:
+   - Aumentar o disminuir las unidades con los botones `+` y `-`.
+   - Eliminar un producto con el botón de papelera si cambió de opinión.
+   - Ver el subtotal de su compra sumándose en tiempo real.
+4. Puede cerrar el carrito y seguir navegando para agregar más artículos; el sistema guarda automáticamente sus productos para que no se borren aunque cierre el navegador.
 
-    // 3. Creación de la venta con datos de envío
-    $venta = Venta::create([
-        'usuario' => Auth::user()->usuario,
-        'fecha' => now()->toDateString(),
-        'total' => $totalVenta,
-        'metodo_pago' => $nombreMetodo,
-        'direccion_envio' => $direccionCompleta,
-        'ciudad' => $request->input('ciudad'),
-        'departamento' => $request->input('departamento'),
-        'documento' => $request->input('documento'),
-        'telefono' => $request->input('telefono'),
-        'estado' => ($metodoRaw === 'contraentrega') ? 'pendiente_entrega' : 'pagado',
-    ]);
+### Paso 3: Pasar a la pantalla de Pago (Checkout)
+Cuando el cliente está listo para comprar, abre su carrito y hace clic en el botón principal **"Continuar con el Pedido"** o **"Ir al Checkout"**.
 
-    // 4. Detalle y deducción atómica de inventario
-    foreach ($detalles as $d) {
-        DetalleVenta::create([...]);
-        $d['producto']->decrement('stock', $d['cantidad']);
-    }
+Se abre una pantalla muy limpia y organizada en dos columnas:
 
-    return $venta;
-});
-```
+#### Columna de la Izquierda: Datos de Entrega y Pago
+El cliente diligencia sus datos para coordinar el despacho:
+1. **Datos de Contacto:** Su nombre, apellido, correo electrónico y número de celular para llamarlo cuando vaya el repartidor.
+2. **Documento de Identidad:** Cédula de ciudadanía o extranjería (necesaria para la facturación).
+3. **Dirección de Entrega en Colombia:** Dirección completa de su casa u oficina, complemento (apartamento, torre o conjunto), su ciudad y el departamento correspondiente.
+4. **Elección del Método de Pago:** El cliente selecciona la forma en que desea pagar entre las siguientes opciones:
+   - **PSE:** Para pagar con débito desde su cuenta bancaria.
+   - **Wompi / Tarjetas:** Para pagar con tarjeta de crédito o débito Visa, Mastercard o American Express.
+   - **Transferencia Directa (Nequi / Daviplata):** Para transferir desde su celular a las cuentas oficiales de la tienda.
+   - **Pago Contra Entrega:** Para pagar en efectivo directamente al mensajero cuando toque a su puerta con el paquete.
 
-Tras la confirmación exitosa, JavaScript limpia el carrito en `localStorage` y redirige al cliente a `/pedido-confirmado/{id}`, donde visualiza su número de orden (`#0000XX`), datos de despacho, desglose de compra y un botón directo para imprimir su factura.
+#### Columna de la Derecha: Resumen de la Orden y Cupones
+En el lado derecho de la pantalla, el cliente ve en todo momento el resumen de lo que va a recibir:
+- Las fotos en miniatura de cada artículo con su nombre y la cantidad de unidades.
+- El costo del envío (con mensaje de envío gratis o tarifa fijada).
+- **Casilla de Cupón de Descuento:**  
+  Si el cliente tiene un código de promoción (por ejemplo, escribe el código **`EUROPA10`**), lo escribe y presiona **"Aplicar"**:
+  - El sistema comprueba el código al instante sin ventanas emergentes molestas.
+  - Le muestra un aviso verde de felicitación.
+  - Le descuenta automáticamente el 10% del total de su compra y actualiza el valor a pagar de inmediato.
+- **Total Final:** El precio final definitivo en pesos colombianos.
+
+### Paso 4: Finalización del Pedido
+El cliente presiona el botón destacado **"Pagar Ahora"** o **"Confirmar Pedido"**:
+1. El sistema realiza una última verificación en la bodega para confirmar que las unidades sigan disponibles.
+2. Descuenta automáticamente los productos del inventario general.
+3. Si el método fue *Contra Entrega*, el pedido queda registrado en estado *"Pendiente de Entrega"*. Si fue por medios digitales, queda como *"Pagado"*.
+4. Guarda toda la información de entrega, ciudad y teléfono para el repartidor.
+5. Limpia el carrito de compras en el celular del cliente para que quede listo para futuras compras.
+
+### Paso 5: Pantalla de Pedido Confirmado
+El sistema redirige automáticamente al cliente a una pantalla de felicitación y confirmación:
+- Se muestra en grande un mensaje verde de éxito: *"¡Gracias por tu compra!"*.
+- Se le entrega su número oficial de orden (por ejemplo: Pedido `#000034`).
+- Se presenta el resumen completo de lo comprado, el método de pago seleccionado y la dirección a donde se enviará el paquete.
+- Cuenta con un botón para **"Imprimir Resumen / Factura"** si desea guardar un comprobante impreso o en PDF.
+- Incluye un botón para **"Seguir Comprando"** que lo devuelve a la tienda cuando lo desee.

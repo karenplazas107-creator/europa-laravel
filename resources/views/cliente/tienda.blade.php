@@ -226,6 +226,30 @@
             transform: scale(1.05);
         }
 
+        .tienda-nav__btn-compras {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 14px;
+            border-radius: 9999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 0.84rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+            border: 1px solid #bfdbfe;
+            transition: all 0.18s ease;
+            text-decoration: none;
+        }
+
+        .tienda-nav__btn-compras:hover {
+            background: #dbeafe;
+            color: #1e3a8a;
+            border-color: #93c5fd;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.15);
+        }
+
         /* ══════════════════════════════════════════
            HERO SECTION
         ══════════════════════════════════════════ */
@@ -339,6 +363,29 @@
         .tienda-btn-carrito:hover {
             background: rgba(15, 23, 42, 0.65);
             transform: translateY(-2px);
+        }
+
+        .tienda-btn-compras-hero {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .tienda-btn-compras-hero:hover {
+            background: rgba(255, 255, 255, 0.28);
+            border-color: #ffffff;
+            transform: translateY(-2px);
+            color: #ffffff;
         }
 
         /* Hero Right: Stats */
@@ -1530,6 +1577,16 @@
                     {{ strtoupper(substr(Auth::user()?->nombre ?? 'C', 0, 1)) }}
                 </div>
                 <span class="tienda-nav__username">{{ strtolower(Auth::user()?->nombre ?? 'Cliente') }}</span>
+
+                <!-- Botón Mis Compras -->
+                <a href="{{ route('cliente.compras') }}" class="tienda-nav__btn-compras" title="Ver mis compras y facturas">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span>Mis Compras</span>
+                </a>
             @else
                 <a href="{{ route('login') }}" class="europa-btn-ingresar" style="background: #1e3a8a; color: #ffffff; padding: 7px 18px; border-radius: 9999px; font-weight: 700; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
                     Ingresar →
@@ -1603,6 +1660,17 @@
                         </svg>
                         Mi Carrito
                     </button>
+
+                    @auth
+                        <a href="{{ route('cliente.compras') }}" class="tienda-btn-compras-hero">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                            </svg>
+                            Mis Compras
+                        </a>
+                    @endauth
                 </div>
             </div>
 

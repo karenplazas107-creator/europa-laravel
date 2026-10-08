@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Categoria;
+use App\Models\DetalleVenta;
 use App\Models\Producto;
 use App\Models\User;
+use App\Models\Venta;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -293,5 +295,129 @@ class ClienteTiendaTest extends TestCase
         ]);
 
         $response->assertRedirect(route('checkout'));
+    }
+
+    public function test_cliente_autenticado_puede_acceder_a_mis_compras(): void
+    {
+        $producto = Producto::first();
+        $venta = Venta::create([
+            'usuario' => $this->cliente->usuario,
+            'fecha' => now()->toDateString(),
+            'total' => 200.00,
+            'metodo_pago' => 'PSE / Débito Bancario',
+            'estado' => 'pagado',
+            'direccion_envio' => 'Calle 10 # 4-20',
+            'ciudad' => 'Neiva',
+            'departamento' => 'Huila',
+        ]);
+
+        DetalleVenta::create([
+            'venta' => $venta->ventas,
+            'producto' => $producto->productos,
+            'cantidad' => 2,
+            'precio' => 100.00,
+        ]);
+
+        $response = $this->actingAs($this->cliente)->get(route('cliente.compras'));
+
+        $response->assertOk();
+        $response->assertSee('Mis Compras');
+        $response->assertSee('Facturas');
+        $response->assertSee($venta->numero_venta);
+        $response->assertSee($venta->numero_factura);
+        $response->assertSee('Chanel Coco Mademoiselle');
+        $response->assertSee('PSE / Débito Bancario');
+    }
+
+    public function test_visitante_no_autenticado_no_puede_acceder_a_mis_compras(): void
+    {
+        $response = $this->get(route('cliente.compras'));
+
+        $response->assertRedirect(route('login'));
+    }
+
+    public function test_cliente_puede_ver_su_factura_oficial_imprimible(): void
+    {
+        $producto = Producto::first();
+        $venta = Venta::create([
+            'usuario' => $this->cliente->usuario,
+            'fecha' => now()->toDateString(),
+            'total' => 100.00,
+            'metodo_pago' => 'Wompi (Tarjetas)',
+            'estado' => 'pagado',
+            'direccion_envio' => 'Carrera 7 # 15-30',
+            'ciudad' => 'Neiva',
+            'departamento' => 'Huila',
+        ]);
+
+        DetalleVenta::create([
+            'venta' => $venta->ventas,
+            'producto' => $producto->productos,
+            'cantidad' => 1,
+            'precio' => 100.00,
+        ]);
+
+        $response = $this->actingAs($this->cliente)->get(route('cliente.compras.factura', $venta->ventas));
+
+        $response->assertOk();
+        $response->assertSee('ALMACÉN EUROPA');
+        $response->assertSee('NIT: 901234567-8');
+        $response->assertSee('FACTURA DE VENTA');
+        $response->assertSee('Chanel Coco Mademoiselle');
+        $response->assertSee('Wompi (Tarjetas)');
+    }
+
+    public function test_cliente_no_puede_ver_factura_de_otro_cliente(): void
+    {
+        $otroCliente = User::create([
+            'rol' => 'cliente',
+            'nombre' => 'Felipe',
+            'apellido' => 'Duran',
+            'email' => 'felipe@test.com',
+            'movil' => '3157776655',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $ventaOtro = Venta::create([
+            'usuario' => $otroCliente->usuario,
+            'fecha' => now()->toDateString(),
+            'total' => 150.00,
+            'metodo_pago' => 'Efectivo',
+            'estado' => 'pagado',
+        ]);
+
+        // Carla intenta acceder a la factura de Felipe
+        $response = $this->actingAs($this->cliente)->get(route('cliente.compras.factura', $ventaOtro->ventas));
+
+        $response->assertNotFound();
+    }
+
+    public function test_cliente_puede_obtener_detalle_json_de_su_compra(): void
+    {
+        $producto = Producto::first();
+        $venta = Venta::create([
+            'usuario' => $this->cliente->usuario,
+            'fecha' => now()->toDateString(),
+            'total' => 100.00,
+            'metodo_pago' => 'PSE / Débito Bancario',
+            'estado' => 'pagado',
+        ]);
+
+        DetalleVenta::create([
+            'venta' => $venta->ventas,
+            'producto' => $producto->productos,
+            'cantidad' => 1,
+            'precio' => 100.00,
+        ]);
+
+        $response = $this->actingAs($this->cliente)->getJson(route('cliente.compras.detalle', $venta->ventas));
+
+        $response->assertOk();
+        $response->assertJson([
+            'success' => true,
+            'id' => $venta->ventas,
+            'numero_factura' => $venta->numero_factura,
+            'metodo_pago' => 'PSE / Débito Bancario',
+        ]);
     }
 }

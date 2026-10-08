@@ -1,73 +1,81 @@
-# Documentación Técnica del Sistema Backend — Almacén Europa (Laravel)
+# Documentación y Manual General del Sistema — Almacén Europa
 
-Bienvenido a la documentación oficial del backend y arquitectura de software de **Almacén Europa**, desarrollado sobre **Laravel 11** y **PHP 8.3**.
+Bienvenido a la documentación y guía de funcionamiento de **Almacén Europa**. Este documento fue elaborado para explicar, de forma clara, detallada y paso a paso, cómo funciona cada uno de los módulos que componen esta plataforma integral de comercio y gestión.
 
-Este repositorio centraliza tanto la operación física interna (Terminal Punto de Venta, Inventarios, Catálogos, Compras y Analítica) como la experiencia digital de comercio electrónico (Tienda Virtual, Carrito interactivo y Checkout estilo Shopify).
-
----
-
-## 1. Ficha Técnica del Proyecto
-
-- **Framework Backend:** Laravel 11.x
-- **Lenguaje:** PHP 8.3
-- **Base de Datos:** MySQL / SQLite con Eloquent ORM
-- **Motor de Plantillas:** Laravel Blade Engine
-- **Estilos y Frontend:** CSS Modular Premium + Inter & Outfit Google Fonts
-- **Librerías Visuales:** Chart.js (Analítica y Reportes)
-- **Control de Código y Estilo:** Laravel Pint (`vendor/bin/pint`)
-- **Suite de Pruebas Automatizadas:** PHPUnit Feature & Unit Tests (`php artisan test`)
+El sistema fue diseñado para atender dos frentes principales del negocio:
+1. **La Atención Física en el Local Comercial:** A través de una terminal de Punto de Venta (caja registradora moderna), control de bodegas, inventarios en tiempo real, registro de proveedores y reportes contables.
+2. **La Tienda Virtual en Línea:** Para que cualquier persona pueda ingresar desde su celular o computador, consultar el catálogo de productos con fotos y precios, armar su carrito de compras y realizar su pedido a domicilio con diversos métodos de pago.
 
 ---
 
-## 2. Mapa de Módulos del Sistema
+## 1. Mapa de Módulos del Sistema
 
-| # | Módulo | Documento de Detalle | Controlador Principal |
+Cada área del sistema cuenta con un documento detallado donde se explica paso a paso cómo se utiliza, qué ve el usuario en pantalla y cómo responde el sistema ante cada acción. A continuación se presentan los módulos disponibles:
+
+| # | Módulo | ¿Qué hace en el sistema? | Documento Detallado |
 |---|---|---|---|
-| **01** | **Acceso y Autenticación** | [puerta de entrada al sistema.md](./Acceso%20al%20Sistema/puerta%20de%20entrada%20al%20sistema.md) | `AuthController.php` |
-| **02** | **Gestión de Catálogo** | [módulo de catálogo.md](./Gestión%20de%20Catálogo/módulo%20de%20catálogo.md) | `CatalogoController.php` |
-| **03** | **Gestión de Clientes** | [módulo de clientes.md](./Gestión%20de%20Clientes/módulo%20de%20clientes.md) | `ClienteController.php` |
-| **04** | **Gestión de Inventario** | [módulo de inventario.md](./Gestión%20de%20Inventario/módulo%20de%20inventario.md) | `InventarioController.php` |
-| **05** | **Gestión de Productos** | [módulo de productos.md](./Gestión%20de%20Productos/módulo%20de%20productos.md) | `ProductoController.php` |
-| **06** | **Gestión de Proveedores** | [módulo de proveedores.md](./Gestión%20de%20Proveedores/módulo%20de%20proveedores.md) | `ProveedorController.php` |
-| **07** | **Gestión de Usuarios y Roles** | [módulo de usuario.md](./Gestión%20de%20Usuarios/módulo%20de%20usuario.md) | `UsuarioController.php` |
-| **08** | **Gestión de Ventas y POS** | [módulo de ventas.md](./Gestión%20de%20Ventas/módulo%20de%20ventas.md) | `VentaController.php` |
-| **09** | **Informes y Reportes** | [módulo de reportes.md](./Informes%20y%20Reportes/módulo%20de%20reportes.md) | `ReporteController.php` |
-| **10** | **Tienda Virtual y Checkout** | [módulo de tienda y checkout.md](./Tienda%20y%20Checkout%20Cliente/módulo%20de%20tienda%20y%20checkout.md) | `TiendaClienteController.php` |
+| **01** | **Acceso y Registro** | Inicio de sesión inteligente (por correo o por celular), registro de nuevos clientes y cierre seguro de sesión. | [Ver explicación paso a paso](./Acceso%20al%20Sistema/puerta%20de%20entrada%20al%20sistema.md) |
+| **02** | **Catálogo y Categorías** | Vitrina visual para que los empleados consulten productos por familias, fotos, precios y alertas de existencias. | [Ver explicación paso a paso](./Gestión%20de%20Catálogo/módulo%20de%20catálogo.md) |
+| **03** | **Gestión de Clientes** | Directorio de compradores registrados, buscador en vivo, actualización de teléfonos o correos y restablecimiento de claves. | [Ver explicación paso a paso](./Gestión%20de%20Clientes/módulo%20de%20clientes.md) |
+| **04** | **Control de Inventario** | Valorización económica del stock a costo, alertas de existencias bajas o agotadas, y registro de entradas, salidas o ajustes físicos. | [Ver explicación paso a paso](./Gestión%20de%20Inventario/módulo%20de%20inventario.md) |
+| **05** | **Gestión de Productos** | Alta de referencias nuevas, lectura o asignación de código de barras, precios de compra y venta, fotos y márgenes de ganancia. | [Ver explicación paso a paso](./Gestión%20de%20Productos/módulo%20de%20productos.md) |
+| **06** | **Gestión de Proveedores** | Directorio de distribuidores y socios comerciales mayoristas, con datos de contacto directo para reposición de mercancía. | [Ver explicación paso a paso](./Gestión%20de%20Proveedores/módulo%20de%20proveedores.md) |
+| **07** | **Usuarios y Roles** | Panel del administrador para dar de alta empleados, asignarles cargos (vendedor, bodeguero, admin) y proteger las pantallas privadas. | [Ver explicación paso a paso](./Gestión%20de%20Usuarios/módulo%20de%20usuario.md) |
+| **08** | **Ventas y Punto de Venta (POS)** | Caja registradora física para cobrar en mostrador con código de barras, cálculo automático de cambio e impresión de recibo. | [Ver explicación paso a paso](./Gestión%20de%20Ventas/módulo%20de%20ventas.md) |
+| **09** | **Informes y Reportes** | Gráficos de ingresos mes a mes, ventas del día, top 5 de productos más vendidos, rendimiento del personal e impresión ejecutiva. | [Ver explicación paso a paso](./Informes%20y%20Reportes/módulo%20de%20reportes.md) |
+| **10** | **Tienda Virtual y Checkout** | Experiencia e-commerce para clientes: catálogo digital, carrito deslizante, pagos colombianos (PSE, Addi, Wompi, Contra Entrega) y cupones. | [Ver explicación paso a paso](./Tienda%20y%20Checkout%20Cliente/módulo%20de%20tienda%20y%20checkout.md) |
 
 ---
 
-## 3. Modelo de Control de Acceso Basado en Roles (RBAC)
+## 2. Los Roles de Trabajo y sus Permisos
 
-El sistema implementa middlewares en cascada para segregar permisos y proteger los recursos según el tipo de usuario:
+Para mantener el orden y la seguridad en la empresa, el sistema clasifica a las personas en 4 tipos de usuarios:
 
-```
-[ Visitante ] ───► /login, /register, / (Landing pública)
-      │
-  (Autenticado)
-      ├── Rol 'cliente'  ───────────► /tienda, /checkout, /pedido-confirmado/*
-      └── Rol 'staff'
-            ├── 'administrador' ────► Acceso total (Usuarios, Reportes, Configuración, etc.)
-            ├── 'vendedor'      ────► /ventas (POS), /catalogo, /productos, /reportes
-            └── 'auxiliar_bodega' ──► /inventario, /productos, /proveedores, /catalogo
-```
+1. **Administrador General:**
+   - Es el encargado general de la empresa.
+   - Tiene acceso irrestricto a todas las pantallas: creación de empleados, estados financieros, inventario, reportes y configuración.
 
----
+2. **Vendedor / Cajero:**
+   - Su función principal es atender y facturar en el mostrador físico.
+   - Tiene acceso al Punto de Venta (POS) para cobrar y generar recibos de compra, y al catálogo para asesorar a los compradores.
 
-## 4. Estructura de la Base de Datos (Tablas Clave)
+3. **Auxiliar de Bodega:**
+   - Su función es el control físico de la mercancía.
+   - Tiene acceso a la gestión de inventario para registrar ingresos de pedidos, dar de alta productos, supervisar proveedores y hacer ajustes de stock.
 
-- **`users`:** Cuentas de usuario con roles (`admin`, `vendedor`, `auxiliar_bodega`, `cliente`), correo único, móvil y contraseñas hasheadas en Bcrypt.
-- **`categories`:** Categorías comerciales de clasificación de productos.
-- **`products`:** Catálogo de artículos con código de barras, precio de compra, precio de venta, categoría, stock actual, stock mínimo e imagen.
-- **`suppliers`:** Proveedores de mercancía con datos de contacto (NIT, email, teléfono, dirección).
-- **`sales`:** Cabeceras de venta física y pedidos e-commerce con cliente/cajero, total, método de pago, dirección de envío, ciudad, notas y estado.
-- **`detalle_ventas`:** Líneas de factura vinculadas a cada venta (`producto`, `cantidad`, `precio`).
-- **`inventarios` / `movimientos_stock`:** Trazabilidad de existencias físicas y auditoría de variaciones de stock.
+4. **Cliente:**
+   - Es el comprador que accede por la página web.
+   - Solo puede navegar por la tienda virtual, usar su carrito y pagar sus pedidos. El sistema le impide entrar a cualquier pantalla de administración interna.
 
 ---
 
-## 5. Medidas de Seguridad y Buenas Prácticas
+## 3. El Flujo de Trabajo Diario en Almacén Europa
 
-1. **Protección CSRF:** Activada en todos los formularios y llamadas Fetch mediante directiva `@csrf` y meta-tags.
-2. **Transacciones Atómicas (`DB::transaction`):** Las ventas y deducciones de stock se ejecutan en transacciones aisladas con bloqueo pesimista (`lockForUpdate`), garantizando que jamás se facture mercancía sin existencias.
-3. **Cero Popups Invasivos:** La aplicación utiliza diseño responsivo, hojas de estilo `@media print` para impresión en la misma ventana y alertas sutiles en línea sin los disruptivos `alert()` del navegador.
-4. **Validación de Formularios de Laravel:** Validación granular en el servidor de tipos de datos, longitudes, unicidad de correos/móviles y formatos de archivos multimedia.
+Para entender cómo se conectan todos los módulos entre sí, este es el recorrido que sigue la mercancía y la información en un día normal:
+
+### 1. Entrada y Recepción de Mercancía:
+- El camión del distribuidor llega al almacén con cajas de productos.
+- El personal de bodega abre el módulo de **Proveedores** para verificar los datos de la empresa despachadora.
+- En el módulo de **Productos** y de **Inventario**, registra la entrada de las unidades recibidas, asociando el código de barras y el costo al que se compró.
+- El sistema suma esas unidades al inventario general y actualiza el valor del dinero invertido en mercancía.
+
+### 2. Fijación de Precios y Catálogo:
+- El administrador supervisa que cada producto tenga su precio de venta al público y su fotografía correspondiente.
+- Inmediatamente, el producto queda visible tanto en el **Catálogo interno** de los empleados como en la **Tienda Virtual** de los clientes.
+
+### 3. Venta Presencial en el Mostrador:
+- Un cliente llega a la tienda física y pide un artículo.
+- El vendedor abre el módulo de **Ventas / POS**, pasa el lector de código de barras sobre el producto y el sistema lo añade a la factura en vivo.
+- El cliente paga en efectivo o tarjeta. Si paga en efectivo, el sistema le indica al cajero el valor exacto del cambio a devolver.
+- Al confirmar el cobro, el sistema descuenta automáticamente las unidades de la bodega e imprime el recibo en la misma pantalla.
+
+### 4. Venta en Línea a través de la Tienda Virtual:
+- Un cliente entra desde su celular a la **Tienda Virtual**.
+- Selecciona los productos, los añade a su carrito de compras y avanza al **Checkout**.
+- Diligencia su dirección de entrega en Colombia, aplica su cupón de descuento si lo tiene y elige si pagar por PSE, tarjeta o pago contra entrega.
+- Al presionar pagar, el sistema descuenta esas unidades del inventario para que no se vendan dos veces y genera el pedido con su número de orden para que bodega prepare el envío.
+
+### 5. Cierre del Día y Análisis Gerencial:
+- Al terminar la jornada, el administrador abre el módulo de **Informes y Reportes**.
+- Comprueba cuánto dinero en efectivo y cuánto en medios digitales ingresó en el día para cuadrar la caja.
+- Revisa qué productos fueron los más solicitados y genera un informe limpio en PDF para el archivo administrativo.

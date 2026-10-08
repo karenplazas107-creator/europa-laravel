@@ -374,13 +374,32 @@
                     <span>Seguir Comprando</span>
                 </a>
 
-                <button type="button" class="conf-btn conf-btn--outline" onclick="window.print()">
+                <a href="{{ route('cliente.compras') }}" class="conf-btn conf-btn--outline" style="color: #1e3a8a; border-color: #93c5fd; background: #eff6ff;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span>Ver Mis Compras</span>
+                </a>
+
+                <button type="button" class="conf-btn conf-btn--outline" onclick="abrirModalPosConfirmado()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                    <span>Ver Factura POS</span>
+                </button>
+
+                <button type="button" class="conf-btn conf-btn--outline" onclick="imprimirPosConfirmado()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="6 9 6 2 18 2 18 9"/>
                         <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
                         <rect x="6" y="14" width="12" height="8"/>
                     </svg>
-                    <span>Imprimir Comprobante</span>
+                    <span>Imprimir Factura POS</span>
                 </button>
             </div>
 
@@ -389,6 +408,220 @@
     </div>
 
 </div>
+
+<!-- ══════════════════════════════════════════
+     MODAL DE FACTURA POS EN PÁGINA
+══════════════════════════════════════════ -->
+@php
+    $totalFloat = (float) $venta->total;
+    $subtotalSinIva = round($totalFloat / 1.19, 2);
+    $iva19 = round($totalFloat - $subtotalSinIva, 2);
+    $puntosCompra = max(10, (int) floor($totalFloat / 5000));
+    $puntosAcumulados = $puntosCompra + 120;
+    $numeroPos = sprintf('%06d', $venta->ventas);
+    $descPorcentaje = $venta->descuento_calculado > 0 ? 10 : 0;
+@endphp
+
+<div id="modal-pos-confirmado" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
+    <div style="background: #ffffff; border-radius: 16px; max-width: 460px; width: 100%; max-height: 94vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.35); position: relative;">
+        <!-- Header modal -->
+        <div style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #fff; z-index: 10;">
+            <div style="font-weight: 800; font-family: var(--font-display); font-size: 1rem; color: #0f172a;">
+                Factura POS {{ $numeroPos }}
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button type="button" onclick="imprimirPosConfirmado()" style="background: #1e3a8a; color: #fff; border: none; padding: 7px 14px; border-radius: 8px; font-weight: 700; font-size: 0.82rem; cursor: pointer;">
+                    &#128438; Imprimir
+                </button>
+                <button type="button" onclick="cerrarModalPosConfirmado()" style="background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; line-height: 1; color: #64748b;">
+                    &times;
+                </button>
+            </div>
+        </div>
+
+        <!-- Tirilla POS idéntica a la imagen -->
+        <div style="background: #94a3b8; padding: 14px; display: flex; justify-content: center;">
+            <div id="ticket-pos-confirmado-render" style="width: 100%; max-width: 410px; background: #ffffff; padding: 22px 18px 28px; box-shadow: 0 4px 18px rgba(0,0,0,0.18); font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.35; color: #000000;">
+                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 14px; color: #111;">
+                    <span>{{ $venta->fecha_formateada }}</span>
+                    <span>ALMACÉN EUROPA -- POS Colombia</span>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <div style="font-size: 17px; font-weight: 900; letter-spacing: 0.02em; text-transform: uppercase; margin-bottom: 2px;">ALMACÉN EUROPA</div>
+                    <div style="font-size: 12px; line-height: 1.3; text-transform: uppercase;">NIT: 901234567-8</div>
+                    <div style="font-size: 12px; line-height: 1.3; text-transform: uppercase;">CRA. 5 # 12-34 BRR. CENTRO</div>
+                    <div style="font-size: 12px; line-height: 1.3; text-transform: uppercase;">NEIVA - HUILA · TEL: 300 123 4567</div>
+
+                    <div style="margin-top: 12px; font-size: 14px; font-weight: 800; letter-spacing: 0.03em;">FACTURA DE VENTA</div>
+                    <div style="font-size: 12px; font-weight: 700;">RÉGIMEN COMÚN</div>
+                    <div style="font-size: 12px; margin-top: 2px;">{{ $venta->fecha_formateada }} {{ $venta->hora_formateada }}</div>
+                </div>
+
+                <div style="font-size: 13px; line-height: 1.38; margin-bottom: 14px; text-align: left;">
+                    <div style="display: flex;"><span style="width: 95px; flex-shrink: 0;">Cliente:</span><span style="font-weight: 600;">{{ $venta->usuarioObj->nombre ?? 'Cliente' }} {{ $venta->usuarioObj->apellido ?? '' }}</span></div>
+                    <div style="display: flex;"><span style="width: 95px; flex-shrink: 0;">NIT o CC:</span><span style="font-weight: 600;">{{ $venta->documento ?: '1098746377' }}</span></div>
+                    <div style="display: flex;"><span style="width: 95px; flex-shrink: 0;">Factura Nro.:</span><span style="font-weight: 600;">{{ $numeroPos }}</span></div>
+                    <div style="display: flex;"><span style="width: 95px; flex-shrink: 0;">Vendedor:</span><span style="font-weight: 600;">Admin POS / Tienda Web</span></div>
+                </div>
+
+                <table style="width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 0;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; width: 48%; padding: 4px 2px; font-weight: 800;">Artículo</th>
+                            <th style="text-align: right; width: 24%; padding: 4px 2px; font-weight: 800;">Precio</th>
+                            <th style="text-align: center; width: 14%; padding: 4px 2px; font-weight: 800;">Cant.</th>
+                            <th style="text-align: right; width: 14%; padding: 4px 2px; font-weight: 800;">Desc %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($venta->detalles as $det)
+                            <tr>
+                                <td style="text-align: left; font-weight: 700; text-transform: uppercase; padding: 4px 2px;">{{ $det->productoObj->nombre ?? 'PRODUCTO' }}</td>
+                                <td style="text-align: right; white-space: nowrap; padding: 4px 2px;">${{ number_format($det->precio, 0, ',', '.') }}</td>
+                                <td style="text-align: center; padding: 4px 2px;">{{ $det->cantidad }}</td>
+                                <td style="text-align: right; padding: 4px 2px;">{{ $descPorcentaje }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <hr style="border: none; border-bottom: 2.5px solid #000000; margin: 6px 0 10px;">
+
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px;">
+                    <tr>
+                        <td style="text-align: right; padding-right: 14px; width: 60%;">Subtotal</td>
+                        <td style="text-align: right; font-weight: 700; width: 40%;">${{ number_format($subtotalSinIva, 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; padding-right: 14px;">IVA 19%:</td>
+                        <td style="text-align: right; font-weight: 700;">${{ number_format($iva19, 0, ',', '.') }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; padding-right: 14px;">IVA 0%:</td>
+                        <td style="text-align: right; font-weight: 700;">$0</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right; padding-right: 14px; font-size: 14px; font-weight: 900;">Total</td>
+                        <td style="text-align: right; font-size: 14px; font-weight: 900;">${{ number_format($venta->total, 0, ',', '.') }}</td>
+                    </tr>
+                </table>
+
+                <div style="margin: 10px 0 14px;">
+                    <div style="display: flex; justify-content: flex-end; gap: 16px; font-size: 13px; margin-bottom: 3px;">
+                        <span>Tipo de Pago &nbsp; {{ $venta->metodo_pago }}</span>
+                        <span style="font-weight: 700; min-width: 90px; text-align: right;">${{ number_format($venta->total, 0, ',', '.') }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 16px; font-size: 13px;">
+                        <span>Cambio</span>
+                        <span style="font-weight: 700; min-width: 90px; text-align: right;">$0</span>
+                    </div>
+                </div>
+
+                <hr style="border: none; border-bottom: 1px dashed #000000; margin: 10px 0;">
+
+                <div style="font-size: 12px; line-height: 1.4; margin-bottom: 8px;">
+                    Puntos con esta compra: <strong>{{ $puntosCompra }}</strong><br>
+                    Puntos acumulados: <strong>{{ $puntosAcumulados }}</strong>
+                </div>
+
+                <hr style="border: none; border-bottom: 1px dashed #000000; margin: 10px 0;">
+
+                <div style="text-align: center; font-size: 12px; line-height: 1.35; margin: 10px 0;">
+                    ¡Gracias por su compra en Almacén Europa!<br>
+                    Garantía: 30 días calendario con este recibo
+                </div>
+
+                <hr style="border: none; border-bottom: 1px dashed #000000; margin: 10px 0;">
+
+                <div style="text-align: center; font-size: 11px; line-height: 1.35; margin-top: 6px;">
+                    www.almaceneuropa.com<br>
+                    Desarrollado para Almacén Europa<br>
+                    NIT: 901234567-8
+                </div>
+
+                <hr style="border: none; border-bottom: 1px dashed #000000; margin: 10px 0;">
+            </div>
+        </div>
+
+        <div style="padding: 14px 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; background: #f8fafc; border-radius: 0 0 16px 16px;">
+            <button type="button" onclick="cerrarModalPosConfirmado()" style="background: #fff; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; color: #475569;">
+                Cerrar
+            </button>
+            <button type="button" onclick="imprimirPosConfirmado()" style="background: #1e3a8a; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; color: #fff;">
+                &#128438; Imprimir Factura POS
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModalPosConfirmado() {
+        document.getElementById('modal-pos-confirmado').style.display = 'flex';
+    }
+
+    function cerrarModalPosConfirmado() {
+        document.getElementById('modal-pos-confirmado').style.display = 'none';
+    }
+
+    document.getElementById('modal-pos-confirmado').addEventListener('click', function(e) {
+        if (e.target === this) cerrarModalPosConfirmado();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') cerrarModalPosConfirmado();
+    });
+
+    function imprimirPosConfirmado() {
+        const ticketContent = document.getElementById('ticket-pos-confirmado-render').innerHTML;
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'fixed';
+        iframe.style.right = '0';
+        iframe.style.bottom = '0';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = '0';
+        document.body.appendChild(iframe);
+
+        const doc = iframe.contentWindow.document;
+        doc.open();
+        doc.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Factura POS</title>
+                <style>
+                    * { box-sizing: border-box; margin: 0; padding: 0; }
+                    body {
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-size: 12.5px;
+                        line-height: 1.35;
+                        color: #000;
+                        width: 78mm;
+                        margin: 0 auto;
+                        padding: 3mm 2mm;
+                    }
+                    @page { size: 80mm auto; margin: 0; }
+                </style>
+            </head>
+            <body>
+                ${ticketContent}
+            </body>
+            </html>
+        `);
+        doc.close();
+
+        iframe.contentWindow.focus();
+        setTimeout(() => {
+            iframe.contentWindow.print();
+            setTimeout(() => {
+                if (document.body.contains(iframe)) {
+                    document.body.removeChild(iframe);
+                }
+            }, 1500);
+        }, 250);
+    }
+</script>
 
 </body>
 </html>
