@@ -6,59 +6,47 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Mis Compras & Facturas — Almacén Europa</title>
 
-    <!-- Google Fonts: Outfit (Titulares & Números), Inter (Cuerpo), JetBrains Mono (Códigos POS) -->
+    <!-- Google Fonts: Inter & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* ══════════════════════════════════════════════════════
-           SISTEMA DE DISEÑO & VARIABLES PREMIUM
+           VARIABLES & PALETA AZUL INSTITUCIONAL ALMACÉN EUROPA
         ══════════════════════════════════════════════════════ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         :root {
             --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
 
-            /* Paleta Principal */
+            /* Colores Institucionales de Almacén Europa */
             --clr-primary: #1e3a8a;
             --clr-primary-hover: #1d4ed8;
             --clr-primary-light: #eff6ff;
             --clr-accent: #0284c7;
-            --clr-accent-cyan: #06b6d4;
-            --clr-dark: #0f172a;
-            --clr-dark-sub: #1e293b;
+            --clr-cyan: #06b6d4;
+            --clr-cyan-light: #67e8f9;
 
-            /* Superficies & Fondos */
+            /* Tipografía & Fondos */
+            --clr-text-main: #0f172a;
+            --clr-text-muted: #64748b;
             --clr-bg: #f8fafc;
             --clr-card: #ffffff;
             --clr-border: #e2e8f0;
             --clr-border-subtle: #f1f5f9;
-
-            /* Tipografía */
-            --clr-text-main: #0f172a;
-            --clr-text-muted: #64748b;
-            --clr-text-subtle: #94a3b8;
-
-            /* Estados */
-            --clr-success: #10b981;
-            --clr-success-bg: #ecfdf5;
-            --clr-warning: #f59e0b;
-            --clr-warning-bg: #fffbeb;
-            --clr-info: #0284c7;
-            --clr-info-bg: #f0f9ff;
 
             /* Sombras suaves */
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 14px -2px rgba(15, 23, 42, 0.06);
             --shadow-lg: 0 12px 30px -4px rgba(15, 23, 42, 0.08);
             --shadow-xl: 0 20px 40px -6px rgba(15, 23, 42, 0.12);
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
@@ -86,48 +74,46 @@
         }
 
         /* ══════════════════════════════════════════════════════
-           NAVBAR CRISTALINA (GLASSMORPHISM)
+           NAVBAR (IDÉNTICA A LA TIENDA PRINCIPAL)
         ══════════════════════════════════════════════════════ */
         .tienda-nav {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: #ffffff;
             height: 72px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 32px;
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 0 36px;
+            border-bottom: 1px solid #f1f5f9;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
             position: sticky;
             top: 0;
-            z-index: 50;
-            transition: all 0.2s ease;
+            z-index: 100;
         }
 
         .tienda-nav__logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-family: var(--font-display);
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: var(--clr-dark);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
             letter-spacing: -0.02em;
         }
 
         .tienda-nav__logo-icon {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%);
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #1d4ed8, #0284c7);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+            box-shadow: 0 4px 10px rgba(29, 78, 216, 0.25);
             flex-shrink: 0;
         }
 
-        .tienda-nav__logo strong {
+        .tienda-nav__logo span strong {
             background: linear-gradient(135deg, #1e3a8a, #0284c7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -142,22 +128,23 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #ffffff;
-            border: 1px solid var(--clr-border);
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
             padding: 8px 18px;
-            border-radius: 999px;
+            border-radius: 9999px;
             font-size: 0.86rem;
-            font-weight: 600;
-            color: var(--clr-dark-sub);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            font-weight: 700;
+            font-family: var(--font-display);
+            transition: all 0.18s ease;
         }
 
         .tienda-nav__back-link:hover {
-            background: var(--clr-primary-light);
-            border-color: #bfdbfe;
-            color: var(--clr-primary);
+            background: #dbeafe;
+            color: #1e3a8a;
+            border-color: #93c5fd;
             transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.15);
         }
 
         .tienda-nav__user-zone {
@@ -170,248 +157,200 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            background: #f1f5f9;
-            padding: 5px 12px 5px 6px;
-            border-radius: 999px;
-            border: 1px solid var(--clr-border);
         }
 
         .tienda-nav__avatar {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: #ffffff;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
+            background: #dbeafe;
+            color: #1e40af;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 0.85rem;
             font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .tienda-nav__username {
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            color: var(--clr-dark);
+            color: #1e293b;
             text-transform: capitalize;
         }
 
         .tienda-nav__btn-logout {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #475569;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--clr-text-muted);
-            border: 1px solid var(--clr-border);
-            background: #ffffff;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
 
         .tienda-nav__btn-logout:hover {
-            color: #ef4444;
-            background: #fef2f2;
-            border-color: #fecaca;
+            background: #fee2e2;
+            color: #dc2626;
+            transform: scale(1.05);
         }
 
         /* ══════════════════════════════════════════════════════
-           HERO SECTION MODERNO (AURORA / GLASS KPI)
+           HERO SECTION: AZUL INSTITUCIONAL ALMACÉN EUROPA
+           linear-gradient(135deg, #09215c 0%, #113a96 40%, #1952cb 75%, #0284c7 100%)
         ══════════════════════════════════════════════════════ */
-        .cp-hero {
-            background: radial-gradient(120% 120% at 50% 0%, #1e293b 0%, #0f172a 100%);
+        .tienda-hero {
+            background: linear-gradient(135deg, #09215c 0%, #113a96 40%, #1952cb 75%, #0284c7 100%);
+            padding: 50px 40px 60px;
+            position: relative;
             color: #ffffff;
-            padding: 44px 32px 56px;
-            position: relative;
-            overflow: hidden;
+            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        /* Iluminaciones sutiles en el fondo */
-        .cp-hero::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            right: 10%;
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .cp-hero::after {
-            content: '';
-            position: absolute;
-            bottom: -120px;
-            left: 5%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.16) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .cp-hero__container {
-            max-width: 1200px;
+        .tienda-hero__container {
+            max-width: 1240px;
             margin: 0 auto;
-            position: relative;
-            z-index: 2;
             display: flex;
             flex-direction: column;
-            gap: 36px;
+            gap: 32px;
         }
 
-        .cp-hero__header {
+        .tienda-hero__top {
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 24px;
+            gap: 20px;
         }
 
-        .cp-hero__tag {
+        .tienda-hero__tag {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(8px);
             padding: 6px 14px;
-            border-radius: 999px;
+            border-radius: 9999px;
             font-size: 0.78rem;
-            font-weight: 600;
-            letter-spacing: 0.03em;
-            color: #bae6fd;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 14px;
         }
 
-        .cp-hero__tag-dot {
-            width: 7px;
-            height: 7px;
+        .tienda-hero__tag-dot {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: #38bdf8;
-            box-shadow: 0 0 10px #38bdf8;
-            animation: pulseDot 2s infinite;
+            background: #22c55e;
+            box-shadow: 0 0 8px #22c55e;
         }
 
-        .cp-hero__title {
+        .tienda-hero__title {
             font-family: var(--font-display);
-            font-size: 2.35rem;
-            font-weight: 800;
+            font-size: 2.5rem;
+            font-weight: 900;
             line-height: 1.15;
             letter-spacing: -0.03em;
+            margin-bottom: 8px;
             color: #ffffff;
-            margin-bottom: 10px;
         }
 
-        .cp-hero__title span {
-            background: linear-gradient(135deg, #ffffff 40%, #7dd3fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .tienda-hero__title-accent {
+            color: #67e8f9;
         }
 
-        .cp-hero__desc {
+        .tienda-hero__subtitle {
             font-size: 0.95rem;
-            color: #cbd5e1;
-            max-width: 580px;
+            color: rgba(255, 255, 255, 0.88);
             line-height: 1.5;
+            max-width: 620px;
         }
 
-        .cp-hero__desc strong {
+        .tienda-hero__subtitle strong {
             color: #ffffff;
-            font-weight: 600;
         }
 
-        /* Grid de Métricas / KPI Cards */
-        .cp-stats-grid {
+        /* Stats Rápidas en Vidrio Pulido */
+        .tienda-hero__stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 18px;
+            gap: 16px;
             width: 100%;
         }
 
-        .cp-stat-card {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+        .tienda-stat-card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border-radius: 18px;
             padding: 20px 22px;
             display: flex;
             align-items: center;
-            gap: 18px;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 16px;
+            color: #ffffff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
         }
 
-        .cp-stat-card:hover {
-            background: rgba(255, 255, 255, 0.09);
-            border-color: rgba(255, 255, 255, 0.22);
+        .tienda-stat-card:hover {
             transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.35);
         }
 
-        .cp-stat-icon-wrap {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
+        .tienda-stat-icon-wrap {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: rgba(255, 255, 255, 0.16);
+            color: #ffffff;
             flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.25);
         }
 
-        .cp-stat-icon-wrap--pedidos {
-            background: rgba(14, 165, 233, 0.15);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.25);
-        }
-
-        .cp-stat-icon-wrap--gasto {
-            background: rgba(16, 185, 129, 0.15);
-            color: #34d399;
-            border: 1px solid rgba(52, 211, 153, 0.25);
-        }
-
-        .cp-stat-icon-wrap--ultimo {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fbbf24;
-            border: 1px solid rgba(251, 191, 36, 0.25);
-        }
-
-        .cp-stat-content {
+        .tienda-stat-content {
             display: flex;
             flex-direction: column;
         }
 
-        .cp-stat-lbl {
-            font-size: 0.76rem;
+        .tienda-stat-lbl {
+            font-size: 0.74rem;
             text-transform: uppercase;
             font-weight: 700;
-            letter-spacing: 0.06em;
-            color: #94a3b8;
-            margin-bottom: 3px;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2px;
         }
 
-        .cp-stat-val {
+        .tienda-stat-val {
             font-family: var(--font-display);
-            font-size: 1.6rem;
+            font-size: 1.65rem;
             font-weight: 800;
+            line-height: 1.1;
             color: #ffffff;
             letter-spacing: -0.02em;
-            line-height: 1.1;
         }
 
-        .cp-stat-sub {
-            font-size: 0.78rem;
-            color: #cbd5e1;
-            margin-top: 4px;
+        .tienda-stat-sub {
+            font-size: 0.76rem;
+            color: rgba(255, 255, 255, 0.75);
+            margin-top: 3px;
         }
 
         /* ══════════════════════════════════════════════════════
            BARRA DE BÚSQUEDA Y FILTROS SEGMENTADOS
         ══════════════════════════════════════════════════════ */
         .cp-main {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: -24px auto 60px;
             padding: 0 24px;
             width: 100%;
@@ -421,16 +360,16 @@
 
         .cp-filters-card {
             background: #ffffff;
-            border-radius: 18px;
+            border-radius: 16px;
             padding: 16px 20px;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
             border: 1px solid var(--clr-border);
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 16px;
-            margin-bottom: 28px;
+            margin-bottom: 26px;
         }
 
         .cp-search-form {
@@ -464,15 +403,15 @@
             padding: 11px 16px 11px 40px;
             font-size: 0.88rem;
             font-family: var(--font-body);
-            color: var(--clr-dark);
+            color: var(--clr-text-main);
             outline: none;
             transition: all 0.2s ease;
         }
 
         .cp-search-input:focus {
             background: #ffffff;
-            border-color: var(--clr-primary);
-            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.12);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
         .cp-search-input::placeholder {
@@ -480,20 +419,20 @@
         }
 
         .cp-btn-search {
-            background: var(--clr-primary);
+            background: linear-gradient(135deg, #1d4ed8, #0284c7);
             color: #ffffff;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.86rem;
-            padding: 11px 18px;
+            padding: 11px 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.25);
+            box-shadow: 0 3px 10px rgba(29, 78, 216, 0.25);
             transition: all 0.15s ease;
             white-space: nowrap;
         }
 
         .cp-btn-search:hover {
-            background: var(--clr-primary-hover);
             transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(29, 78, 216, 0.35);
         }
 
         .cp-btn-clear {
@@ -522,27 +461,26 @@
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            padding: 8px 14px;
-            border-radius: 999px;
-            font-size: 0.82rem;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-size: 0.84rem;
             font-weight: 600;
             background: #f8fafc;
-            color: var(--clr-text-muted);
+            color: #475569;
             border: 1px solid var(--clr-border);
-            transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.15s ease;
         }
 
         .cp-pill:hover {
             background: #f1f5f9;
-            color: var(--clr-dark);
-            border-color: #cbd5e1;
+            color: #0f172a;
         }
 
         .cp-pill.active {
-            background: var(--clr-dark);
+            background: #1e3a8a;
             color: #ffffff;
-            border-color: var(--clr-dark);
-            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2);
+            border-color: #1e3a8a;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.25);
         }
 
         .cp-pill-dot {
@@ -562,29 +500,29 @@
 
         .cp-order-card {
             background: #ffffff;
-            border-radius: 20px;
+            border-radius: 18px;
             border: 1px solid var(--clr-border);
             box-shadow: var(--shadow-md);
             overflow: hidden;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .cp-order-card:hover {
             box-shadow: var(--shadow-xl);
-            border-color: #cbd5e1;
+            border-color: #bfdbfe;
             transform: translateY(-2px);
         }
 
         /* Cabecera de la tarjeta */
         .cp-card-header {
-            padding: 18px 24px;
+            padding: 16px 24px;
             background: #ffffff;
-            border-bottom: 1px solid var(--clr-border-subtle);
+            border-bottom: 1px solid #f1f5f9;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 14px;
+            gap: 12px;
         }
 
         .cp-card-header__left {
@@ -599,14 +537,13 @@
             align-items: center;
             gap: 7px;
             background: #eff6ff;
-            color: #1e3a8a;
+            color: #1d4ed8;
             border: 1px solid #bfdbfe;
             padding: 5px 12px;
-            border-radius: 10px;
+            border-radius: 8px;
             font-family: var(--font-display);
             font-weight: 700;
-            font-size: 0.95rem;
-            letter-spacing: -0.01em;
+            font-size: 0.94rem;
         }
 
         .cp-fac-pill {
@@ -616,7 +553,7 @@
             background: #f8fafc;
             color: #475569;
             padding: 4px 10px;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid #e2e8f0;
         }
 
@@ -628,16 +565,15 @@
             color: var(--clr-text-muted);
         }
 
-        /* Badges de estado con estilo píldora pulida */
+        /* Badges de estado */
         .cp-status-pill {
             display: inline-flex;
             align-items: center;
             gap: 7px;
             padding: 5px 13px;
-            border-radius: 999px;
+            border-radius: 9999px;
             font-size: 0.8rem;
             font-weight: 700;
-            letter-spacing: 0.01em;
         }
 
         .cp-status-pill--pagado {
@@ -677,11 +613,11 @@
             background: #3b82f6;
         }
 
-        /* Cuerpo principal de la tarjeta: 2 columnas bien equilibradas */
+        /* Cuerpo principal: 2 columnas limpias */
         .cp-card-body {
             padding: 22px 24px;
             display: grid;
-            grid-template-columns: 340px 1fr;
+            grid-template-columns: 330px 1fr;
             gap: 24px;
             background: #ffffff;
         }
@@ -693,11 +629,11 @@
             }
         }
 
-        /* Columna 1: Datos de entrega y pago */
+        /* Columna 1: Entrega y Pago */
         .cp-delivery-box {
             background: #f8fafc;
             border: 1px solid var(--clr-border);
-            border-radius: 16px;
+            border-radius: 14px;
             padding: 18px 20px;
             display: flex;
             flex-direction: column;
@@ -724,7 +660,7 @@
         }
 
         .cp-info-icon {
-            color: #64748b;
+            color: #2563eb;
             margin-top: 2px;
             flex-shrink: 0;
         }
@@ -744,7 +680,7 @@
 
         .cp-info-val {
             font-weight: 600;
-            color: var(--clr-dark);
+            color: #0f172a;
             word-break: break-word;
         }
 
@@ -758,12 +694,12 @@
             border-radius: 6px;
             font-size: 0.78rem;
             font-weight: 700;
-            color: #1e293b;
+            color: #1e3a8a;
             margin-top: 2px;
             width: fit-content;
         }
 
-        /* Columna 2: Lista moderna de productos */
+        /* Columna 2: Lista de Productos */
         .cp-items-box {
             display: flex;
             flex-direction: column;
@@ -791,12 +727,11 @@
             font-size: 0.75rem;
             font-weight: 700;
             background: #eff6ff;
-            color: #1e3a8a;
+            color: #1d4ed8;
             padding: 2px 8px;
-            border-radius: 999px;
+            border-radius: 9999px;
         }
 
-        /* Tarjeta de cada producto individual */
         .cp-product-rows {
             display: flex;
             flex-direction: column;
@@ -832,8 +767,8 @@
             width: 36px;
             height: 36px;
             border-radius: 10px;
-            background: #f1f5f9;
-            color: #1e3a8a;
+            background: #eff6ff;
+            color: #1d4ed8;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -849,7 +784,7 @@
         .cp-product-row__name {
             font-weight: 700;
             font-size: 0.88rem;
-            color: var(--clr-dark);
+            color: #0f172a;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -881,7 +816,7 @@
             font-family: var(--font-display);
             font-weight: 700;
             font-size: 0.95rem;
-            color: var(--clr-dark);
+            color: #0f172a;
         }
 
         .cp-product-row__unit {
@@ -890,7 +825,7 @@
             margin-top: 1px;
         }
 
-        /* Footer de la tarjeta con Total & Botones de Acción */
+        /* Footer con Total y Acciones */
         .cp-card-footer {
             padding: 18px 24px;
             background: #f8fafc;
@@ -919,7 +854,7 @@
             font-family: var(--font-display);
             font-size: 1.55rem;
             font-weight: 800;
-            color: var(--clr-dark);
+            color: #0f172a;
             letter-spacing: -0.02em;
             line-height: 1.1;
         }
@@ -931,7 +866,6 @@
             flex-wrap: wrap;
         }
 
-        /* Botones de acción */
         .cp-btn-action {
             display: inline-flex;
             align-items: center;
@@ -946,29 +880,28 @@
         /* Botón Ver Factura POS */
         .cp-btn-action--outline {
             background: #ffffff;
-            color: var(--clr-dark-sub);
-            border: 1.5px solid #cbd5e1;
+            color: #1e3a8a;
+            border: 1.5px solid #bfdbfe;
             box-shadow: var(--shadow-sm);
         }
 
         .cp-btn-action--outline:hover {
-            background: #f8fafc;
-            border-color: var(--clr-primary);
-            color: var(--clr-primary);
+            background: #eff6ff;
+            border-color: #2563eb;
+            color: #1d4ed8;
             transform: translateY(-1px);
         }
 
         /* Botón Imprimir Factura POS */
         .cp-btn-action--filled {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            background: linear-gradient(135deg, #1d4ed8, #0284c7);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.28);
         }
 
         .cp-btn-action--filled:hover {
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.38);
             transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(29, 78, 216, 0.38);
         }
 
         /* ══════════════════════════════════════════════════════
@@ -976,7 +909,7 @@
         ══════════════════════════════════════════════════════ */
         .cp-empty-state {
             background: #ffffff;
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 60px 32px;
             text-align: center;
             border: 1px solid var(--clr-border);
@@ -993,7 +926,7 @@
             height: 72px;
             border-radius: 20px;
             background: #eff6ff;
-            color: var(--clr-primary);
+            color: #1d4ed8;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1004,7 +937,7 @@
             font-family: var(--font-display);
             font-size: 1.45rem;
             font-weight: 800;
-            color: var(--clr-dark);
+            color: #0f172a;
             margin-bottom: 8px;
         }
 
@@ -1019,19 +952,19 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            background: linear-gradient(135deg, #1d4ed8, #0284c7);
             color: #ffffff;
             font-weight: 700;
             font-size: 0.9rem;
             padding: 12px 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+            border-radius: 9999px;
+            box-shadow: 0 4px 14px rgba(29, 78, 216, 0.28);
             transition: all 0.2s ease;
         }
 
         .cp-btn-tienda:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+            box-shadow: 0 8px 20px rgba(29, 78, 216, 0.35);
         }
 
         /* ══════════════════════════════════════════════════════
@@ -1097,7 +1030,7 @@
             font-family: var(--font-display);
             font-size: 1.05rem;
             font-weight: 800;
-            color: var(--clr-dark);
+            color: #0f172a;
         }
 
         .cp-modal-close {
@@ -1290,12 +1223,7 @@
         }
 
         .cp-footer strong {
-            color: var(--clr-dark);
-        }
-
-        @keyframes pulseDot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.85); }
+            color: #0f172a;
         }
 
         @keyframes spin {
@@ -1352,63 +1280,63 @@
     </header>
 
     <!-- ══════════════════════════════════════════════════════
-         HERO SECTION PREMIUM & KPIS
+         HERO SECTION: AZUL INSTITUCIONAL ALMACÉN EUROPA
     ══════════════════════════════════════════════════════ -->
-    <section class="cp-hero">
-        <div class="cp-hero__container">
-            <div class="cp-hero__header">
+    <section class="tienda-hero">
+        <div class="tienda-hero__container">
+            <div class="tienda-hero__top">
                 <div>
-                    <div class="cp-hero__tag">
-                        <span class="cp-hero__tag-dot"></span>
-                        Centro de Compras · Historial &amp; Facturación
+                    <div class="tienda-hero__tag">
+                        <span class="tienda-hero__tag-dot"></span>
+                        Módulo de Compras del Cliente — Almacén Europa
                     </div>
 
-                    <h1 class="cp-hero__title">
-                        Mis Compras &amp; <span>Facturas</span>
+                    <h1 class="tienda-hero__title">
+                        Mis Compras &amp; <span class="tienda-hero__title-accent">Facturas</span>
                     </h1>
 
-                    <p class="cp-hero__desc">
-                        Hola <strong>{{ $user->nombre }}</strong>, aquí puedes gestionar tus compras, hacer seguimiento a tus entregas y consultar tus tirillas térmicas POS autorizadas.
+                    <p class="tienda-hero__subtitle">
+                        Hola <strong>{{ $user->nombre }}</strong>, aquí encuentras el registro de todas tus compras, copia de tus facturas y el estado de tus pedidos.
                     </p>
                 </div>
             </div>
 
-            <!-- KPI Cards en Glassmorphism -->
-            <div class="cp-stats-grid">
+            <!-- Stats Rápidas en Vidrio Pulido -->
+            <div class="tienda-hero__stats">
                 <!-- Card 1: Total Pedidos -->
-                <div class="cp-stat-card">
-                    <div class="cp-stat-icon-wrap cp-stat-icon-wrap--pedidos">
+                <div class="tienda-stat-card">
+                    <div class="tienda-stat-icon-wrap">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                             <line x1="3" y1="6" x2="21" y2="6"></line>
                             <path d="M16 10a4 4 0 0 1-8 0"></path>
                         </svg>
                     </div>
-                    <div class="cp-stat-content">
-                        <span class="cp-stat-lbl">Total Pedidos</span>
-                        <span class="cp-stat-val">{{ $totalCompras }}</span>
-                        <span class="cp-stat-sub">{{ $totalCompras === 1 ? '1 pedido registrado' : $totalCompras . ' pedidos registrados' }}</span>
+                    <div class="tienda-stat-content">
+                        <span class="tienda-stat-lbl">Total Pedidos</span>
+                        <span class="tienda-stat-val">{{ $totalCompras }}</span>
+                        <span class="tienda-stat-sub">{{ $totalCompras === 1 ? '1 compra efectuada' : $totalCompras . ' compras efectuadas' }}</span>
                     </div>
                 </div>
 
                 <!-- Card 2: Inversión Total -->
-                <div class="cp-stat-card">
-                    <div class="cp-stat-icon-wrap cp-stat-icon-wrap--gasto">
+                <div class="tienda-stat-card">
+                    <div class="tienda-stat-icon-wrap">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="2" y="5" width="20" height="14" rx="2"></rect>
                             <line x1="2" y1="10" x2="22" y2="10"></line>
                         </svg>
                     </div>
-                    <div class="cp-stat-content">
-                        <span class="cp-stat-lbl">Inversión Total</span>
-                        <span class="cp-stat-val">${{ number_format($gastoTotal, 0, ',', '.') }}</span>
-                        <span class="cp-stat-sub">Acumulado en compras</span>
+                    <div class="tienda-stat-content">
+                        <span class="tienda-stat-lbl">Inversión Total</span>
+                        <span class="tienda-stat-val">${{ number_format($gastoTotal, 0, ',', '.') }}</span>
+                        <span class="tienda-stat-sub">Acumulado en compras</span>
                     </div>
                 </div>
 
                 <!-- Card 3: Último Pedido -->
-                <div class="cp-stat-card">
-                    <div class="cp-stat-icon-wrap cp-stat-icon-wrap--ultimo">
+                <div class="tienda-stat-card">
+                    <div class="tienda-stat-icon-wrap">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                             <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -1416,12 +1344,12 @@
                             <line x1="3" y1="10" x2="21" y2="10"></line>
                         </svg>
                     </div>
-                    <div class="cp-stat-content">
-                        <span class="cp-stat-lbl">Último Pedido</span>
-                        <span class="cp-stat-val" style="font-size: 1.25rem;">
+                    <div class="tienda-stat-content">
+                        <span class="tienda-stat-lbl">Último Pedido</span>
+                        <span class="tienda-stat-val" style="font-size: 1.25rem;">
                             {{ $ultimaCompra ? $ultimaCompra->fecha_formateada : 'Ninguno' }}
                         </span>
-                        <span class="cp-stat-sub">{{ $ultimaCompra ? $ultimaCompra->numero_venta : 'Sin historial' }}</span>
+                        <span class="tienda-stat-sub">{{ $ultimaCompra ? $ultimaCompra->numero_venta : 'Sin registros' }}</span>
                     </div>
                 </div>
             </div>
@@ -1440,7 +1368,7 @@
                     <input type="hidden" name="estado" value="{{ $estado }}">
                 @endif
                 <div class="cp-search-wrap">
-                    <svg class="cp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="cp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
@@ -1448,7 +1376,7 @@
                         type="text"
                         name="search"
                         class="cp-search-input"
-                        placeholder="Buscar por # pedido, factura, producto o ciudad..."
+                        placeholder="Buscar por # de pedido, factura o producto..."
                         value="{{ $search }}"
                     >
                 </div>
@@ -1677,7 +1605,7 @@
                                                     <div class="cp-product-row__meta">
                                                         <span class="cp-product-row__cat-badge">{{ $det->productoObj->categoriaObj->nombre ?? 'General' }}</span>
                                                         <span>·</span>
-                                                        <strong style="color: #1e3a8a;">{{ $det->cantidad }} {{ $det->cantidad === 1 ? 'ud' : 'uds' }}</strong>
+                                                        <strong style="color: #1d4ed8;">{{ $det->cantidad }} {{ $det->cantidad === 1 ? 'ud' : 'uds' }}</strong>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1700,7 +1628,7 @@
                             </div>
 
                             <div class="cp-actions-zone">
-                                <!-- Botón Ver Factura POS en la misma página -->
+                                <!-- Botón Ver Factura POS -->
                                 <button type="button" class="cp-btn-action cp-btn-action--outline" onclick="verFacturaPos({{ $compra->ventas }})" title="Ver tirilla POS en ventana emergente">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -1711,7 +1639,7 @@
                                     <span>Ver Factura POS</span>
                                 </button>
 
-                                <!-- Botón Imprimir Factura POS directo -->
+                                <!-- Botón Imprimir Factura POS -->
                                 <button type="button" class="cp-btn-action cp-btn-action--filled" onclick="imprimirFacturaPosDirecto({{ $compra->ventas }})" title="Imprimir tirilla térmica directamente">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="6 9 6 2 18 2 18 9"></polyline>
@@ -1741,7 +1669,7 @@
         <div class="cp-modal" onclick="event.stopPropagation()">
             <div class="cp-modal-header">
                 <div class="cp-modal-title">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
                         <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -1811,7 +1739,7 @@
 
             modalBackdrop.classList.add('is-open');
             ticketRender.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">' +
-                '<div style="display: inline-block; width: 32px; height: 32px; border: 3px solid #cbd5e1; border-top-color: #1e3a8a; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>' +
+                '<div style="display: inline-block; width: 32px; height: 32px; border: 3px solid #cbd5e1; border-top-color: #1d4ed8; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>' +
                 '<p style="margin-top: 12px; font-weight: 600;">Generando Factura POS...</p>' +
                 '</div>';
 
