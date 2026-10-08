@@ -6,25 +6,53 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Mis Compras & Facturas — Almacén Europa</title>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Outfit (Titulares & Números), Inter (Cuerpo), JetBrains Mono (Códigos POS) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        /* ══════════════════════════════════════════════════════
+           SISTEMA DE DISEÑO & VARIABLES PREMIUM
+        ══════════════════════════════════════════════════════ */
         :root {
             --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
+
+            /* Paleta Principal */
             --clr-primary: #1e3a8a;
-            --clr-primary-light: #2563eb;
+            --clr-primary-hover: #1d4ed8;
+            --clr-primary-light: #eff6ff;
             --clr-accent: #0284c7;
-            --clr-cyan: #06b6d4;
-            --clr-text-main: #0f172a;
-            --clr-text-muted: #64748b;
+            --clr-accent-cyan: #06b6d4;
+            --clr-dark: #0f172a;
+            --clr-dark-sub: #1e293b;
+
+            /* Superficies & Fondos */
             --clr-bg: #f8fafc;
             --clr-card: #ffffff;
             --clr-border: #e2e8f0;
+            --clr-border-subtle: #f1f5f9;
+
+            /* Tipografía */
+            --clr-text-main: #0f172a;
+            --clr-text-muted: #64748b;
+            --clr-text-subtle: #94a3b8;
+
+            /* Estados */
+            --clr-success: #10b981;
+            --clr-success-bg: #ecfdf5;
+            --clr-warning: #f59e0b;
+            --clr-warning-bg: #fffbeb;
+            --clr-info: #0284c7;
+            --clr-info-bg: #f0f9ff;
+
+            /* Sombras suaves */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 14px -2px rgba(15, 23, 42, 0.06);
+            --shadow-lg: 0 12px 30px -4px rgba(15, 23, 42, 0.08);
+            --shadow-xl: 0 20px 40px -6px rgba(15, 23, 42, 0.12);
         }
 
         *, *::before, *::after {
@@ -39,9 +67,9 @@
             color: var(--clr-text-main);
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         a {
@@ -53,78 +81,83 @@
             font-family: inherit;
             cursor: pointer;
             border: none;
-            outline: none;
             background: none;
+            outline: none;
         }
 
-        /* ══════════════════════════════════════════
-           TOP NAVBAR
-        ══════════════════════════════════════════ */
+        /* ══════════════════════════════════════════════════════
+           NAVBAR CRISTALINA (GLASSMORPHISM)
+        ══════════════════════════════════════════════════════ */
         .tienda-nav {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             height: 72px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 36px;
-            border-bottom: 1px solid #f1f5f9;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+            padding: 0 32px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 50;
+            transition: all 0.2s ease;
         }
 
         .tienda-nav__logo {
             display: flex;
             align-items: center;
-            gap: 10px;
-            text-decoration: none;
+            gap: 12px;
             font-family: var(--font-display);
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #0f172a;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--clr-dark);
             letter-spacing: -0.02em;
         }
 
         .tienda-nav__logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #1d4ed8, #0284c7);
-            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(29, 78, 216, 0.25);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
             flex-shrink: 0;
         }
 
-        .tienda-nav__logo span strong {
-            color: #2563eb;
-            font-weight: 800;
+        .tienda-nav__logo strong {
+            background: linear-gradient(135deg, #1e3a8a, #0284c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .tienda-nav__center {
             display: flex;
             align-items: center;
-            gap: 16px;
         }
 
         .tienda-nav__back-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.88rem;
+            background: #ffffff;
+            border: 1px solid var(--clr-border);
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 0.86rem;
             font-weight: 600;
-            color: #1e3a8a;
-            padding: 8px 16px;
-            border-radius: 9999px;
-            background: #f1f5f9;
-            transition: all 0.2s ease;
+            color: var(--clr-dark-sub);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .tienda-nav__back-link:hover {
-            background: #e2e8f0;
-            transform: translateX(-2px);
+            background: var(--clr-primary-light);
+            border-color: #bfdbfe;
+            color: var(--clr-primary);
+            transform: translateY(-1px);
         }
 
         .tienda-nav__user-zone {
@@ -133,184 +166,271 @@
             gap: 12px;
         }
 
+        .tienda-nav__user-chip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 5px 12px 5px 6px;
+            border-radius: 999px;
+            border: 1px solid var(--clr-border);
+        }
+
         .tienda-nav__avatar {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #ffffff;
             border-radius: 50%;
-            background: #dbeafe;
-            color: #1e40af;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: var(--font-display);
-            font-size: 0.95rem;
             font-weight: 700;
-            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-family: var(--font-display);
         }
 
         .tienda-nav__username {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
-            color: #1e293b;
+            color: var(--clr-dark);
             text-transform: capitalize;
         }
 
         .tienda-nav__btn-logout {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #f1f5f9;
-            color: #475569;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.15s ease;
+            color: var(--clr-text-muted);
+            border: 1px solid var(--clr-border);
+            background: #ffffff;
+            transition: all 0.2s ease;
         }
 
         .tienda-nav__btn-logout:hover {
-            background: #fee2e2;
-            color: #dc2626;
-            transform: scale(1.05);
+            color: #ef4444;
+            background: #fef2f2;
+            border-color: #fecaca;
         }
 
-        /* ══════════════════════════════════════════
-           HERO BANNER
-        ══════════════════════════════════════════ */
+        /* ══════════════════════════════════════════════════════
+           HERO SECTION MODERNO (AURORA / GLASS KPI)
+        ══════════════════════════════════════════════════════ */
         .cp-hero {
-            background: linear-gradient(135deg, #09215c 0%, #113a96 45%, #1952cb 80%, #0284c7 100%);
-            padding: 48px 36px 36px;
-            position: relative;
+            background: radial-gradient(120% 120% at 50% 0%, #1e293b 0%, #0f172a 100%);
             color: #ffffff;
+            padding: 44px 32px 56px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Iluminaciones sutiles en el fondo */
+        .cp-hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: 10%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .cp-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -120px;
+            left: 5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.16) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
         .cp-hero__container {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+        }
+
+        .cp-hero__header {
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            gap: 32px;
             flex-wrap: wrap;
-        }
-
-        .cp-hero__left {
-            max-width: 600px;
+            gap: 24px;
         }
 
         .cp-hero__tag {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.14);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            backdrop-filter: blur(8px);
-            padding: 5px 14px;
-            border-radius: 9999px;
-            font-size: 0.76rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.78rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 16px;
+            letter-spacing: 0.03em;
+            color: #bae6fd;
+            margin-bottom: 14px;
         }
 
         .cp-hero__tag-dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
-            background: #22c55e;
-            box-shadow: 0 0 8px #22c55e;
+            background: #38bdf8;
+            box-shadow: 0 0 10px #38bdf8;
+            animation: pulseDot 2s infinite;
         }
 
         .cp-hero__title {
             font-family: var(--font-display);
             font-size: 2.35rem;
-            font-weight: 900;
+            font-weight: 800;
             line-height: 1.15;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
+            color: #ffffff;
             margin-bottom: 10px;
         }
 
         .cp-hero__title span {
-            color: #67e8f9;
+            background: linear-gradient(135deg, #ffffff 40%, #7dd3fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .cp-hero__desc {
             font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.85);
+            color: #cbd5e1;
+            max-width: 580px;
             line-height: 1.5;
-            margin-bottom: 20px;
         }
 
-        /* Stats Cards */
+        .cp-hero__desc strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Grid de Métricas / KPI Cards */
         .cp-stats-grid {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            width: 100%;
         }
 
         .cp-stat-card {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(12px);
-            border-radius: 14px;
-            padding: 16px 20px;
-            min-width: 160px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 18px;
+            padding: 20px 22px;
             display: flex;
-            flex-direction: column;
-            gap: 4px;
-            transition: transform 0.2s ease;
+            align-items: center;
+            gap: 18px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .cp-stat-card:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.22);
             transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.17);
         }
 
-        .cp-stat-card__lbl {
-            font-size: 0.75rem;
-            font-weight: 600;
+        .cp-stat-icon-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cp-stat-icon-wrap--pedidos {
+            background: rgba(14, 165, 233, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+
+        .cp-stat-icon-wrap--gasto {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.25);
+        }
+
+        .cp-stat-icon-wrap--ultimo {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.25);
+        }
+
+        .cp-stat-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cp-stat-lbl {
+            font-size: 0.76rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: rgba(255, 255, 255, 0.75);
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #94a3b8;
+            margin-bottom: 3px;
         }
 
-        .cp-stat-card__val {
+        .cp-stat-val {
             font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 900;
+            font-size: 1.6rem;
+            font-weight: 800;
             color: #ffffff;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
         }
 
-        .cp-stat-card__sub {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.8);
+        .cp-stat-sub {
+            font-size: 0.78rem;
+            color: #cbd5e1;
+            margin-top: 4px;
         }
 
-        /* ══════════════════════════════════════════
-           MAIN CONTENT
-        ══════════════════════════════════════════ */
+        /* ══════════════════════════════════════════════════════
+           BARRA DE BÚSQUEDA Y FILTROS SEGMENTADOS
+        ══════════════════════════════════════════════════════ */
         .cp-main {
             max-width: 1200px;
-            margin: -20px auto 60px;
+            margin: -24px auto 60px;
             padding: 0 24px;
             width: 100%;
             position: relative;
             z-index: 10;
-            flex: 1;
         }
 
-        /* Barra de Filtros y Búsqueda */
         .cp-filters-card {
             background: #ffffff;
+            border-radius: 18px;
+            padding: 16px 20px;
+            box-shadow: var(--shadow-lg);
             border: 1px solid var(--clr-border);
-            border-radius: 16px;
-            padding: 18px 24px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-            margin-bottom: 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
             flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
         }
 
         .cp-search-form {
@@ -318,7 +438,8 @@
             align-items: center;
             gap: 10px;
             flex: 1;
-            max-width: 480px;
+            min-width: 280px;
+            max-width: 580px;
         }
 
         .cp-search-wrap {
@@ -337,51 +458,59 @@
 
         .cp-search-input {
             width: 100%;
-            height: 42px;
             background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 9999px;
-            padding: 0 16px 0 42px;
+            border: 1.5px solid var(--clr-border);
+            border-radius: 12px;
+            padding: 11px 16px 11px 40px;
             font-size: 0.88rem;
-            color: var(--clr-text-main);
+            font-family: var(--font-body);
+            color: var(--clr-dark);
             outline: none;
             transition: all 0.2s ease;
         }
 
         .cp-search-input:focus {
             background: #ffffff;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+            border-color: var(--clr-primary);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.12);
+        }
+
+        .cp-search-input::placeholder {
+            color: #94a3b8;
         }
 
         .cp-btn-search {
-            background: #1e3a8a;
+            background: var(--clr-primary);
             color: #ffffff;
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 0.85rem;
-            height: 42px;
-            padding: 0 18px;
-            border-radius: 9999px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 0.86rem;
+            padding: 11px 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.25);
+            transition: all 0.15s ease;
+            white-space: nowrap;
         }
 
         .cp-btn-search:hover {
-            background: #1d4ed8;
+            background: var(--clr-primary-hover);
+            transform: translateY(-1px);
         }
 
         .cp-btn-clear {
             font-size: 0.82rem;
-            color: #64748b;
             font-weight: 600;
-            padding: 8px 12px;
-            text-decoration: underline;
+            color: #ef4444;
+            padding: 9px 12px;
+            border-radius: 10px;
+            background: #fef2f2;
+            transition: all 0.15s ease;
         }
 
-        /* Píldoras de Estado */
+        .cp-btn-clear:hover {
+            background: #fee2e2;
+        }
+
+        /* Chips de estado segmentados */
         .cp-status-pills {
             display: flex;
             align-items: center;
@@ -390,521 +519,673 @@
         }
 
         .cp-pill {
-            font-size: 0.82rem;
-            font-weight: 600;
-            padding: 7px 14px;
-            border-radius: 9999px;
-            border: 1px solid #e2e8f0;
-            background: #f8fafc;
-            color: #475569;
-            transition: all 0.18s ease;
-            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: #f8fafc;
+            color: var(--clr-text-muted);
+            border: 1px solid var(--clr-border);
+            transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .cp-pill:hover {
             background: #f1f5f9;
+            color: var(--clr-dark);
             border-color: #cbd5e1;
-            color: #0f172a;
         }
 
         .cp-pill.active {
-            background: #1e3a8a;
-            border-color: #1e3a8a;
+            background: var(--clr-dark);
             color: #ffffff;
-            font-weight: 700;
+            border-color: var(--clr-dark);
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2);
         }
 
-        /* ══════════════════════════════════════════
-           LISTADO DE COMPRAS (CARDS)
-        ══════════════════════════════════════════ */
+        .cp-pill-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        /* ══════════════════════════════════════════════════════
+           TARJETAS DE COMPRA (PREMIUM ORDER CARD)
+        ══════════════════════════════════════════════════════ */
         .cp-orders-list {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 22px;
         }
 
         .cp-order-card {
             background: #ffffff;
+            border-radius: 20px;
             border: 1px solid var(--clr-border);
-            border-radius: 18px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
+            box-shadow: var(--shadow-md);
             overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .cp-order-card:hover {
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow-xl);
             border-color: #cbd5e1;
             transform: translateY(-2px);
         }
 
-        /* Header de la Tarjeta */
-        .cp-order-header {
-            background: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 16px 24px;
+        /* Cabecera de la tarjeta */
+        .cp-card-header {
+            padding: 18px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--clr-border-subtle);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
             flex-wrap: wrap;
+            gap: 14px;
         }
 
-        .cp-order-id-group {
+        .cp-card-header__left {
             display: flex;
             align-items: center;
             gap: 12px;
             flex-wrap: wrap;
         }
 
-        .cp-order-tag {
-            font-family: var(--font-display);
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: #0f172a;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .cp-fac-badge {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            font-weight: 700;
-            background: #eff6ff;
-            color: #1d4ed8;
-            border: 1px solid #bfdbfe;
-            padding: 3px 10px;
-            border-radius: 6px;
-        }
-
-        .cp-order-date {
-            font-size: 0.82rem;
-            color: #64748b;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* Badges de Estado */
-        .cp-status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 0.76rem;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-        }
-
-        .badge-pagado {
-            background: #ecfdf5;
-            color: #059669;
-            border: 1px solid #a7f3d0;
-        }
-
-        .badge-pendiente {
-            background: #fffbeb;
-            color: #d97706;
-            border: 1px solid #fde68a;
-        }
-
-        .badge-completado {
-            background: #f0f9ff;
-            color: #0284c7;
-            border: 1px solid #bae6fd;
-        }
-
-        .badge-cancelado {
-            background: #fef2f2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
-        }
-
-        .badge-default {
-            background: #f1f5f9;
-            color: #475569;
-            border: 1px solid #e2e8f0;
-        }
-
-        /* Cuerpo de la Tarjeta */
-        .cp-order-body {
-            padding: 24px;
-            display: grid;
-            grid-template-columns: 1fr 1.3fr;
-            gap: 28px;
-        }
-
-        @media (max-width: 860px) {
-            .cp-order-body {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-
-        /* Datos de Entrega y Pago */
-        .cp-order-info-block h4 {
-            font-family: var(--font-display);
-            font-size: 0.82rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: #64748b;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .cp-info-row {
-            display: flex;
-            font-size: 0.86rem;
-            margin-bottom: 8px;
-            line-height: 1.45;
-        }
-
-        .cp-info-row strong {
-            width: 110px;
-            flex-shrink: 0;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .cp-info-row span {
-            color: #1e293b;
-            font-weight: 500;
-        }
-
-        .cp-method-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: #f1f5f9;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            color: #1e3a8a;
-        }
-
-        /* Tabla / Lista de Productos del Pedido */
-        .cp-order-items-block h4 {
-            font-family: var(--font-display);
-            font-size: 0.82rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: #64748b;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .cp-items-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-
-        .cp-items-table th {
-            text-align: left;
-            padding: 8px 10px;
-            background: #f8fafc;
-            color: #64748b;
-            font-size: 0.74rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .cp-items-table td {
-            padding: 10px;
-            border-bottom: 1px solid #f1f5f9;
-            vertical-align: middle;
-        }
-
-        .cp-items-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .cp-item-title {
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .cp-item-cat {
-            font-size: 0.72rem;
-            color: #94a3b8;
-        }
-
-        /* Footer de la Tarjeta */
-        .cp-order-footer {
-            background: #fafafa;
-            border-top: 1px solid #f1f5f9;
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .cp-total-display {
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-        }
-
-        .cp-total-lbl {
-            font-size: 0.82rem;
-            color: #64748b;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .cp-total-val {
-            font-family: var(--font-display);
-            font-size: 1.45rem;
-            font-weight: 900;
-            color: #1e3a8a;
-        }
-
-        .cp-actions-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .cp-btn {
+        .cp-order-badge {
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            padding: 9px 18px;
+            background: #eff6ff;
+            color: #1e3a8a;
+            border: 1px solid #bfdbfe;
+            padding: 5px 12px;
             border-radius: 10px;
             font-family: var(--font-display);
-            font-size: 0.86rem;
             font-weight: 700;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            cursor: pointer;
+            font-size: 0.95rem;
+            letter-spacing: -0.01em;
         }
 
-        .cp-btn--primary {
-            background: #1e3a8a;
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
-        }
-
-        .cp-btn--primary:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
-        }
-
-        .cp-btn--outline {
-            background: #ffffff;
-            color: #334155;
-            border: 1px solid #cbd5e1;
-        }
-
-        .cp-btn--outline:hover {
+        .cp-fac-pill {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 600;
             background: #f8fafc;
-            border-color: #94a3b8;
+            color: #475569;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
         }
 
-        .cp-btn--factura {
+        .cp-order-datetime {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            color: var(--clr-text-muted);
+        }
+
+        /* Badges de estado con estilo píldora pulida */
+        .cp-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 13px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+        .cp-status-pill--pagado {
             background: #ecfdf5;
             color: #065f46;
             border: 1px solid #a7f3d0;
         }
 
-        .cp-btn--factura:hover {
-            background: #d1fae5;
-            color: #047857;
+        .cp-status-pill--pendiente {
+            background: #fffbeb;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .cp-status-pill--entregado {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .cp-status-pill-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .cp-status-pill--pagado .cp-status-pill-dot {
+            background: #10b981;
+            box-shadow: 0 0 6px #10b981;
+        }
+
+        .cp-status-pill--pendiente .cp-status-pill-dot {
+            background: #f59e0b;
+        }
+
+        .cp-status-pill--entregado .cp-status-pill-dot {
+            background: #3b82f6;
+        }
+
+        /* Cuerpo principal de la tarjeta: 2 columnas bien equilibradas */
+        .cp-card-body {
+            padding: 22px 24px;
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 24px;
+            background: #ffffff;
+        }
+
+        @media (max-width: 900px) {
+            .cp-card-body {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Columna 1: Datos de entrega y pago */
+        .cp-delivery-box {
+            background: #f8fafc;
+            border: 1px solid var(--clr-border);
+            border-radius: 16px;
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cp-box-title {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 2px;
+        }
+
+        .cp-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+
+        .cp-info-icon {
+            color: #64748b;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .cp-info-texts {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.35;
+        }
+
+        .cp-info-label {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .cp-info-val {
+            font-weight: 600;
+            color: var(--clr-dark);
+            word-break: break-word;
+        }
+
+        .cp-method-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 3px 9px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 2px;
+            width: fit-content;
+        }
+
+        /* Columna 2: Lista moderna de productos */
+        .cp-items-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cp-items-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cp-items-header-title {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .cp-items-count-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: #eff6ff;
+            color: #1e3a8a;
+            padding: 2px 8px;
+            border-radius: 999px;
+        }
+
+        /* Tarjeta de cada producto individual */
+        .cp-product-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cp-product-row {
+            background: #ffffff;
+            border: 1px solid var(--clr-border);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            transition: all 0.15s ease;
+        }
+
+        .cp-product-row:hover {
+            border-color: #cbd5e1;
+            background: #fafafa;
+        }
+
+        .cp-product-row__info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .cp-product-row__icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cp-product-row__titles {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .cp-product-row__name {
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--clr-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cp-product-row__meta {
+            font-size: 0.75rem;
+            color: var(--clr-text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .cp-product-row__cat-badge {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 1px 7px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .cp-product-row__pricing {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .cp-product-row__subtotal {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--clr-dark);
+        }
+
+        .cp-product-row__unit {
+            font-size: 0.74rem;
+            color: #94a3b8;
+            margin-top: 1px;
+        }
+
+        /* Footer de la tarjeta con Total & Botones de Acción */
+        .cp-card-footer {
+            padding: 18px 24px;
+            background: #f8fafc;
+            border-top: 1px solid var(--clr-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .cp-total-zone {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cp-total-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #64748b;
+        }
+
+        .cp-total-number {
+            font-family: var(--font-display);
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--clr-dark);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .cp-actions-zone {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Botones de acción */
+        .cp-btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Botón Ver Factura POS */
+        .cp-btn-action--outline {
+            background: #ffffff;
+            color: var(--clr-dark-sub);
+            border: 1.5px solid #cbd5e1;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .cp-btn-action--outline:hover {
+            background: #f8fafc;
+            border-color: var(--clr-primary);
+            color: var(--clr-primary);
             transform: translateY(-1px);
         }
 
-        /* ══════════════════════════════════════════
+        /* Botón Imprimir Factura POS */
+        .cp-btn-action--filled {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+        }
+
+        .cp-btn-action--filled:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.38);
+            transform: translateY(-1px);
+        }
+
+        /* ══════════════════════════════════════════════════════
            ESTADO VACÍO (EMPTY STATE)
-        ══════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════ */
         .cp-empty-state {
             background: #ffffff;
-            border: 1px dashed #cbd5e1;
-            border-radius: 20px;
-            padding: 60px 24px;
+            border-radius: 24px;
+            padding: 60px 32px;
             text-align: center;
-            max-width: 600px;
-            margin: 40px auto;
+            border: 1px solid var(--clr-border);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 580px;
+            margin: 20px auto 40px;
         }
 
         .cp-empty-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
             background: #eff6ff;
-            color: #2563eb;
-            display: inline-flex;
+            color: var(--clr-primary);
+            display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
-            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.12);
         }
 
         .cp-empty-title {
             font-family: var(--font-display);
             font-size: 1.45rem;
             font-weight: 800;
-            color: #0f172a;
+            color: var(--clr-dark);
             margin-bottom: 8px;
         }
 
         .cp-empty-desc {
-            font-size: 0.92rem;
-            color: #64748b;
+            font-size: 0.9rem;
+            color: var(--clr-text-muted);
             line-height: 1.5;
             margin-bottom: 24px;
-            max-width: 440px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .cp-btn-tienda {
-            background: #1e3a8a;
-            color: #ffffff;
-            padding: 12px 28px;
-            border-radius: 9999px;
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 0.92rem;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 14px rgba(30, 58, 138, 0.25);
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 12px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
             transition: all 0.2s ease;
         }
 
         .cp-btn-tienda:hover {
-            background: #1d4ed8;
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
         }
 
-        /* ══════════════════════════════════════════
-           MODAL DE DETALLE RÁPIDO / FACTURA
-        ══════════════════════════════════════════ */
+        /* ══════════════════════════════════════════════════════
+           MODAL DE FACTURA POS (TIRILLA TÉRMICA)
+        ══════════════════════════════════════════════════════ */
         .cp-modal-backdrop {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            display: flex;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 99999;
+            display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
             opacity: 0;
-            visibility: hidden;
-            transition: all 0.25s ease;
+            transition: opacity 0.2s ease;
         }
 
         .cp-modal-backdrop.is-open {
+            display: flex;
             opacity: 1;
-            visibility: visible;
         }
 
         .cp-modal {
             background: #ffffff;
-            border-radius: 16px;
-            max-width: 480px;
             width: 100%;
-            max-height: 94vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-            position: relative;
-            transform: scale(0.95);
-            transition: transform 0.25s ease;
+            max-width: 480px;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(15, 23, 42, 0.35);
+            overflow: hidden;
+            animation: modalSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .cp-modal-backdrop.is-open .cp-modal {
-            transform: scale(1);
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .cp-modal-header {
+            padding: 16px 20px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--clr-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cp-modal-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--clr-dark);
+        }
+
+        .cp-modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            background: #f1f5f9;
+            font-size: 1.2rem;
+            transition: all 0.15s ease;
+        }
+
+        .cp-modal-close:hover {
+            background: #fee2e2;
+            color: #ef4444;
         }
 
         .cp-modal-body {
-            padding: 16px;
-            background: #94a3b8;
+            padding: 20px;
+            background: #e2e8f0;
+            overflow-y: auto;
             display: flex;
             justify-content: center;
         }
 
-        /* ── TIRILLA POS RENDER DENTRO DEL MODAL ── */
+        /* Tirilla POS Render */
         .pos-modal-ticket {
             width: 100%;
-            max-width: 420px;
+            max-width: 360px;
             background: #ffffff;
-            padding: 24px 20px 30px;
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+            padding: 24px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 13px;
+            font-size: 12.5px;
             line-height: 1.35;
             color: #000000;
+            border-radius: 4px;
         }
 
         .pos-modal-ticket .pos-top-line {
             display: flex;
             justify-content: space-between;
             font-size: 11px;
-            margin-bottom: 14px;
-            color: #111111;
+            margin-bottom: 12px;
         }
 
         .pos-modal-ticket .pos-header {
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .pos-modal-ticket .pos-store-name {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 900;
-            letter-spacing: 0.02em;
             text-transform: uppercase;
             margin-bottom: 2px;
+            letter-spacing: 0.02em;
         }
 
         .pos-modal-ticket .pos-store-info {
-            font-size: 12px;
+            font-size: 11.5px;
             line-height: 1.3;
             text-transform: uppercase;
         }
 
         .pos-modal-ticket .pos-doc-title {
-            margin-top: 12px;
-            font-size: 14px;
+            margin-top: 10px;
+            font-size: 13.5px;
             font-weight: 800;
-            letter-spacing: 0.03em;
         }
 
         .pos-modal-ticket .pos-regimen {
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 700;
         }
 
         .pos-modal-ticket .pos-date {
-            font-size: 12px;
+            font-size: 11.5px;
             margin-top: 2px;
         }
 
         .pos-modal-ticket .pos-client-info {
-            font-size: 13px;
-            line-height: 1.38;
-            margin-bottom: 14px;
-            text-align: left;
+            font-size: 12.5px;
+            line-height: 1.36;
+            margin-bottom: 12px;
         }
 
         .pos-modal-ticket .pos-client-row {
@@ -912,47 +1193,30 @@
         }
 
         .pos-modal-ticket .pos-client-lbl {
-            font-weight: 400;
-            width: 95px;
+            width: 90px;
             flex-shrink: 0;
+            font-weight: 400;
         }
 
         .pos-modal-ticket .pos-client-val {
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .pos-modal-ticket .pos-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12.5px;
-            margin-bottom: 0;
+            font-size: 12px;
         }
 
         .pos-modal-ticket .pos-table th {
             padding: 4px 2px;
             font-weight: 800;
-            font-size: 12.5px;
         }
 
-        .pos-modal-ticket .pos-table th.col-art {
-            text-align: left;
-            width: 48%;
-        }
-
-        .pos-modal-ticket .pos-table th.col-pre {
-            text-align: right;
-            width: 24%;
-        }
-
-        .pos-modal-ticket .pos-table th.col-cant {
-            text-align: center;
-            width: 14%;
-        }
-
-        .pos-modal-ticket .pos-table th.col-desc {
-            text-align: right;
-            width: 14%;
-        }
+        .pos-modal-ticket .pos-table th.col-art { text-align: left; width: 48%; }
+        .pos-modal-ticket .pos-table th.col-pre { text-align: right; width: 24%; }
+        .pos-modal-ticket .pos-table th.col-cant { text-align: center; width: 14%; }
+        .pos-modal-ticket .pos-table th.col-desc { text-align: right; width: 14%; }
 
         .pos-modal-ticket .pos-table td {
             padding: 4px 2px;
@@ -966,189 +1230,89 @@
             line-height: 1.2;
         }
 
-        .pos-modal-ticket .pos-table td.col-pre {
-            text-align: right;
-            white-space: nowrap;
-        }
-
-        .pos-modal-ticket .pos-table td.col-cant {
-            text-align: center;
-        }
-
-        .pos-modal-ticket .pos-table td.col-desc {
-            text-align: right;
-        }
+        .pos-modal-ticket .pos-table td.col-pre { text-align: right; white-space: nowrap; }
+        .pos-modal-ticket .pos-table td.col-cant { text-align: center; }
+        .pos-modal-ticket .pos-table td.col-desc { text-align: right; }
 
         .pos-modal-ticket .pos-thick-line {
             border: none;
-            border-bottom: 2.5px solid #000000;
-            margin: 6px 0 10px;
+            border-bottom: 2px solid #000;
+            margin: 6px 0 8px;
         }
 
         .pos-modal-ticket .pos-totals-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13px;
-            margin-bottom: 12px;
+            font-size: 12.5px;
+            margin-bottom: 10px;
         }
 
-        .pos-modal-ticket .pos-totals-table td {
-            padding: 2px 2px;
-        }
+        .pos-modal-ticket .pos-totals-table td { padding: 2px 2px; }
+        .pos-modal-ticket .pos-totals-table .pos-tot-lbl { text-align: right; padding-right: 12px; width: 60%; }
+        .pos-modal-ticket .pos-totals-table .pos-tot-val { text-align: right; font-weight: 700; width: 40%; white-space: nowrap; }
+        .pos-modal-ticket .pos-total-highlight { font-size: 13.5px; font-weight: 900; }
 
-        .pos-modal-ticket .pos-totals-table .pos-tot-lbl {
-            text-align: right;
-            padding-right: 14px;
-            font-weight: 400;
-            width: 60%;
-        }
-
-        .pos-modal-ticket .pos-totals-table .pos-tot-val {
-            text-align: right;
-            font-weight: 700;
-            width: 40%;
-            white-space: nowrap;
-        }
-
-        .pos-modal-ticket .pos-total-highlight {
-            font-size: 14px;
-            font-weight: 900;
-        }
-
-        .pos-modal-ticket .pos-payment-block {
-            margin: 10px 0 14px;
-        }
-
-        .pos-modal-ticket .pos-pay-row {
-            display: flex;
-            justify-content: flex-end;
-            gap: 16px;
-            font-size: 13px;
-            margin-bottom: 3px;
-        }
-
-        .pos-modal-ticket .pos-pay-lbl {
-            font-weight: 400;
-        }
-
-        .pos-modal-ticket .pos-pay-val {
-            font-weight: 700;
-            min-width: 90px;
-            text-align: right;
-        }
+        .pos-modal-ticket .pos-payment-block { margin-top: 6px; }
+        .pos-modal-ticket .pos-pay-row { display: flex; justify-content: flex-end; gap: 14px; font-size: 12.5px; margin-bottom: 3px; }
+        .pos-modal-ticket .pos-pay-lbl { font-weight: 400; }
+        .pos-modal-ticket .pos-pay-val { font-weight: 700; min-width: 85px; text-align: right; }
 
         .pos-modal-ticket .pos-dashed-line {
             border: none;
-            border-bottom: 1px dashed #000000;
-            margin: 10px 0;
+            border-bottom: 1px dashed #000;
+            margin: 8px 0;
         }
 
-        .pos-modal-ticket .pos-loyalty {
-            font-size: 12px;
-            line-height: 1.4;
-            margin-bottom: 8px;
-        }
-
-        .pos-modal-ticket .pos-loyalty strong {
-            font-weight: 800;
-        }
-
-        .pos-modal-ticket .pos-custom-text {
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.35;
-            margin: 10px 0;
-        }
-
-        .pos-modal-ticket .pos-footer-credits {
-            text-align: center;
-            font-size: 11px;
-            line-height: 1.35;
-            margin-top: 6px;
-        }
-
-        .cp-modal-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            background: #ffffff;
-            z-index: 10;
-        }
-
-        .cp-modal-title {
-            font-family: var(--font-display);
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .cp-modal-close {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #f1f5f9;
-            color: #64748b;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .cp-modal-close:hover {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-
-        .cp-modal-body {
-            padding: 24px;
-        }
+        .pos-modal-ticket .pos-loyalty { font-size: 11.5px; line-height: 1.4; margin-bottom: 6px; }
+        .pos-modal-ticket .pos-custom-text { text-align: center; font-size: 11.5px; line-height: 1.35; margin: 8px 0; }
+        .pos-modal-ticket .pos-footer-credits { text-align: center; font-size: 10.5px; line-height: 1.35; margin-top: 4px; }
 
         .cp-modal-footer {
-            padding: 16px 24px;
-            border-top: 1px solid #e2e8f0;
+            padding: 14px 20px;
+            background: #ffffff;
+            border-top: 1px solid var(--clr-border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #f8fafc;
-            border-radius: 0 0 20px 20px;
         }
 
-        /* ══════════════════════════════════════════
+        /* ══════════════════════════════════════════════════════
            FOOTER GENERAL
-        ══════════════════════════════════════════ */
+        ══════════════════════════════════════════════════════ */
         .cp-footer {
             background: #ffffff;
-            border-top: 1px solid #e2e8f0;
-            padding: 24px 36px;
+            border-top: 1px solid var(--clr-border);
+            padding: 28px 32px;
             text-align: center;
             font-size: 0.82rem;
-            color: #64748b;
+            color: var(--clr-text-muted);
             margin-top: auto;
         }
 
         .cp-footer strong {
-            color: #1e3a8a;
+            color: var(--clr-dark);
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
-    <!-- ══════════════════════════════════════════
-         TOP NAVBAR
-    ══════════════════════════════════════════ -->
+    <!-- ══════════════════════════════════════════════════════
+         NAVBAR SUPERIOR
+    ══════════════════════════════════════════════════════ -->
     <header class="tienda-nav">
         <a href="{{ route('tienda') }}" class="tienda-nav__logo">
             <div class="tienda-nav__logo-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="2" y="3" width="20" height="14" rx="3" fill="white" fill-opacity="0.2" stroke="white" stroke-width="1.8"/>
+                    <rect x="2" y="3" width="20" height="14" rx="3" fill="white" fill-opacity="0.25" stroke="white" stroke-width="1.8"/>
                     <path d="M7 9h10M7 12h6" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
                     <path d="M8 17v4M16 17v4M5 21h14" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
                 </svg>
@@ -1158,7 +1322,7 @@
 
         <div class="tienda-nav__center">
             <a href="{{ route('tienda') }}" class="tienda-nav__back-link">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="19" y1="12" x2="5" y2="12"></line>
                     <polyline points="12 19 5 12 12 5"></polyline>
                 </svg>
@@ -1167,15 +1331,17 @@
         </div>
 
         <div class="tienda-nav__user-zone">
-            <div class="tienda-nav__avatar">
-                {{ strtoupper(substr($user->nombre ?? 'C', 0, 1)) }}
+            <div class="tienda-nav__user-chip">
+                <div class="tienda-nav__avatar">
+                    {{ strtoupper(substr($user->nombre ?? 'C', 0, 1)) }}
+                </div>
+                <span class="tienda-nav__username">{{ strtolower($user->nombre ?? 'Cliente') }}</span>
             </div>
-            <span class="tienda-nav__username">{{ strtolower($user->nombre ?? 'Cliente') }}</span>
 
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf
                 <button type="submit" class="tienda-nav__btn-logout" title="Cerrar sesión">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                         <polyline points="16 17 21 12 16 7"></polyline>
                         <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -1185,64 +1351,96 @@
         </div>
     </header>
 
-    <!-- ══════════════════════════════════════════
-         HERO SECTION: MIS COMPRAS & STATS
-    ══════════════════════════════════════════ -->
+    <!-- ══════════════════════════════════════════════════════
+         HERO SECTION PREMIUM & KPIS
+    ══════════════════════════════════════════════════════ -->
     <section class="cp-hero">
         <div class="cp-hero__container">
-            <div class="cp-hero__left">
-                <div class="cp-hero__tag">
-                    <span class="cp-hero__tag-dot"></span>
-                    Módulo de Compras del Cliente — Almacén Europa
+            <div class="cp-hero__header">
+                <div>
+                    <div class="cp-hero__tag">
+                        <span class="cp-hero__tag-dot"></span>
+                        Centro de Compras · Historial &amp; Facturación
+                    </div>
+
+                    <h1 class="cp-hero__title">
+                        Mis Compras &amp; <span>Facturas</span>
+                    </h1>
+
+                    <p class="cp-hero__desc">
+                        Hola <strong>{{ $user->nombre }}</strong>, aquí puedes gestionar tus compras, hacer seguimiento a tus entregas y consultar tus tirillas térmicas POS autorizadas.
+                    </p>
                 </div>
-
-                <h1 class="cp-hero__title">
-                    Mis Compras &amp; <span>Facturas</span> 📦
-                </h1>
-
-                <p class="cp-hero__desc">
-                    Hola <strong>{{ $user->nombre }}</strong>, aquí encuentras el registro de todas tus compras, copia de tus facturas electrónicas oficiales y el estado de tus entregas.
-                </p>
             </div>
 
-            <!-- Stats Rápidas -->
+            <!-- KPI Cards en Glassmorphism -->
             <div class="cp-stats-grid">
+                <!-- Card 1: Total Pedidos -->
                 <div class="cp-stat-card">
-                    <span class="cp-stat-card__lbl">Total Pedidos</span>
-                    <span class="cp-stat-card__val">{{ $totalCompras }}</span>
-                    <span class="cp-stat-card__sub">{{ $totalCompras === 1 ? '1 compra efectuada' : $totalCompras . ' compras efectuadas' }}</span>
+                    <div class="cp-stat-icon-wrap cp-stat-icon-wrap--pedidos">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                    </div>
+                    <div class="cp-stat-content">
+                        <span class="cp-stat-lbl">Total Pedidos</span>
+                        <span class="cp-stat-val">{{ $totalCompras }}</span>
+                        <span class="cp-stat-sub">{{ $totalCompras === 1 ? '1 pedido registrado' : $totalCompras . ' pedidos registrados' }}</span>
+                    </div>
                 </div>
 
+                <!-- Card 2: Inversión Total -->
                 <div class="cp-stat-card">
-                    <span class="cp-stat-card__lbl">Inversión Total</span>
-                    <span class="cp-stat-card__val">${{ number_format($gastoTotal, 0, ',', '.') }}</span>
-                    <span class="cp-stat-card__sub">Acumulado en compras</span>
+                    <div class="cp-stat-icon-wrap cp-stat-icon-wrap--gasto">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                            <line x1="2" y1="10" x2="22" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="cp-stat-content">
+                        <span class="cp-stat-lbl">Inversión Total</span>
+                        <span class="cp-stat-val">${{ number_format($gastoTotal, 0, ',', '.') }}</span>
+                        <span class="cp-stat-sub">Acumulado en compras</span>
+                    </div>
                 </div>
 
+                <!-- Card 3: Último Pedido -->
                 <div class="cp-stat-card">
-                    <span class="cp-stat-card__lbl">Último Pedido</span>
-                    <span class="cp-stat-card__val" style="font-size: 1.15rem; padding-top: 5px;">
-                        {{ $ultimaCompra ? $ultimaCompra->fecha_formateada : 'Ninguno' }}
-                    </span>
-                    <span class="cp-stat-card__sub">{{ $ultimaCompra ? $ultimaCompra->numero_venta : 'Sin registros' }}</span>
+                    <div class="cp-stat-icon-wrap cp-stat-icon-wrap--ultimo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </div>
+                    <div class="cp-stat-content">
+                        <span class="cp-stat-lbl">Último Pedido</span>
+                        <span class="cp-stat-val" style="font-size: 1.25rem;">
+                            {{ $ultimaCompra ? $ultimaCompra->fecha_formateada : 'Ninguno' }}
+                        </span>
+                        <span class="cp-stat-sub">{{ $ultimaCompra ? $ultimaCompra->numero_venta : 'Sin historial' }}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ══════════════════════════════════════════
-         CONTENEDOR PRINCIPAL
-    ══════════════════════════════════════════ -->
+    <!-- ══════════════════════════════════════════════════════
+         CONTENIDO PRINCIPAL
+    ══════════════════════════════════════════════════════ -->
     <main class="cp-main">
 
-        <!-- Barra de Búsqueda y Filtros -->
+        <!-- Barra de Búsqueda y Chips de Estado -->
         <div class="cp-filters-card">
             <form action="{{ route('cliente.compras') }}" method="GET" class="cp-search-form">
                 @if($estado)
                     <input type="hidden" name="estado" value="{{ $estado }}">
                 @endif
                 <div class="cp-search-wrap">
-                    <svg class="cp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="cp-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
@@ -1250,7 +1448,7 @@
                         type="text"
                         name="search"
                         class="cp-search-input"
-                        placeholder="Buscar por # de pedido, factura o producto..."
+                        placeholder="Buscar por # pedido, factura, producto o ciudad..."
                         value="{{ $search }}"
                     >
                 </div>
@@ -1262,7 +1460,7 @@
                 @endif
             </form>
 
-            <!-- Píldoras de Estado -->
+            <!-- Segmented Pills -->
             <div class="cp-status-pills">
                 <a href="{{ route('cliente.compras', array_filter(['search' => $search])) }}"
                    class="cp-pill {{ empty($estado) ? 'active' : '' }}">
@@ -1270,17 +1468,17 @@
                 </a>
                 <a href="{{ route('cliente.compras', array_filter(['estado' => 'pagado', 'search' => $search])) }}"
                    class="cp-pill {{ $estado === 'pagado' ? 'active' : '' }}">
-                    <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#10b981;"></span>
+                    <span class="cp-pill-dot" style="background:#10b981;"></span>
                     Pagados
                 </a>
                 <a href="{{ route('cliente.compras', array_filter(['estado' => 'pendiente_entrega', 'search' => $search])) }}"
                    class="cp-pill {{ $estado === 'pendiente_entrega' ? 'active' : '' }}">
-                    <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#f59e0b;"></span>
+                    <span class="cp-pill-dot" style="background:#f59e0b;"></span>
                     Contra Entrega
                 </a>
                 <a href="{{ route('cliente.compras', array_filter(['estado' => 'completado', 'search' => $search])) }}"
                    class="cp-pill {{ $estado === 'completado' ? 'active' : '' }}">
-                    <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#0284c7;"></span>
+                    <span class="cp-pill-dot" style="background:#0284c7;"></span>
                     Entregados
                 </a>
             </div>
@@ -1290,7 +1488,7 @@
         @if($compras->isEmpty())
             <div class="cp-empty-state">
                 <div class="cp-empty-icon">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="9" cy="21" r="1"></circle>
                         <circle cx="20" cy="21" r="1"></circle>
                         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
@@ -1298,16 +1496,16 @@
                 </div>
                 <h3 class="cp-empty-title">
                     @if($search || $estado)
-                        No se encontraron pedidos con ese criterio
+                        No hay pedidos con esos criterios
                     @else
                         Aún no tienes compras realizadas
                     @endif
                 </h3>
                 <p class="cp-empty-desc">
                     @if($search || $estado)
-                        Intenta buscar con otro término o limpia los filtros para ver todo tu historial.
+                        Intenta con otra palabra clave o limpia los filtros para ver todos tus pedidos.
                     @else
-                        Explora nuestro catálogo en línea, aprovecha nuestras promociones y haz tu primer pedido hoy mismo. ¡Te lo enviamos de inmediato!
+                        ¡Visita nuestro catálogo en línea y descubre nuestras promociones y productos de alta calidad!
                     @endif
                 </p>
                 <a href="{{ route('tienda') }}" class="cp-btn-tienda">
@@ -1315,7 +1513,7 @@
                         <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
                         <line x1="7" y1="7" x2="7.01" y2="7"></line>
                     </svg>
-                    <span>Ir a la Tienda / Ver Productos</span>
+                    <span>Ir al Catálogo de Productos</span>
                 </a>
             </div>
         @else
@@ -1323,136 +1521,188 @@
                 @foreach($compras as $compra)
                     <article class="cp-order-card" id="pedido-{{ $compra->ventas }}">
                         <!-- Header de la compra -->
-                        <div class="cp-order-header">
-                            <div class="cp-order-id-group">
-                                <span class="cp-order-tag">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e3a8a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <div class="cp-card-header">
+                            <div class="cp-card-header__left">
+                                <span class="cp-order-badge">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                                         <line x1="3" y1="6" x2="21" y2="6"></line>
                                         <path d="M16 10a4 4 0 0 1-8 0"></path>
                                     </svg>
                                     Pedido {{ $compra->numero_venta }}
                                 </span>
-                                <span class="cp-fac-badge" title="Número de Factura Electrónica">
+
+                                <span class="cp-fac-pill" title="Factura Oficial">
                                     {{ $compra->numero_factura }}
                                 </span>
-                                <span class="cp-order-date">
+
+                                <span class="cp-order-datetime">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
                                     </svg>
                                     {{ $compra->fecha_formateada }} a las {{ $compra->hora_formateada }}
                                 </span>
                             </div>
 
                             <div>
-                                <span class="cp-status-badge {{ $compra->estado_badge_class }}">
-                                    ● {{ $compra->estado_etiqueta }}
+                                @php
+                                    $pillClass = match($compra->estado) {
+                                        'pagado' => 'cp-status-pill--pagado',
+                                        'pendiente_entrega' => 'cp-status-pill--pendiente',
+                                        default => 'cp-status-pill--entregado'
+                                    };
+                                @endphp
+                                <span class="cp-status-pill {{ $pillClass }}">
+                                    <span class="cp-status-pill-dot"></span>
+                                    {{ $compra->estado_etiqueta }}
                                 </span>
                             </div>
                         </div>
 
-                        <!-- Cuerpo de la compra -->
-                        <div class="cp-order-body">
-                            <!-- Datos de entrega y pago -->
-                            <div class="cp-order-info-block">
-                                <h4>
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Cuerpo de la compra (2 columnas equilibradas) -->
+                        <div class="cp-card-body">
+                            <!-- Columna 1: Información de Entrega & Pago -->
+                            <div class="cp-delivery-box">
+                                <div class="cp-box-title">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                         <rect x="1" y="3" width="15" height="13" rx="1"></rect>
                                         <path d="M16 8h4l3 5v3h-7V8z"></path>
                                         <circle cx="5.5" cy="18.5" r="2.5"></circle>
                                         <circle cx="18.5" cy="18.5" r="2.5"></circle>
                                     </svg>
-                                    Detalles de Entrega &amp; Pago
-                                </h4>
+                                    <span>Entrega &amp; Destinatario</span>
+                                </div>
 
-                                <div class="cp-info-row">
-                                    <strong>Destinatario:</strong>
-                                    <span>{{ $compra->usuarioObj->nombre ?? 'Cliente' }} {{ $compra->usuarioObj->apellido ?? '' }}</span>
+                                <div class="cp-info-item">
+                                    <div class="cp-info-icon">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                    </div>
+                                    <div class="cp-info-texts">
+                                        <span class="cp-info-label">Destinatario</span>
+                                        <span class="cp-info-val">{{ $compra->usuarioObj->nombre ?? 'Cliente' }} {{ $compra->usuarioObj->apellido ?? '' }}</span>
+                                    </div>
                                 </div>
-                                <div class="cp-info-row">
-                                    <strong>Dirección:</strong>
-                                    <span>{{ $compra->direccion_envio ?: 'Dirección principal registrada' }}</span>
+
+                                <div class="cp-info-item">
+                                    <div class="cp-info-icon">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                            <circle cx="12" cy="10" r="3"></circle>
+                                        </svg>
+                                    </div>
+                                    <div class="cp-info-texts">
+                                        <span class="cp-info-label">Dirección de Entrega</span>
+                                        <span class="cp-info-val">{{ $compra->direccion_envio ?: 'Dirección principal registrada' }}</span>
+                                        <span style="font-size: 0.78rem; color: #64748b; margin-top: 1px;">
+                                            {{ $compra->ciudad ? ($compra->ciudad . ', ' . $compra->departamento) : 'Neiva, Huila' }}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="cp-info-row">
-                                    <strong>Ciudad:</strong>
-                                    <span>{{ $compra->ciudad ? ($compra->ciudad . ', ' . $compra->departamento) : 'Neiva, Huila' }}</span>
+
+                                <div class="cp-info-item">
+                                    <div class="cp-info-icon">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="cp-info-texts">
+                                        <span class="cp-info-label">Teléfono de Contacto</span>
+                                        <span class="cp-info-val">{{ $compra->telefono ?: ($compra->usuarioObj->movil ?? '—') }}</span>
+                                    </div>
                                 </div>
-                                <div class="cp-info-row">
-                                    <strong>Teléfono:</strong>
-                                    <span>{{ $compra->telefono ?: ($compra->usuarioObj->movil ?? '—') }}</span>
+
+                                <div class="cp-info-item">
+                                    <div class="cp-info-icon">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                                            <line x1="2" y1="10" x2="22" y2="10"></line>
+                                        </svg>
+                                    </div>
+                                    <div class="cp-info-texts">
+                                        <span class="cp-info-label">Método de Pago</span>
+                                        <div class="cp-method-tag">
+                                            {{ $compra->metodo_pago }}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="cp-info-row">
-                                    <strong>Método Pago:</strong>
-                                    <span class="cp-method-badge">
-                                        {{ $compra->metodo_pago }}
-                                    </span>
-                                </div>
+
                                 @if($compra->notas)
-                                <div class="cp-info-row">
-                                    <strong>Nota / Cupón:</strong>
-                                    <span style="font-size: 0.8rem; color: #475569;">{{ $compra->notas }}</span>
-                                </div>
+                                    <div class="cp-info-item">
+                                        <div class="cp-info-icon">
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                            </svg>
+                                        </div>
+                                        <div class="cp-info-texts">
+                                            <span class="cp-info-label">Nota / Cupón</span>
+                                            <span style="font-size: 0.8rem; color: #475569;">{{ $compra->notas }}</span>
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
 
-                            <!-- Resumen de productos -->
-                            <div class="cp-order-items-block">
-                                <h4>
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                                    </svg>
-                                    Productos Comprados ({{ $compra->detalles->sum('cantidad') }} uds.)
-                                </h4>
+                            <!-- Columna 2: Productos Comprados -->
+                            <div class="cp-items-box">
+                                <div class="cp-items-header">
+                                    <div class="cp-items-header-title">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                        </svg>
+                                        <span>Artículos del Pedido</span>
+                                    </div>
+                                    <span class="cp-items-count-badge">
+                                        {{ $compra->detalles->sum('cantidad') }} {{ $compra->detalles->sum('cantidad') === 1 ? 'unidad' : 'unidades' }}
+                                    </span>
+                                </div>
 
-                                <table class="cp-items-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Producto</th>
-                                            <th style="text-align: center; width: 60px;">Cant.</th>
-                                            <th style="text-align: right; width: 100px;">Unitario</th>
-                                            <th style="text-align: right; width: 110px;">Subtotal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($compra->detalles as $det)
-                                            @php
-                                                $sub = $det->cantidad * $det->precio;
-                                            @endphp
-                                            <tr>
-                                                <td>
-                                                    <div class="cp-item-title">{{ $det->productoObj->nombre ?? 'Producto Almacén Europa' }}</div>
-                                                    <div class="cp-item-cat">{{ $det->productoObj->categoriaObj->nombre ?? 'General' }}</div>
-                                                </td>
-                                                <td style="text-align: center; font-weight: 700; color: #1e3a8a;">
-                                                    {{ $det->cantidad }}
-                                                </td>
-                                                <td style="text-align: right; color: #64748b;">
-                                                    ${{ number_format($det->precio, 0, ',', '.') }}
-                                                </td>
-                                                <td style="text-align: right; font-weight: 700; color: #0f172a;">
-                                                    ${{ number_format($sub, 0, ',', '.') }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                <div class="cp-product-rows">
+                                    @foreach($compra->detalles as $det)
+                                        @php
+                                            $sub = $det->cantidad * $det->precio;
+                                        @endphp
+                                        <div class="cp-product-row">
+                                            <div class="cp-product-row__info">
+                                                <div class="cp-product-row__icon">
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="cp-product-row__titles">
+                                                    <span class="cp-product-row__name">{{ $det->productoObj->nombre ?? 'Producto Almacén Europa' }}</span>
+                                                    <div class="cp-product-row__meta">
+                                                        <span class="cp-product-row__cat-badge">{{ $det->productoObj->categoriaObj->nombre ?? 'General' }}</span>
+                                                        <span>·</span>
+                                                        <strong style="color: #1e3a8a;">{{ $det->cantidad }} {{ $det->cantidad === 1 ? 'ud' : 'uds' }}</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="cp-product-row__pricing">
+                                                <div class="cp-product-row__subtotal">${{ number_format($sub, 0, ',', '.') }}</div>
+                                                <div class="cp-product-row__unit">${{ number_format($det->precio, 0, ',', '.') }} c/u</div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Footer con Total y Acciones -->
-                        <div class="cp-order-footer">
-                            <div class="cp-total-display">
-                                <span class="cp-total-lbl">Total Cancelado:</span>
-                                <span class="cp-total-val">${{ number_format($compra->total, 0, ',', '.') }}</span>
+                        <!-- Footer de la tarjeta con Total y Acciones -->
+                        <div class="cp-card-footer">
+                            <div class="cp-total-zone">
+                                <span class="cp-total-label">Total Cancelado</span>
+                                <span class="cp-total-number">${{ number_format($compra->total, 0, ',', '.') }}</span>
                             </div>
 
-                            <div class="cp-actions-group">
-                                <!-- Botón Ver Factura POS (Abre el modal aquí mismo sin navegar a otra página) -->
-                                <button type="button" class="cp-btn cp-btn--factura" onclick="verFacturaPos({{ $compra->ventas }})" title="Ver tirilla POS sin salir de la página">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <div class="cp-actions-zone">
+                                <!-- Botón Ver Factura POS en la misma página -->
+                                <button type="button" class="cp-btn-action cp-btn-action--outline" onclick="verFacturaPos({{ $compra->ventas }})" title="Ver tirilla POS en ventana emergente">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                         <polyline points="14 2 14 8 20 8"></polyline>
                                         <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -1461,9 +1711,9 @@
                                     <span>Ver Factura POS</span>
                                 </button>
 
-                                <!-- Botón Imprimir Factura POS directo desde aquí sin ir a otra página -->
-                                <button type="button" class="cp-btn cp-btn--primary" onclick="imprimirFacturaPosDirecto({{ $compra->ventas }})" title="Imprimir tirilla POS directamente">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <!-- Botón Imprimir Factura POS directo -->
+                                <button type="button" class="cp-btn-action cp-btn-action--filled" onclick="imprimirFacturaPosDirecto({{ $compra->ventas }})" title="Imprimir tirilla térmica directamente">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="6 9 6 2 18 2 18 9"></polyline>
                                         <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
                                         <rect x="6" y="14" width="12" height="8"></rect>
@@ -1475,8 +1725,8 @@
                     </article>
                 @endforeach
 
-                <!-- Paginación -->
-                <div style="margin-top: 24px;">
+                <!-- Paginación con estilo integrado -->
+                <div style="margin-top: 16px;">
                     {{ $compras->links() }}
                 </div>
             </div>
@@ -1484,9 +1734,9 @@
 
     </main>
 
-    <!-- ══════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════════
          MODAL DE FACTURA POS (TIRILLA TÉRMICA)
-    ══════════════════════════════════════════ -->
+    ══════════════════════════════════════════════════════ -->
     <div class="cp-modal-backdrop" id="modal-detalle-compra" onclick="cerrarModalClickFuera(event)">
         <div class="cp-modal" onclick="event.stopPropagation()">
             <div class="cp-modal-header">
@@ -1500,8 +1750,8 @@
                     <span id="md-titulo">Factura POS</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <button type="button" class="cp-btn cp-btn--primary" onclick="imprimirTicketActual()" style="padding: 7px 14px; font-size: 0.82rem;">
-                        &#128438; Imprimir POS
+                    <button type="button" class="cp-btn-action cp-btn-action--filled" onclick="imprimirTicketActual()" style="padding: 7px 14px; font-size: 0.82rem;">
+                        &#128438; Imprimir
                     </button>
                     <button type="button" class="cp-modal-close" onclick="cerrarModalDetalle()" aria-label="Cerrar modal">
                         &times;
@@ -1509,7 +1759,7 @@
                 </div>
             </div>
 
-            <!-- Cuerpo del Modal: Tirilla POS idéntica a la imagen -->
+            <!-- Cuerpo del Modal: Tirilla POS idéntica al formato físico 80mm -->
             <div class="cp-modal-body">
                 <div id="ticket-pos-render" class="pos-modal-ticket">
                     <div style="text-align: center; padding: 40px; color: #64748b;">
@@ -1519,28 +1769,28 @@
             </div>
 
             <div class="cp-modal-footer">
-                <button type="button" class="cp-btn cp-btn--outline" onclick="cerrarModalDetalle()">
+                <button type="button" class="cp-btn-action cp-btn-action--outline" onclick="cerrarModalDetalle()">
                     Cerrar
                 </button>
 
-                <button type="button" class="cp-btn cp-btn--primary" onclick="imprimirTicketActual()">
+                <button type="button" class="cp-btn-action cp-btn-action--filled" onclick="imprimirTicketActual()">
                     &#128438; Imprimir Factura POS
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- ══════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════════
          FOOTER
-    ══════════════════════════════════════════ -->
+    ══════════════════════════════════════════════════════ -->
     <footer class="cp-footer">
         <p>&copy; {{ date('Y') }} <strong>Almacén Europa S.A.S.</strong> · Sistema POS y Control Comercial.</p>
         <p style="margin-top: 4px; color: #94a3b8;">Todos los derechos reservados. Neiva – Huila, Colombia.</p>
     </footer>
 
-    <!-- ══════════════════════════════════════════
+    <!-- ══════════════════════════════════════════════════════
          SCRIPTS INTERACTIVOS (FACTURA POS EN PÁGINA)
-    ══════════════════════════════════════════ -->
+    ══════════════════════════════════════════════════════ -->
     <script>
         const modalBackdrop = document.getElementById('modal-detalle-compra');
         const mdTitulo = document.getElementById('md-titulo');
@@ -1767,12 +2017,6 @@
             }
         });
     </script>
-
-    <style>
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
 
 </body>
 </html>
